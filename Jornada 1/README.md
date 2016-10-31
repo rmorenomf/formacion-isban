@@ -95,4 +95,4 @@ Tag | Description
 ```<summary>``` | Defines a visible heading for a ```<details>``` element
 ```<time>``` | Defines a date/time
 
-![alt text](https://escientia.me/formacion-isban/html-html5.gif "HTML5 semántica")
+![alt text](https://github.com/rmorenomf/formacion-isban/blob/master/Jornada%201/resources/html-html5.gif?raw=true "HTML5 semántica")
