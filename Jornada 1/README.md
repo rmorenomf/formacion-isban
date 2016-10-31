@@ -251,85 +251,117 @@ Existen tres niveles de conformidad:
 #### PUNTOS DE VERIFICACIÓN PRIORIDAD 1
 
 En general (Prioridad 1)
-1.1 Proporcione un texto equivalente para todo elemento no textual (Por ejemplo, a través de "alt", "longdesc" o en el contenido del elemento). Esto incluye: imágenes, representaciones gráficas del texto, mapas de imagen, animaciones (Por ejemplo, GIFs animados), "applets" y objetos programados, "ascii art", marcos, scripts, imágenes usadas como viñetas en las listas, espaciadores, botones gráficos, sonidos (ejecutados con o sin interacción del usuario), archivos exclusivamente auditivos, banda sonora del vídeo y vídeos.
-2.1 Asegúrese de que toda la información transmitida a través de los colores también esté disponible sin color, por ejemplo mediante el contexto o por marcadores.
-4.1 Identifique claramente los cambios en el idioma del texto del documento y en cualquier texto equivalente (por ejemplo, leyendas).
-6.1 Organice el documento de forma que pueda ser leído sin hoja de estilo. Por ejemplo, cuando un documento HTML es interpretado sin asociarlo a una hoja de estilo, tiene que ser posible leerlo.
-6.2 Asegúrese de que los equivalentes de un contenido dinámico son actualizados cuando cambia el contenido dinámico.
-7.1 Hasta que las aplicaciones de usuario permitan controlarlo, evite provocar destellos en la pantalla.
-14.1 Utilice el lenguaje apropiado más claro y simple para el contenido de un sitio.
+* 1.1 Proporcione un texto equivalente para todo elemento no textual (Por ejemplo, a través de "alt", "longdesc" o en el contenido del elemento). Esto incluye: imágenes, representaciones gráficas del texto, mapas de imagen, animaciones (Por ejemplo, GIFs animados), "applets" y objetos programados, "ascii art", marcos, scripts, imágenes usadas como viñetas en las listas, espaciadores, botones gráficos, sonidos (ejecutados con o sin interacción del usuario), archivos exclusivamente auditivos, banda sonora del vídeo y vídeos.
+* 2.1 Asegúrese de que toda la información transmitida a través de los colores también esté disponible sin color, por ejemplo mediante el contexto o por marcadores.
+* 4.1 Identifique claramente los cambios en el idioma del texto del documento y en cualquier texto equivalente (por ejemplo, leyendas).
+* 6.1 Organice el documento de forma que pueda ser leído sin hoja de estilo. Por ejemplo, cuando un documento HTML es interpretado sin asociarlo a una hoja de estilo, tiene que ser posible leerlo.
+* 6.2 Asegúrese de que los equivalentes de un contenido dinámico son actualizados cuando cambia el contenido dinámico.
+* 7.1 Hasta que las aplicaciones de usuario permitan controlarlo, evite provocar destellos en la pantalla.
+* 14.1 Utilice el lenguaje apropiado más claro y simple para el contenido de un sitio.
+
 Y si utiliza imágenes y mapas de imagen (Prioridad 1)
-1.2 Proporcione vínculos redundantes en formato texto para cada zona activa de un mapa de imagen del servidor.
-9.1 Proporcione mapas de imagen controlados por el cliente en lugar de por el servidor, excepto donde las zonas sensibles no puedan ser definidas con una forma geométrica.
+* 1.2 Proporcione vínculos redundantes en formato texto para cada zona activa de un mapa de imagen del servidor.
+* 9.1 Proporcione mapas de imagen controlados por el cliente en lugar de por el servidor, excepto donde las zonas sensibles no puedan ser definidas con una forma geométrica.
+
 Y si utiliza tablas (Prioridad 1)
-5.1 En las tablas de datos, identifique los encabezamientos de fila y columna.
-5.2 Para las tablas de datos que tienen dos o más niveles lógicos de encabezamientos de fila o columna, utilice marcadores para asociar las celdas de encabezamiento y las celdas de datos.
+* 5.1 En las tablas de datos, identifique los encabezamientos de fila y columna.
+* 5.2 Para las tablas de datos que tienen dos o más niveles lógicos de encabezamientos de fila o columna, utilice marcadores para asociar las celdas de encabezamiento y las celdas de datos.
+
 Y si utiliza marcos ("frames") (Prioridad 1)
-12.1 Titule cada marco para facilitar su identificación y navegación.
+* 12.1 Titule cada marco para facilitar su identificación y navegación.
+
 Y si utiliza "applets" y "scripts" (Prioridad 1)
-6.3 Asegure que las páginas sigan siendo utilizables cuando se desconecten o no se soporten los scripts, applets u otros objetos programados. Si esto no es posible, proporcione información equivalente en una página alternativa accesible.
+* 6.3 Asegure que las páginas sigan siendo utilizables cuando se desconecten o no se soporten los scripts, applets u otros objetos programados. Si esto no es posible, proporcione información equivalente en una página alternativa accesible.
+
 Y si utiliza multimedia (Prioridad 1)
-1.3 Hasta que las aplicaciones de usuario puedan leer en voz alta automáticamente el texto equivalente de la banda visual, proporcione una descripción auditiva de la información importante de la banda visual de una presentación multimedia.
-1.4 Para toda presentación multimedia tempodependiente (por ejemplo, una película o animación) sincronice alternativas equivalentes (por ejemplo, subtítulos o descripciones de la banda visual) con la presentación.
+* 1.3 Hasta que las aplicaciones de usuario puedan leer en voz alta automáticamente el texto equivalente de la banda visual, proporcione una descripción auditiva de la información importante de la banda visual de una presentación multimedia.
+* 1.4 Para toda presentación multimedia tempodependiente (por ejemplo, una película o animación) sincronice alternativas equivalentes (por ejemplo, subtítulos o descripciones de la banda visual) con la presentación.
+
 Y si todo lo demás falla (Prioridad 1)
-11.4 Si, después de los mayores esfuerzos, no puede crear una página accesible, proporcione un vínculo a una página alternativa que use tecnologías W3C, sea accesible, tenga información (o funcionalidad) equivalente y sea actualizada tan a menudo como la página (original) inaccesible.
+* 11.4 Si, después de los mayores esfuerzos, no puede crear una página accesible, proporcione un vínculo a una página alternativa que use tecnologías W3C, sea accesible, tenga información (o funcionalidad) equivalente y sea actualizada tan a menudo como la página (original) inaccesible.
+
 PUNTOS DE VERIFICACIÓN PRIORIDAD 2
+
 En general (Prioridad 2)
-2.2 Asegúrese de que las combinaciones de los colores de fondo y primer plano tengan el suficiente contraste para que sean percibidas por personas con deficiencias de percepción de color o en pantallas en blanco y negro [Prioridad 2 para las imágenes. Prioridad 3 para los textos].
-3.1 Cuando exista un marcador apropiado, use marcadores en vez de imágenes para transmitir la información.
-3.2 Cree documentos que estén validados por las gramáticas formales publicadas.
-3.3 Utilice hojas de estilo para controlar la maquetación y la presentación.
-3.4 Utilice unidades relativas en lugar de absolutas al especificar los valores en los atributos de los marcadores de lenguaje y en los valores de las propiedades de las hojas de estilo.
-3.5 Utilice elementos de encabezado para transmitir la estructura lógica y utilícelos de acuerdo con la especificación.
-3.6 Marque correctamente las listas y los ítems de las listas.
-3.7 Marque las citas. No utilice el marcador de citas para efectos de formato tales como sangrías.
-6.5 Asegúrese de que los contenidos dinámicos son accesibles o proporcione una página o presentación alternativa.
-7.2 Hasta que las aplicaciones de usuario permitan controlarlo, evite el parpadeo del contenido (por ejemplo, cambio de presentación en periodos regulares, así como el encendido y apagado).
-7.4 Hasta que las aplicaciones de usuario proporcionen la posibilidad de detener las actualizaciones, no cree páginas que se actualicen automáticamente de forma periódica.
-7.5 Hasta que las aplicaciones de usuario proporcionen la posibilidad de detener el redireccionamiento automático, no utilice marcadores para redirigir las páginas automáticamente. En su lugar, configure el servidor para que ejecute esta posibilidad.
-10.1 Hasta que las aplicaciones de usuario permitan desconectar la apertura de nuevas ventanas, no provoque apariciones repentinas de nuevas ventanas y no cambie la ventana actual sin informar al usuario.
-11.1 Utilice tecnologías W3C cuando estén disponibles y sean apropiadas para la tarea y use las últimas versiones que sean soportadas.
-11.2 Evite características desaconsejadas por las tecnologías W3C.
-12.3 Divida los bloques largos de información en grupos más manejables cuando sea natural y apropiado.
-13.1 Identifique claramente el objetivo de cada vínculo.
-13.2 Proporcione metadatos para añadir información semántica a las páginas y sitios.
-13.3 Proporcione información sobre la maquetación general de un sitio (por ejemplo, mapa del sitio o tabla de contenidos).
-13.4 Utilice los mecanismos de navegación de forma coherente.
+
+* 2.2 Asegúrese de que las combinaciones de los colores de fondo y primer plano tengan el suficiente contraste para que sean percibidas por personas con deficiencias de percepción de color o en pantallas en blanco y negro [Prioridad 2 para las imágenes. Prioridad 3 para los textos].
+* 3.1 Cuando exista un marcador apropiado, use marcadores en vez de imágenes para transmitir la información.
+* 3.2 Cree documentos que estén validados por las gramáticas formales publicadas.
+* 3.3 Utilice hojas de estilo para controlar la maquetación y la presentación.
+* 3.4 Utilice unidades relativas en lugar de absolutas al especificar los valores en los atributos de los marcadores de lenguaje y en los valores de las propiedades de las hojas de estilo.
+* 3.5 Utilice elementos de encabezado para transmitir la estructura lógica y utilícelos de acuerdo con la especificación.
+* 3.6 Marque correctamente las listas y los ítems de las listas.
+* 3.7 Marque las citas. No utilice el marcador de citas para efectos de formato tales como sangrías.
+* 6.5 Asegúrese de que los contenidos dinámicos son accesibles o proporcione una página o presentación alternativa.
+* 7.2 Hasta que las aplicaciones de usuario permitan controlarlo, evite el parpadeo del contenido (por ejemplo, cambio de presentación en periodos regulares, así como el encendido y apagado).
+* 7.4 Hasta que las aplicaciones de usuario proporcionen la posibilidad de detener las actualizaciones, no cree páginas que se actualicen automáticamente de forma periódica.
+* 7.5 Hasta que las aplicaciones de usuario proporcionen la posibilidad de detener el redireccionamiento automático, no utilice marcadores para redirigir las páginas automáticamente. En su lugar, configure el servidor para que ejecute esta posibilidad.
+* 10.1 Hasta que las aplicaciones de usuario permitan desconectar la apertura de nuevas ventanas, no provoque apariciones repentinas de nuevas ventanas y no cambie la ventana actual sin informar al usuario.
+* 11.1 Utilice tecnologías W3C cuando estén disponibles y sean apropiadas para la tarea y use las últimas versiones que sean soportadas.
+* 11.2 Evite características desaconsejadas por las tecnologías W3C.
+* 12.3 Divida los bloques largos de información en grupos más manejables cuando sea natural y apropiado.
+* 13.1 Identifique claramente el objetivo de cada vínculo.
+* 13.2 Proporcione metadatos para añadir información semántica a las páginas y sitios.
+* 13.3 Proporcione información sobre la maquetación general de un sitio (por ejemplo, mapa del sitio o tabla de contenidos).
+* 13.4 Utilice los mecanismos de navegación de forma coherente.
+
 Y si utiliza tablas (Prioridad 2)
-5.3 No utilice tablas para maquetar, a menos que la tabla tenga sentido cuando se alinee. Por otro lado, si la tabla no tiene sentido, proporcione una alternativa equivalente (la cual debe ser una versión alineada).
-5.4 Si se utiliza una tabla para maquetar, no utilice marcadores estructurales para realizar un efecto visual de formato.
+* 5.3 No utilice tablas para maquetar, a menos que la tabla tenga sentido cuando se alinee. Por otro lado, si la tabla no tiene sentido, proporcione una alternativa equivalente (la cual debe ser una versión alineada).
+* 5.4 Si se utiliza una tabla para maquetar, no utilice marcadores estructurales para realizar un efecto visual de formato.
+
 Y si utiliza marcos ("frames") (Prioridad 2)
-12.2 Describa el propósito de los marcos y cómo éstos se relacionan entre sí, si no resulta obvio solamente con el título del marco.
+* 12.2 Describa el propósito de los marcos y cómo éstos se relacionan entre sí, si no resulta obvio solamente con el título del marco.
+
 Y si utiliza formularios (Prioridad 2)
-10.2 Hasta que las aplicaciones de usuario soporten explícitamente la asociación entre control de formulario y etiqueta, para todos los controles de formularios con etiquetas asociadas implícitamente, asegúrese de que la etiqueta está colocada adecuadamente.
-12.4 Asocie explícitamente las etiquetas con sus controles.
+* 10.2 Hasta que las aplicaciones de usuario soporten explícitamente la asociación entre control de formulario y etiqueta, para todos los controles de formularios con etiquetas asociadas implícitamente, asegúrese de que la etiqueta está colocada adecuadamente.
+* 12.4 Asocie explícitamente las etiquetas con sus controles.
+
 Y si utiliza "applets" y "scripts" (Prioridad 2)
-6.4 Para los scripts y applets, asegúrese de que los manejadores de eventos sean independientes del dispositivo de entrada.
-7.3 Hasta que las aplicaciones de usuario permitan congelar el movimiento de los contenidos, evite los movimientos en las páginas.
-8.1 Haga los elementos de programación, tales como scripts y applets, directamente accesibles o compatibles con las ayudas técnicas [Prioridad 1 si la funcionalidad es importante y no se presenta en otro lugar; de otra manera, Prioridad 2].
-9.2 Asegúrese de que cualquier elemento que tiene su propia interfaz pueda manejarse de forma independiente del dispositivo.
-9.3 Para los "scripts", especifique manejadores de evento lógicos mejor que manejadores de evento dependientes de dispositivos.
+* 6.4 Para los scripts y applets, asegúrese de que los manejadores de eventos sean independientes del dispositivo de entrada.
+* 7.3 Hasta que las aplicaciones de usuario permitan congelar el movimiento de los contenidos, evite los movimientos en las páginas.
+* 8.1 Haga los elementos de programación, tales como scripts y applets, directamente accesibles o compatibles con las ayudas técnicas [Prioridad 1 si la funcionalidad es importante y no se presenta en otro lugar; de otra manera, Prioridad 2].
+* 9.2 Asegúrese de que cualquier elemento que tiene su propia interfaz pueda manejarse de forma independiente del dispositivo.
+* 9.3 Para los "scripts", especifique manejadores de evento lógicos mejor que manejadores de evento dependientes de dispositivos.
+
 PUNTOS DE VERIFICACIÓN PRIORIDAD 3
+
 En general (Prioridad 3)
-4.2 Especifique la expansión de cada abreviatura o acrónimo cuando aparezcan por primera vez en el documento.
-4.3 Identifique el idioma principal de un documento.
-9.4 Cree un orden lógico para navegar con el tabulador a través de vínculos, controles de formulario y objetos.
-9.5 Proporcione atajos de teclado para los vínculos más importantes (incluidos los de los mapas de imagen de cliente), los controles de formulario y los grupos de controles de formulario.
-10.5 Hasta que las aplicaciones de usuario (incluidas las ayudas técnicas) interpreten claramente los vínculos contiguos, incluya caracteres imprimibles (rodeados de espacios), que no sirvan como vínculo, entre los vínculos contiguos.
-11.3 Proporcione la información de modo que los usuarios puedan recibir los documentos según sus preferencias (por ejemplo, idioma, tipo de contenido, etc.).
-13.5 Proporcione barras de navegación para destacar y dar acceso al mecanismo de navegación.
-13.6 Agrupe los vínculos relacionados, identifique el grupo (para las aplicaciones de usuario) y, hasta que las aplicaciones de usuario lo hagan, proporcione una manera de evitar el grupo.
-13.7 Si proporciona funciones de búsqueda, permita diferentes tipos de búsquedas para diversos niveles de habilidad y preferencias.
-13.8 Localice la información destacada al principio de los encabezamientos, párrafos, listas, etc.
-13.9 Proporcione información sobre las colecciones de documentos (por ejemplo, los documentos que comprendan múltiples páginas).
-13.10 Proporcione un medio para saltar sobre un ASCII art de varias líneas.
-14.2 Complemente el texto con presentaciones gráficas o auditivas cuando ello facilite la comprensión de la página.
-14.3 Cree un estilo de presentación que sea coherente para todas las páginas.
+* 4.2 Especifique la expansión de cada abreviatura o acrónimo cuando aparezcan por primera vez en el documento.
+* 4.3 Identifique el idioma principal de un documento.
+* 9.4 Cree un orden lógico para navegar con el tabulador a través de vínculos, controles de formulario y objetos.
+* 9.5 Proporcione atajos de teclado para los vínculos más importantes (incluidos los de los mapas de imagen de cliente), los controles de formulario y los grupos de controles de formulario.
+* 10.5 Hasta que las aplicaciones de usuario (incluidas las ayudas técnicas) interpreten claramente los vínculos contiguos, incluya caracteres imprimibles (rodeados de espacios), que no sirvan como vínculo, entre los vínculos contiguos.
+* 11.3 Proporcione la información de modo que los usuarios puedan recibir los documentos según sus preferencias (por ejemplo, idioma, tipo de contenido, etc.).
+* 13.5 Proporcione barras de navegación para destacar y dar acceso al mecanismo de navegación.
+* 13.6 Agrupe los vínculos relacionados, identifique el grupo (para las aplicaciones de usuario) y, hasta que las aplicaciones de usuario lo hagan, proporcione una manera de evitar el grupo.
+* 13.7 Si proporciona funciones de búsqueda, permita diferentes tipos de búsquedas para diversos niveles de habilidad y preferencias.
+* 13.8 Localice la información destacada al principio de los encabezamientos, párrafos, listas, etc.
+* 13.9 Proporcione información sobre las colecciones de documentos (por ejemplo, los documentos que comprendan múltiples páginas).
+* 13.10 Proporcione un medio para saltar sobre un ASCII art de varias líneas.
+* 14.2 Complemente el texto con presentaciones gráficas o auditivas cuando ello facilite la comprensión de la página.
+* 14.3 Cree un estilo de presentación que sea coherente para todas las páginas.
+
 Y si utiliza imágenes o mapas de imagen (Prioridad 3)
-1.5 Hasta que las aplicaciones de usuario interpreten el texto equivalente para los vínculos de los mapas de imagen de cliente, proporcione vínculos de texto redundantes para cada zona activa del mapa de imagen de cliente.
+* 1.5 Hasta que las aplicaciones de usuario interpreten el texto equivalente para los vínculos de los mapas de imagen de cliente, proporcione vínculos de texto redundantes para cada zona activa del mapa de imagen de cliente.
+
 Y si utiliza tablas (Prioridad 3)
-5.5 Proporcione resúmenes de las tablas.
-5.6 Proporcione abreviaturas para las etiquetas de encabezamiento.
-10.3 Hasta que las aplicaciones de usuario (incluidas las ayudas técnicas) interpreten correctamente los textos contiguos, proporcione un texto lineal alternativo (en la página actual o en alguna otra) para todas las tablas que maquetan texto en paralelo, en columnas de palabras.
+* 5.5 Proporcione resúmenes de las tablas.
+* 5.6 Proporcione abreviaturas para las etiquetas de encabezamiento.
+* 10.3 Hasta que las aplicaciones de usuario (incluidas las ayudas técnicas) interpreten correctamente los textos contiguos, proporcione un texto lineal alternativo (en la página actual o en alguna otra) para todas las tablas que maquetan texto en paralelo, en columnas de palabras.
+
 Y si utiliza formularios (Prioridad 3)
-10.4 Hasta que las aplicaciones de usuario manejen correctamente los controles vacíos, incluya caracteres por defecto en los cuadros de edición y áreas de texto.
+* 10.4 Hasta que las aplicaciones de usuario manejen correctamente los controles vacíos, incluya caracteres por defecto en los cuadros de edición y áreas de texto.
+
+
+### Herramientas de verificación WEI-ARIA
+
+La más importante, cerrar los ojos e intentar usar un lector de pantalla.
+
+1. *HERA*: Herramienta online, disponible en español, que valida automáticamente la accesibilidad de la página, señalando qué puntos revisar manualmente. http://www.sidar.org/hera/
+2. *Cynthia Says*: Detecta automáticamente problemas de accesibilidad tanto de WCAG 1.0 como de Section 508. http://www.cynthiasays.com
+3. *Google Accessibility Developer Tool* es una extensión de Google para Chrome que permite realizar una validación automática de la página que se está visualizando en el navegador https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb
+4. *OCAWA Web Accessibility Expert*: Herramienta de validación automática de páginas web compatible con WCAG 1.0 de Prioridad 1. http://www.ocawa.com/en/
+5. *PISTA*: Permite analizar automáticamente varios sitios y todas sus páginas de vez (la gramática, las CSS y los diferentes Niveles de accesibilidad), y además programar revisiones periódicas cuyos informes te son enviados por correo. Permite revisar con varias normativas (por defecto WCAG 1.0, también permite WCAG 2.0). http://www.mityc.es/DGDSI/PISTA/ACCESIBILIDADFREEWARE/Paginas/pistaacces...
+6. *TAW*: Valida automáticamente la accesibilidad de la página, señalando qué puntos revisar manualmente. Se puede seleccionar Nivel A, AA y AAA, así como revisión WCAG 1.0 y 2.0. Está disponible en español, en versión online, local o extensión para Firefox. Incorpora asimismo validación de HTML y CSS y permite analizar también el código JavaScript. http://www.tawdis.net
+7. *W3C Validator for MAC OSX with Experimental WAI-ARIA Support*: Validador del W3C para instalación en sistemas operativos Mac OS X. Valida tanto webs locales como a través de internet y permite también configurarse como servicio web. Presenta un soporte limitado a WAI-ARIA. http://habilis.net/validator-sac/
+8. *WAVE*: Permite analizar sitios web para ayudar a la evaluación de la accesibilidad mostrando la página original con indicadores insertados dentro de sí misma donde se muestran los problemas de accesibilidad. Dispone también de una barra de herramientas para Firefox http://wave.webaim.org/?lang=es
