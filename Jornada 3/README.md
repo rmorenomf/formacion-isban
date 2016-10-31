@@ -304,7 +304,7 @@ Una típica colaboración entre los componentes de un MVC
 
 Un decorador es un objeto que añaden funcionalidad a otro objeto de forma dinámica. Se puede utilizar para mejorar el comportamiento de un objeto sin requerir editar la clase. 
 
-<Ver un ejemplo en Python>
+*Ver un ejemplo en Python*
 
 Cuando usarlo:
 
