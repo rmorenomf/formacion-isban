@@ -7,17 +7,13 @@ HTML5: Semántica y accesibilidad. Repasaremos y aprenderemos las etiquetas más
 1. Dar un repaso a una página index.html bien creada prestando atención a todos los elementos.
 2. Repasar las necesidad del marcado semántico. Repasar qué es y porqué es necesario.
 
-3. Introducción a WAI-ARIA
-Repasar los conceptos de rol, estado y propiedad. Herramientas asistivas.
-
-Ver ejemplos:
+3. Introducción a WAI-ARIA. Repasar los conceptos de rol, estado y propiedad. Herramientas asistivas. Ver ejemplos:
     
-    Imágenes
-    Bloques de navegación
-    Slider
-    TabIndex
-    Forms
-    Tablas
-
+    * Imágenes
+    * Bloques de navegación
+    * Slider
+    * TabIndex
+    * Forms
+    * Tablas
 
 4. Taller: Instalar NVDA.
