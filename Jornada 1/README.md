@@ -183,27 +183,11 @@ Para ello se vale de una serie de elementos estándar:
 
 ### Roles y estados 
 
-Imaginemos por ejemplo el caso de un control avanzando como el slider. Un lector de pantalla no será capaz de dar respuesta a las siguientes preguntas:
-
-Identificar el rol del elemento: ¿qué es?
-Conocer su estado y propiedades: ¿cómo se encuentra?
-Capturar su comportamiento: ¿qué hace?
-Las soluciones que aporta ARIA
-
-ARIA viene a responder a las anteriores preguntas y otras cuestiones proporcionando un marco de trabajo complementario.
-
-Estructuras más semánticas para las zonas funcionales.
-Mejora de la navegación mediante el teclado.
-Controles complejos (widgets) más accesibles.
-Accesibilidad para el contenido actualizado de forma dinámica.
-Para ello ARIA cuenta con:
-
-Roles: su misión es definir el papel que juegan los elemento dentro del documento web. https://www.w3.org/TR/wai-aria/rdf_model.svg
+1. Roles: su misión es definir el papel que juegan los elemento dentro del documento web.
 ```<div id="slider" role="slider">```
 
-Estados y propiedades: determinan las características y los valores de cada elementos.
+2. Estados y propiedades: determinan las características y los valores de cada elementos.
 ```<div id="slider" role="slider" aria-valuenow="27">```
-Por tanto, podemos intuir que ARIA no funciona como una tecnología restrictiva o exclusiva, sino que se trata de un complemento con el que podemos hacer accesibles las aplicaciones web enriquecidas.
 
 ### Landmark Roles (WAI-ARIA). Navegación más accesible y semántica.
 
@@ -432,3 +416,19 @@ La más importante, cerrar los ojos e intentar usar un lector de pantalla.
 ### Otros recursos importantes:
 
 https://www.w3.org/WAI/intro/aria
+
+## Resumen sobre Accesibilidad
+
+1. Es un derecho.
+2. Puede ser una obligación
+3. Pautas:
+
+* Estilos y diseño. 
+* Marcado descriptivo
+* Facilitar la navegación por teclado
+* Roles / Semántica (Marcado)
+* Estados (Programación)
+* Probar en lectores de páginas
+* Revisar listas de verificación de forma automática y manual
+
+En resumen: No es tarea sencilla. Requiere tiempo y esfuerzo. Un modelo de exito es incorporar la figura del experto en accesibilidad que trabaje como mentor y formador del equipo de desarrollo.
