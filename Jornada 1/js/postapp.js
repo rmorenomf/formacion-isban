@@ -1,0 +1,1 @@
+console.log("[*] Cosas para después de la carga de la página.");
