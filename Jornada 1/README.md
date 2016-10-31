@@ -183,7 +183,27 @@ Para ello se vale de una serie de elementos estándar:
 
 ### Roles y estados 
 
+Imaginemos por ejemplo el caso de un control avanzando como el slider. Un lector de pantalla no será capaz de dar respuesta a las siguientes preguntas:
 
+Identificar el rol del elemento: ¿qué es?
+Conocer su estado y propiedades: ¿cómo se encuentra?
+Capturar su comportamiento: ¿qué hace?
+Las soluciones que aporta ARIA
+
+ARIA viene a responder a las anteriores preguntas y otras cuestiones proporcionando un marco de trabajo complementario.
+
+Estructuras más semánticas para las zonas funcionales.
+Mejora de la navegación mediante el teclado.
+Controles complejos (widgets) más accesibles.
+Accesibilidad para el contenido actualizado de forma dinámica.
+Para ello ARIA cuenta con:
+
+Roles: su misión es definir el papel que juegan los elemento dentro del documento web. https://www.w3.org/TR/wai-aria/rdf_model.svg
+```<div id="slider" role="slider">```
+
+Estados y propiedades: determinan las características y los valores de cada elementos.
+```<div id="slider" role="slider" aria-valuenow="27">```
+Por tanto, podemos intuir que ARIA no funciona como una tecnología restrictiva o exclusiva, sino que se trata de un complemento con el que podemos hacer accesibles las aplicaciones web enriquecidas.
 
 ### Landmark Roles (WAI-ARIA). Navegación más accesible y semántica.
 
@@ -193,6 +213,39 @@ Cuando una página web está correctamente marcada permitimos que los usuarios q
 Utilizando determinadas teclas podrán "ojear" el documento y acceder directamente a las partes del mismo que les interesan.
 
 Por ejemplo, si tenemos una correcta estructura de encabezados, marcados como tales, un usuario de lector de pantalla (como JAWS o NVDA) podrá pulsar la tecla “h” para “ojear” los encabezados. Cada vez que pulse dicha tecla el lector le leerá el siguiente encabezado y podrá seguir leyendo a partir del que le interese.
+
+### Diseñando elementos interactivos.
+
+```
+    <section>
+        <h1>Encuesta de satisfaccion</h1>
+        
+        Aqui vamos a meter un widget que sea un slider y un boton de enviar respuesta.
+
+        <!-- Podemos consultar las caracteristicas wai-aria de este rol en https://www.w3.org/TR/wai-aria/roles#slider -->
+        <label for="rating_slider">Valoracion</label>
+        <input type="range"
+            id="rating_slider" 
+            min="0"
+            max="5"
+            value="0"
+            step="1"
+            aria-valuemin="0"
+            aria-valuemax="5"
+            aria-valuenow="1"
+            aria-hidden="false"
+            tabindex="0"
+            oninput="outputUpdate(value)">
+        <output for="rating_slider" id="rating">0</output>
+
+            <!-- En este caso por tratarse de una etiqueta boton no es necesario role="button" está implicito, no es necesario y además no es recomendable 
+                https://www.w3.org/TR/2014/REC-html5-20141028/dom.html#aria-usage-note
+            -->
+        <button aria-pressed="false" onclick="handleBtnClick(event)" onKeyUp="handleBtnKeyUp(event)">Enviar respuesta</button>
+        <a href="" role="button">Envia respuesta</a>
+
+    </section>
+```
 
 ### Pasos y buenas prácticas para aplicar WAI-ARIA
 
@@ -375,3 +428,7 @@ La más importante, cerrar los ojos e intentar usar un lector de pantalla.
 6. *TAW*: Valida automáticamente la accesibilidad de la página, señalando qué puntos revisar manualmente. Se puede seleccionar Nivel A, AA y AAA, así como revisión WCAG 1.0 y 2.0. Está disponible en español, en versión online, local o extensión para Firefox. Incorpora asimismo validación de HTML y CSS y permite analizar también el código JavaScript. http://www.tawdis.net
 7. *W3C Validator for MAC OSX with Experimental WAI-ARIA Support*: Validador del W3C para instalación en sistemas operativos Mac OS X. Valida tanto webs locales como a través de internet y permite también configurarse como servicio web. Presenta un soporte limitado a WAI-ARIA. http://habilis.net/validator-sac/
 8. *WAVE*: Permite analizar sitios web para ayudar a la evaluación de la accesibilidad mostrando la página original con indicadores insertados dentro de sí misma donde se muestran los problemas de accesibilidad. Dispone también de una barra de herramientas para Firefox http://wave.webaim.org/?lang=es
+
+### Otros recursos importantes:
+
+https://www.w3.org/WAI/intro/aria
