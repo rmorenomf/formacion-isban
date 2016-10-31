@@ -159,7 +159,9 @@ Tag | Description
 
 ## Otros elementos
 
-![alt text](https://github.com/rmorenomf/formacion-isban/Jornada 1/resources/listaetiquetasHTML5.pdf "HTML5 lista completa de etiquetas")
+HTML5 lista completa de etiquetas:
+
+https://github.com/rmorenomf/formacion-isban/blob/master/Jornada%201/resources/listaetiquetasHTML5.pdf
 
 * Webworkers
 * Drag & Drop
