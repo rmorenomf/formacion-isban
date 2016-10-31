@@ -54,11 +54,12 @@ En el caso de HTML4
 
         <!-- rel nos permite indicar la relación que existe con el documento linkado, 
         en este caso se trata de una hoja de estilos CSS http://www.w3schools.com/tags/att_link_rel.asp -->
-
+        <!-- Ver README para saber mas sobre atributo rel -->
         <link rel="stylesheet" href="./css/style.css" />
         
         <!-- Normalizamos o reseteamos los estilos por defecto de la web para evitar 
-        problemas de visualización en diferentes navegadores -->
+        problemas de visualización en diferentes navegadores. Es gratis y nos 
+        quita mucho trabajo de corrección de elementos incompatibles. -->
         <link rel="stylesheet" href="./css/normalize.css" />
 
         <!-- Estilos complementarios. En este caso hemos incluido Bootstrap -->
@@ -66,8 +67,11 @@ En el caso de HTML4
 
         <!-- Incluimos los elementos visuales como el icono -->
         <link href="./assets/favicon.ico" rel="shortcut icon" type="image/x-icon">
+        <!-- For historical reasons, the icon keyword may be preceded by the keyword "shortcut". 
+        If the "shortcut" keyword is present, it must be come immediately before the icon keyword 
+        and the two keywords must be separated by only a single U+0020 SPACE character. -->
         
-        <link rel="preload" href="" />
+        <link rel="preload" href=./js/app.js"" />
         <!-- 
             HTTP/2 permite obtener multiples recusos en una única llamada TCP. Eso permite reducir considerablemente los tiempos de carga de los 
             recursos, realmente es util para hacer uso con la estrategia de carga adecuada. Pero puede penalizar las estrategias de 

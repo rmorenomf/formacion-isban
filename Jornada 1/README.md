@@ -40,3 +40,39 @@ preload | Specifies that the browser agent must preemptively fetch and cache the
 prev | Indicates that the document is a part of a series, and that the previous document in the series is the referenced document
 search | Provides a link to a resource that can be used to search through the current document and its related pages.
 stylesheet | Imports a style sheet
+
+### Estrategias de carga de la página para obtener un mejor rendimiento o mejora la percepción de velocidad:
+
+1. Cargar lo esencial primero.
+2. Aplaza la carga del contenido no esencial para después. Carga condicional.
+3. Renderizado progresivo de imágenes.
+    
+    * Crear el JPG como progressive.
+    * Crear el PNG como interlaced.
+    * Mostrar un place holder con el bloque y el color mayoritario de la imagen (esta estrategia la usa google en el buscador de imágenes). 
+    * Usa SVG (cuando se pueda).
+    * Utiliza Tipografias (cuando se pueda).         
+    * Tailored image sizes: Utilizar tamaños de imágenes diferentes según el dispositivo. 
+
+4. Auto-precarga o Cache predictivo de navegador.
+5. Usar eventos touch.
+    - Esto aplica solo a las aplicaciones móviles. Cuando se toca la pantalla en necesario un tiempo que puede ser entre 300-500 milisegundos 
+    para traducir el elevento de tipo touch a un evento de tipo click.
+
+6. Para tareas pesadas usar Webworkers.
+
+Mejorar la apreciación de velocidad 
+
+1. Si algo va a tardar mucho tiempo indica la razón.
+2. Muestra indicadores de progreso.
+
+#### The PRPL Pattern (Progressive Web Apps)
+
+Three cutting-edge new features of the web platform—Web Components, HTTP/2 + Server Push, and Service Worker—all work seamlessly together to provide a totally new and amazingly efficient way to deliver applications to users.
+
+We call this the "PRPL Pattern", and the Polymer App Toolbox and Polymer CLI make it easy to build an application to use this strategy for delivery. The PRPL pattern stands for:
+
+1. Push components critical for initial route
+2. Render the initial route ASAP
+3. Pre-cache components for remaining routes
+4. Lazy-load and create next routes on-demand
