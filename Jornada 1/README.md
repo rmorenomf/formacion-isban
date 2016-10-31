@@ -94,3 +94,5 @@ Tag | Description
 ```<section>``` | Defines a section in a document
 ```<summary>``` | Defines a visible heading for a ```<details>``` element
 ```<time>``` | Defines a date/time
+
+![alt text](https://escientia.me/formacion-isban/html-html5.gif "HTML5 semántica")
