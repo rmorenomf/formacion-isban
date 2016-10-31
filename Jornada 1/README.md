@@ -147,6 +147,26 @@ Tag | Description
 ```<canvas>``` | Draw graphics, on the fly, via scripting (usually JavaScript)
 ```<svg>``` | Draw scalable vector graphics
 
+### Elementos Multimedia
+
+Tag | Description
+--- | ---
+```<audio>``` | Defines sound content
+```<embed>``` | Defines containers for external applications (like plug-ins)
+```<source>``` | Defines sources for <video> and <audio>
+```<track>``` | Defines tracks for <video> and <audio>
+```<video>``` | Defines video or movie content
+
+## Otros elementos
+
+* Webworkers
+* Drag & Drop
+* WebSockets WebRTC
+* Caché de la aplicación
+* IndexDB
+* File API / Blob
+
+
 ### Landmark Roles (WAI-ARIA). Navegación más accesible y semántica.
 
 El objetivo es que sea más fácil de "ojear", comprender y navegar para las personas que usan un lector de pantalla.
