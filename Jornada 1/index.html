@@ -112,10 +112,11 @@ En el caso de HTML4
 
         <!-- Navigation section -->
         <nav>
-            <ul>
-                <li><a href="#">Menu Option 1</a></li>
-                <li><a href="#">Menu Option 2</a></li>
-                <li><a href="#">Menu Option 3</a></li>
+            <div id="navigation_label">Menú principal de navegación</div>
+            <ul aria-labelledby="navigation_label">
+                <li id="active"><a id="current" href="home" aria-label="Acceso al inicio de la apliación">Inicio</a></li>
+                <li><a href="blog" aria-label="Acceso al blog">Blog</a></li>
+                <li><a href="contacto" aria-label="Acceso a la información de contacto">Contacto</a></li>
             </ul>
         </nav>
 

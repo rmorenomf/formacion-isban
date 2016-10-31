@@ -448,6 +448,13 @@ En resumen: No es tarea sencilla. Requiere tiempo y esfuerzo. Un modelo de exito
 
 ## Ejemplo de marcado accesible:
 
+### Ejemplo de imagen acessible:
+
+```<img src="bobby.jpg" alt="My dog Bobby playing fetch in the park">```
+
+* Cuidado con usar imágenes dentro de backgrounds.
+* Prestar atención a la descripción o la funcionalidad del elemento visual.  
+
 ### Ejemplo para la indicar la zona de navegación:
 
 * HTML 4:
@@ -502,6 +509,42 @@ La diferencia es que en el primero pones directamente la etiqueta dentro del atr
 
 ## Ejemplo de formulario accesible:
 
+```
+<form action="post">
+     <label for="firstName">First name:</label>
+     <input id="firstName" type="text" aria-required="true" />
+     <br/>
+     <label for="lastName">Last name:</label>
+     <input id="lastName" type="text" aria-required="true" />
+     <br/>
+     <label for="streetAddress">Street address:</label>
+     <input id="streetAddress" type="text" />
+</form>
+```
+
+Haciendo que el atributo tabindex sea soportado por todos los elementos visibles de una web.
+
+* Si no está el atributo tabindex, el comportamiento es el normal, y sólo los controles de un formulario pueden recibir el foco con el ratón o desde JavaScript con element.focus().
+* Si tabindex toma un valor negativo (tabindex="-1"), el elemento puede recibir el foco con el ratón o desde JavaScript con element.focus(), pero no se puede navegar a él mediante la tecla tabulación, es decir, el elemento no está en el flujo normal de tabulación.
+* Si tabindex toma el valor cero (tabindex="0"), el elemento puede recibir el foco con el ratón o desde JavaScript con element.focus(), y se puede navegar a él mediante la tecla tabulación (la posición que ocupa en el orden de tabulación es la correspondiente a su posición en el documento).
+* Finalmente, si tabindex toma un valor positivo (tabindex="1"), el elemento puede recibir el foco con el ratón o desde JavaScript con element.focus(), se puede navegar a él mediante la tecla tabulación, y el valor del atributo indica su posición en el orden de tabulación; además, se colocan por delante de cualquier elemento que tenga tabindex="0" o cualquier elemento que reciba el foco de forma natural (los controles de los formularios y los enlaces).
 
 ## Ejemplo de componte accesible:
+
+Un humilde checkbox:
+
+```
+<span role="checkbox" 
+      aria-checked="true"
+      tabindex="0"
+      id="simulatedcheckbox"
+      onclick="onCheckClick(this);">
+</span>
+```
+
+```
+function onCheckClick(ev){
+
+}
+```
 
