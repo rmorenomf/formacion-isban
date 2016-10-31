@@ -172,6 +172,19 @@ https://github.com/rmorenomf/formacion-isban/blob/master/Jornada%201/resources/l
 
 ## Accesibilidad
 
+El propósito de ARIA es: dotar de significado explícito a un contenido que no lo tiene. En detalle:
+
+* Establecer el rol de un elemento
+* Establecer la relación entre elementos
+* Informar del estado de un elemento
+* Hacer accesibles los controles a través del teclado
+
+Para ello se vale de una serie de elementos estándar:
+
+### Roles y estados 
+
+
+
 ### Landmark Roles (WAI-ARIA). Navegación más accesible y semántica.
 
 El objetivo es que sea más fácil de "ojear", comprender y navegar para las personas que usan un lector de pantalla.
@@ -180,9 +193,6 @@ Cuando una página web está correctamente marcada permitimos que los usuarios q
 Utilizando determinadas teclas podrán "ojear" el documento y acceder directamente a las partes del mismo que les interesan.
 
 Por ejemplo, si tenemos una correcta estructura de encabezados, marcados como tales, un usuario de lector de pantalla (como JAWS o NVDA) podrá pulsar la tecla “h” para “ojear” los encabezados. Cada vez que pulse dicha tecla el lector le leerá el siguiente encabezado y podrá seguir leyendo a partir del que le interese.
-
-Roles
-
 
 ### Pasos y buenas prácticas para aplicar WAI-ARIA
 
