@@ -21,12 +21,13 @@ En el caso de HTML4
     
     <head>
         
-        <!-- El titulo aún es una etiqueta importante para el SEO -->
+        <!-- El titulo aún es una etiqueta importante para el SEO 
+            (no mas de 70 caracteres para que no aparezca cortado) -->
         <title>Ejemplo de marcado HTML</title>
         
         <!-- Cerrar las etiquetas es ahora opcional, pero es un detalle de compatiblidad --> 
         
-        <meta name="title" content="Ejemplo de marcado HTML" /> <!-- El titulo es importante por temas de SEO incluso si hemos usado la etiqueta title --> 
+        <meta name="title" content="Ejemplo de marcado HTML" /> 
         
         <!-- Modificar desde aquí todo aquello que haga mas específico nuestro contenido -->
         <meta charset="ISO-8859-1" />
@@ -36,17 +37,31 @@ En el caso de HTML4
         <!-- The Dublin Core Metadata Initiative es una de no pocas iniciativas de Web semantica -->
         <meta name="DC.creator" content="s|ngular team." />
         
-        <!-- Open Graph Protocol Properties -->  
+        <!-- 
+            Open Graph Protocol Properties http://ogp.me/ 
+            The Open Graph protocol enables any web page to become a rich object in a social graph.  
+            Ayudamos a las redes sociales a compartir de una forma correcta nuestro contenido. 
+        -->  
         <meta property="article:publisher" content="https://www.facebook.com/sngularSoftware" />
         <meta property="og:title" content="s|ngular team" />         
         <meta property="fb:pages" content="8585811569" />
         <meta property="twitter:card" content="summary" />
+        <meta property="og:image" content="http://example.com/ogp.jpg" />
+        <meta property="og:image:secure_url" content="https://secure.example.com/ogp.jpg" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="400" />
+        <meta property="og:image:height" content="300" />
 
-        <!-- rel nos permite indicar la relación que existe con el documento linkado, en este caso se trata de una hoja de estilos CSS -->
+        <!-- rel nos permite indicar la relación que existe con el documento linkado, 
+        en este caso se trata de una hoja de estilos CSS http://www.w3schools.com/tags/att_link_rel.asp -->
+
         <link rel="stylesheet" href="./css/style.css" />
-        <!-- Normalizamos o reseteamos los estilos por defecto de la web para evitar problemas de visualización en diferentes navegadores -->
+        
+        <!-- Normalizamos o reseteamos los estilos por defecto de la web para evitar 
+        problemas de visualización en diferentes navegadores -->
         <link rel="stylesheet" href="./css/normalize.css" />
 
+        <!-- Estilos complementarios. En este caso hemos incluido Bootstrap -->
         <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css" />
 
         <!-- Incluimos los elementos visuales como el icono -->
