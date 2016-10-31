@@ -186,6 +186,17 @@ Para ello se vale de una serie de elementos estándar:
 1. Roles: su misión es definir el papel que juegan los elemento dentro del documento web.
 ```<div id="slider" role="slider">```
 
+Algunos roles, muchos de ellos tienen su equivalente en etiquetas HTML 5:
+
+* role="banner"
+* role="complementary"
+* role="contentinfo"
+* role="form"
+* role="main"
+* role="navigation"
+* role="search"
+* role="application"
+
 2. Estados y propiedades: determinan las características y los valores de cada elementos.
 ```<div id="slider" role="slider" aria-valuenow="27">```
 
@@ -417,6 +428,8 @@ La más importante, cerrar los ojos e intentar usar un lector de pantalla.
 
 https://www.w3.org/WAI/intro/aria
 
+Soporte de los elementos de HTML5 en los diferentes navegadores desde el punto de vista de la accesibilidad. http://www.html5accessibility.com/#wbdetails
+
 ## Resumen sobre Accesibilidad
 
 1. Es un derecho.
@@ -432,3 +445,63 @@ https://www.w3.org/WAI/intro/aria
 * Revisar listas de verificación de forma automática y manual
 
 En resumen: No es tarea sencilla. Requiere tiempo y esfuerzo. Un modelo de exito es incorporar la figura del experto en accesibilidad que trabaje como mentor y formador del equipo de desarrollo.
+
+## Ejemplo de marcado accesible:
+
+### Ejemplo para la indicar la zona de navegación:
+
+* HTML 4:
+
+```
+<div id="navigation" role="navigation">
+	<ul>
+		<li id="active"><a id="current" href="home">Inicio</a></li>
+		<li><a href="blog">Blog</a></li>
+		<li><a href="contacto">Contacto</a></li>
+	</ul>
+</div>
+```
+
+* HTML 5:
+
+```
+<nav>
+    <ul>
+        <li id="active"><a id="current" href="home">Inicio</a></li>
+		<li><a href="blog">Blog</a></li>
+		<li><a href="contacto">Contacto</a></li>
+    </ul>
+</nav>
+```
+
+Podemos usar el atributo *role* para ablicar estilos:
+
+```div[role="navigation"] { color: blue; background-color: inherit; }```
+
+Complementarlos con "aria-label" o "aria-labelledby"
+
+Se recomienda etiquetar el elemento al que añades el rol, especialmente cuando hay dos del mismo tipo, para diferenciarlos.
+
+Puedes hacerlo con los atributos "aria-label" y "aria-labelledby". 
+La diferencia es que en el primero pones directamente la etiqueta dentro del atributo: *aria-label*="Menú principal", y en el segundo solo indicas el ID del elemento que hace de título o etiqueta a esa zona.
+
+```
+<nav>
+    <div id="navigation_label">Menú principal de navegación</div>
+    <ul aria-labelledby="navigation_label">
+        <li id="active"><a id="current" href="home" aria-label="Acceso al inicio de la apliación">Inicio</a></li>
+		<li><a href="blog" aria-label="Acceso al blog">Blog</a></li>
+		<li><a href="contacto" aria-label="Acceso a la información de contacto">Contacto</a></li>
+    </ul>
+</nav>
+```
+
+```
+<button aria-label="Close" onclick="myDialog.close()">X</button>
+```
+
+## Ejemplo de formulario accesible:
+
+
+## Ejemplo de componte accesible:
+
