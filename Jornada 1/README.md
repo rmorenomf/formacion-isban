@@ -96,3 +96,62 @@ Tag | Description
 ```<time>``` | Defines a date/time
 
 ![alt text](https://github.com/rmorenomf/formacion-isban/blob/master/Jornada%201/resources/html-html5.gif?raw=true "HTML5 semántica")
+
+### Elementos de formulario
+
+Tag | Description
+--- | ---
+```<datalist>``` | Defines pre-defined options for input controls
+```<keygen>``` | Defines a key-pair generator field (for forms)
+```<output>``` | Defines the result of a calculation
+
+### Nuevos tipos de entrada (input)
+
+* color
+* date
+* datetime
+* datetime-local
+* email
+* month
+* number
+* range
+* search
+* tel
+* time
+* url
+* week
+
+#### Y los nuevos atributos para los inputs
+
+* autocomplete
+* autofocus
+* form
+* formaction
+* formenctype
+* formmethod
+* formnovalidate
+* formtarget
+* height and width
+* list
+* min and max
+* multiple
+* pattern (regexp)
+* placeholder
+* required
+* step
+
+### Elementos gráficos
+
+Tag | Description
+--- | ---
+```<canvas>``` | Draw graphics, on the fly, via scripting (usually JavaScript)
+```<svg>``` | Draw scalable vector graphics
+
+### Landmark Roles (WAI-ARIA). Navegación más accesible y semántica.
+
+El objetivo es que sea más fácil de "ojear", comprender y navegar para las personas que usan un lector de pantalla.
+
+Cuando una página web está correctamente marcada permitimos que los usuarios que usan un lector de pantalla no tengan que hacer una lectura lineal de toda la página. 
+Utilizando determinadas teclas podrán "ojear" el documento y acceder directamente a las partes del mismo que les interesan.
+
+Por ejemplo, si tenemos una correcta estructura de encabezados, marcados como tales, un usuario de lector de pantalla (como JAWS o NVDA) podrá pulsar la tecla “h” para “ojear” los encabezados. Cada vez que pulse dicha tecla el lector le leerá el siguiente encabezado y podrá seguir leyendo a partir del que le interese.
