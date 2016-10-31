@@ -76,3 +76,21 @@ We call this the "PRPL Pattern", and the Polymer App Toolbox and Polymer CLI mak
 2. Render the initial route ASAP
 3. Pre-cache components for remaining routes
 4. Lazy-load and create next routes on-demand
+
+### Etiquetas semánticas HTML5
+
+Tag | Description
+--- | ---
+<article> | Defines an article
+<aside> | Defines content aside from the page content
+<details> | Defines additional details that the user can view or hide
+<figcaption> | Defines a caption for a <figure> element
+<figure> | Specifies self-contained content, like illustrations, diagrams, photos, code listings, etc.
+<footer> | Defines a footer for a document or section
+<header> | Specifies a header for a document or section
+<main> | Specifies the main content of a document
+<mark> | Defines marked/highlighted text
+<nav> | Defines navigation links
+<section> | Defines a section in a document
+<summary> | Defines a visible heading for a <details> element
+<time> | Defines a date/time
