@@ -159,6 +159,8 @@ Tag | Description
 
 ## Otros elementos
 
+![alt text](https://github.com/rmorenomf/formacion-isban/Jornada 1/resources/listaetiquetasHTML5.pdf "HTML5 lista completa de etiquetas")
+
 * Webworkers
 * Drag & Drop
 * WebSockets WebRTC
