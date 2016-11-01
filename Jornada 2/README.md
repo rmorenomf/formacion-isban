@@ -14,8 +14,35 @@ __Discutir las ventajas e incovenientes de esto__
 Porque en el mundo real nuestros proyectos tienen muchas dependencias con otros proyectos.
 No solo en el código que forma parte de nuestra aplicación sino de otras librerías y herramientas que usamos en el proceso de desarrollo de nuestra aplicación.
 
+Vamos a trabajar con dos gestores de paquetes ya que son los mas extendidos. NPM y Bower.
+
+_Analizar las diferencias entre ellos._
+
 ### Práctica: Instalar node.js en nuestros equipos
 
 Desde el sitio https://nodejs.org/ descargar *node*.
 
 > El objetivo es dejar operativo en los equipos de los alumnos node.js
+
+## NPM
+
+### Uso básico
+
+### Repositorios privados
+
+### Práctica: Instalar jquery y bootstrap con NPM
+
+### Práctica: Instalar express para servir una apliación mínima.
+
+### Práctica: Usar un paquete alojado en un Git privado.
+
+### Repaso a los comandos de NPM
+
+## Bower
+
+### Práctica: Instalar jquery y bootstrap con Bower
+
+### Repaso a los comandos de Bower
+
+
+
