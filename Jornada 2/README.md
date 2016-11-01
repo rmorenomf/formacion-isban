@@ -18,4 +18,4 @@ No solo en el código que forma parte de nuestra aplicación sino de otras libre
 
 Desde el sitio https://nodejs.org/ descargar *node*.
 
->> El objetivo es dejar operativo en los equipos de los alumnos node.js
+> El objetivo es dejar operativo en los equipos de los alumnos node.js
