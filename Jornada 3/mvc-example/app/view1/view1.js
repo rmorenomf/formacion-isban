@@ -14,6 +14,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
   //Gestiona el uso que se hace del modelo.
   $scope.$on('$viewContentLoaded', function() {
+    
     //Load a model data.
     $http.get('../models/countries.json').success(function(response) {
         $scope.countriesModel = response;
