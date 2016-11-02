@@ -32,6 +32,32 @@ Actualizar la versión que viene por defecto junto con *node*
 
 ```npm install npm@latest -g```
 
+#### Creating a package.json
+
+> npm init [--yes]
+
+> The --save and --save-dev install flags
+
+* "dependencies": these packages are required by your application in production
+* "devDependencies": these packages are only needed for development and testing
+
+#### Installing npm packages locally
+
+> npm install <package_name>
+
+#### Uninstalling local packages
+
+> npm uninstall --save <package_name>
+
+*Recordar el problema con los path largos en Windows*
+
+#### Installing npm packages globally
+
+> npm install -g <package_name>
+
+If you get an EACCES error, you should fix your permissions. You could also try using sudo, but this should be avoided:
+
+> sudo npm install -g <package_name>
 
 ### Repositorios privados
 
