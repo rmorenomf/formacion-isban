@@ -331,47 +331,38 @@ Pros and Contras:
 ### Ejemplo en JavaScript “clásico”.
 
 ```javascript
-var User = function(name) {
-   this.name = name;
- 
-   this.say = function() {
-       log.add("User: " + this.name);
-   };
+function HabitacionHotel() {
+  this.precio = function () { return 1999; };
 }
- 
-var DecoratedUser = function(user, street, city) {
-   this.user = user;
-   this.name = user.name;  // ensures interface stays the same
-   this.street = street;
-   this.city = city;
- 
-   this.say = function() {
-       log.add("Decorated User: " + this.name + ", " +
-                  this.street + ", " + this.city);
-   };
+
+function VistasAlMar(room) {
+  var price = room.precio();
+    room.precio = function() {
+    return price + 50;
+  }
 }
- 
-// logging helper
- 
-var log = (function() {
-   var log = "";
- 
-   return {
-       add: function(msg) { log += msg + "\n"; },
-       show: function() { alert(log); log = ""; }
-   }
-})();
- 
-function run() {
- 
-   var user = new User("Kelly");
-   user.say();
- 
-   var decorated = new DecoratedUser(user, "Broadway", "New York");
-   decorated.say();
- 
-   log.show();
+
+/*Decorador 2*/
+function CamaDoble( room ){
+  var price = room.precio();
+    room.precio = function(){
+    return price + 100;
+  };
 }
+
+/*Decorador 3*/
+function SuitePresidencial( room ){
+  var price = room.precio();
+  room.precio = function(){
+    return price + 125;
+  };
+}
+
+var novotel = new HabitacionHotel();
+VistasAlMar(novotel);
+CamaDoble(novotel);
+SuitePresidencial(novotel);
+console.log(novotel.precio() );
 ```
 
 *Discusión sobre el uso en Angular 2 de este patrón*
