@@ -547,3 +547,13 @@ function onCheckClick(ev){
 
 }
 ```
+
+## Enlaces a recursos WAI-ARIA
+
+* NVDA Screen reader http://www.nvaccess.org/ lector gratutito para Windows.
+* WAI-ARIA modelo de roles https://www.w3.org/TR/wai-aria/rdf_model.svg
+* Web Content Accessibility Guidelines (WCAG) 2.0 en Español http://www.sidar.org/traducciones/wcag20/es/
+
+## Enlaces a otros recursos
+ 
+ * La Biblia del javaScript http://bdcampbell.net/javascript/book/javascript_the_good_parts.pdf

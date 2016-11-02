@@ -54,16 +54,16 @@ En el caso de HTML4
         <meta property="og:image:width" content="400" />
         <meta property="og:image:height" content="300" />
 
-        <!-- rel nos permite indicar la relación que existe con el documento linkado, 
-        en este caso se trata de una hoja de estilos CSS http://www.w3schools.com/tags/att_link_rel.asp -->
-        <!-- Ver README para saber mas sobre atributo rel -->
-        <link rel="stylesheet" href="./css/style.css" />
-        
         <!-- Normalizamos o reseteamos los estilos por defecto de la web para evitar 
         problemas de visualización en diferentes navegadores. Es gratis y nos 
         quita mucho trabajo de corrección de elementos incompatibles. -->
         <link rel="stylesheet" href="./css/normalize.css" />
 
+        <!-- rel nos permite indicar la relación que existe con el documento linkado, 
+        en este caso se trata de una hoja de estilos CSS http://www.w3schools.com/tags/att_link_rel.asp -->
+        <!-- Ver README para saber mas sobre atributo rel -->
+        <link rel="stylesheet" href="./css/style.css" />
+        
         <!-- Estilos complementarios. En este caso hemos incluido Bootstrap -->
         <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css" />
 
@@ -76,7 +76,7 @@ En el caso de HTML4
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> 
         <!-- También hay elementos específicos por plataforma -->
 
-        <link rel="preload" href=./js/app.js"" />
+        <link rel="preload" href="./js/app.js" />
         <!-- 
             HTTP/2 permite obtener multiples recusos en una única llamada TCP. Eso permite reducir considerablemente los tiempos de carga de los 
             recursos, realmente es util para hacer uso con la estrategia de carga adecuada. Pero puede penalizar las estrategias de 
@@ -96,7 +96,7 @@ En el caso de HTML4
 
             - Si está async: El script se ejecuta en el momento que está disponible.
             - Si no está async, pero está defer: El script se ejecuta después de que se finaliza de parsear la página.
-            - Si no hay ni defer ni async: El script se obtiene y se ejecuta inmediatamente, antes de que el nasvegador complete el parseo de la página.            
+            - Si no hay ni defer ni async: El script se obtiene y se ejecuta inmediatamente, antes de que el navegador complete el parseo de la página.            
          -->
  
     </head>
@@ -194,6 +194,7 @@ En el caso de HTML4
                         https://www.w3.org/TR/2014/REC-html5-20141028/dom.html#aria-usage-note
                  -->
                 <button aria-pressed="false" onclick="handleBtnClick(event)" onKeyUp="handleBtnKeyUp(event)">Enviar respuesta</button>
+                
                 <a href="" role="button">Envia respuesta</a>
 
             </section>

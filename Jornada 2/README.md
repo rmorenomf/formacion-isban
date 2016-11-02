@@ -33,7 +33,6 @@ Actualizar la versión que viene por defecto junto con *node*
 ```npm install npm@latest -g```
 
 
-
 ### Repositorios privados
 
 ### Práctica: Instalar jquery y bootstrap con NPM
@@ -49,7 +48,6 @@ Actualizar la versión que viene por defecto junto con *node*
 ### Práctica: Instalar jquery y bootstrap con Bower
 
 ### Repaso a los comandos de Bower
-
 
 ## Breve apunto sobre Grunt y Gulp
 
