@@ -67,32 +67,9 @@ var namespace = {
 // Invoke: namespace.singleton.amethod()
 ```
 
-Otra forma de expresarlo sería:
+Otro ejemplo de singleton:
 
-```javascript
-var namespace = {
-  let _singleton: null,
-   constructor() {
-        if(!this._singleton){
-              _singleton = this;
-        }
-        return _singleton;
-      }
-
-
-  get singleton() {
-    if (!this._singleton) {
-      this._singleton = {
-        amethod: function() {
-          console.log("amethod");
-        }
-      }
-    }
-    return this._singleton;
-  }
-};
-// Invoke: namespace.singleton.amethod()
-```
+Tal vez una caché sea un ejemplo muy real del uso de un singleton.
 
 ```javascript
 let instance = null;
@@ -111,11 +88,28 @@ class Cache{
 }
 ```
 
+Vamos a probar nuestro singleton:
+
+```javascript
+let cache = new Cache()
+ console.log(cache.time);
+
+ setTimeout(function(){
+   let cache = new Cache();
+   console.log(cache.time);
+ },4000);
+ ```
+
 Aunque debido a las características de Javascript un patrón singleton no es estrictamente necesario, ni especialmente útil, los desarrolladores que provienen de otros lenguajes como Java se encontrarán mucho más cómodos con una estructura que les resulta muy familiar.
 
+*Discusion acalorada :-)*
+
+Veamos porqué es importante este patrón para Angular 2.
+
+> Singleton services
+> Dependencies are singletons within the scope of an injector. In our example, a single HeroService instance is shared among the HeroesComponent and its HeroListComponent children.
 
 ## Factory
-
 
 El patrón Factory se encarga de la creación de objetos (Fabrica de objetos) sin la necesidad de definir la clase exacta del objeto a ser creado. 
 
@@ -123,25 +117,25 @@ El patrón Factory encapsula y separa la creación de objetos del resto del cód
 
 Este patrón se puede separar en 3 tipos de comportamiento según las necesidades:
 
-
 1. Simple Factory
 2. SubClases del Factory
 3. AbstractFactory
-4. Simple Factory
+
+### Simple Factory
 
 Es un objeto que encapsula la creación de otros objetos. A medida que tu Factory gana en complejidad ( esto es la posibilidad de crear más objetos de diferentes tipos) será necesario que parametrices el objeto para simplificar el mantenimiento. 
 
 ```javascript
 // Creamos nuestras clases que crearemos con el Factory
 function Car ( params ) {
-this.wheels = params.wheels || "4";
-this.color = params.color || "Black";
+  this.wheels = params.wheels || "4";
+  this.color = params.color || "Black";
 }
 
 
 function Bike ( params ) {
-this.wheels = params.wheels || "2";
-this.color = params.color || "White";
+  this.wheels = params.wheels || "2";
+  this.color = params.color || "White";
 }
 
 // Creamos el Factory
@@ -149,11 +143,11 @@ function VehicleFactory(){}
 
 // y lo extendemos con prototype
 VehicleFactory.prototype.createVehicle = function(params) {
-if (params.tipo== 'car') {
-return new Car(params);
-} else if (params.tipo== 'bike') {
-return new Bike(params);
-}
+  if (params.tipo== 'car') {
+    return new Car(params);
+  } else if (params.tipo== 'bike') {
+    return new Bike(params);
+  }
 };
 ```
 
@@ -173,7 +167,7 @@ var orbea = miFactory.createVehicle({tipo:"bike", color:"Blue"});
 ### SubClases del Factory
 
 Definimos una interfaz para la creación de objetos donde permitimos a las subclases decidir qué clase se desea instanciar. 
-Este patrón resuelve el problema  creando un método  aparte para crear los objetos y para decidir qué subclases son capaces de sobrescribir dicho método para que ellos sean los que especifiquen el tipo de objeto que se creará.
+Este patrón resuelve el problema creando un método aparte para crear los objetos y para decidir qué subclases son capaces de sobrescribir dicho método para que ellos sean los que especifiquen el tipo de objeto que se creará.
 
 ```javascript
 //Creamos un vehículo genérico
@@ -182,14 +176,13 @@ function Vehicle (params){
     this.tradeMark = params.tradeMark || "Ford";
 }
 
-
 // Creamos el Factory
 function VehicleFactory(){}
 
 // y lo extendemos con prototype para vehículos genéricos
 VehicleFactory.prototype.vehicleClass = Vehicle;
 VehicleFactory.prototype.createVehicle = function(params) {
-return new this.vehicleClass(params);
+  return new this.vehicleClass(params);
 };
 ```
 
@@ -206,7 +199,7 @@ CarFactory.prototype = new VehicleFactory();
 CarFactory.prototype.vehicleClass = Car;
 ```
 
-Ahora ya tenemos un factory para la clase Perro, si deseas construye tu la necesaria para crear el gato. Ahora para llamarlo:
+Ahora ya tenemos un factory para la clase Coche. Ahora para llamarlo:
 
 ```javascript
 var miFactory = new CarFactory();
@@ -290,23 +283,20 @@ Este patrón de arquitectura de software se basa en las ideas de reutilización 
 ### Actores de este patrón:
 
 #### Modelo
+
 Representa al estado de la aplicación. Puede haber dos opciones esencialmente:
-Struts proporciona una clase base org.apache.struts.action.ActionForm que se debe extender cuando se desea obtener la entrada de datos proporcionada por el usuario en la petición HTTP.
-El modelo puede ser un Bean o clase ordinaria sin necesidad extender ActionForm.
 
 #### Vista
-La vista es una página JSP que no debe contener lógica de negocio, ni flujo de la aplicación e información del modelo, sólo tags. Utiliza el modelo generado para obtener la información y presentarla
+
+La vista es una página HTML que no debe contener lógica de negocio, ni flujo de la aplicación e información del modelo, sólo tags. Utiliza el modelo generado para obtener la información y presentarla
 
 #### Controlador
-El Servlet ActionServlet actúa de controlador, recibe la petición del navegador y decide qué subclase de Action va tratar la petición en función de lo que se ha declarado en el fichero de configuración struts-config.xml.
-Subclase de Action. Actualiza el estado del modelo, y, controla el flujo de la aplicación y tratamiento de errores. Una instancia de una subclase de Action puede tratar la petición y responder al cliente o indicar al Servlet controlador a qué componente del sistema debe delegar el control (esta es la opción la que se lleve a cabo). Las instancias de las subclases de Action tienen acceso al contexto del Servlet controlador y demás objetos que actúan con el contenedor Web.
 
-Ver ejemplo proyecto: design-patterns/mvc-example
+El controlador, recibe la petición del navegador y decide cómo se va a tratar la petición..
+
+*Ver ejemplo proyecto: design-patterns/mvc-example*
 
 Esquema sencillo:
-
-Una típica colaboración entre los componentes de un MVC
-
 
 ## Decorator
 
@@ -371,3 +361,5 @@ function run() {
    log.show();
 }
 ```
+
+*Discusión sobre el uso en Angular 2 de este patrón*
