@@ -23,10 +23,6 @@ var namespace = {
 
 Si necesitamos crear el singleton bajo demanda (lo que conocemos generalmente con el término lazily), el código se complica un poco:
 
-Es posible que tengamos que habilitar algunas funciones como las Arrow Functions en Chrome, en ese caso habilitar:
-
-```chrome://flags/#enable-javascript-harmony```
-
 ```javascript
 var namespace = {
   _singleton: null,
@@ -45,6 +41,10 @@ var namespace = {
 ```
 
 Usando ES6:
+
+Es posible que tengamos que habilitar algunas funciones como las Arrow Functions en Chrome, en ese caso habilitar:
+
+```chrome://flags/#enable-javascript-harmony```
 
 Ya que hablamos de ES6 es bueno saber el estado en el que está en los diferentes navegadores:
 
@@ -130,8 +130,11 @@ Es un objeto que encapsula la creación de otros objetos. A medida que tu Factor
 function Car ( params ) {
   this.wheels = params.wheels || "4";
   this.color = params.color || "Black";
-}
 
+  this.iAm = function(){
+    console.log("I'm a Car.");
+  }
+}
 
 function Bike ( params ) {
   this.wheels = params.wheels || "2";
@@ -151,7 +154,7 @@ VehicleFactory.prototype.createVehicle = function(params) {
 };
 ```
 
-### Uso de la clase Factory:
+#### Uso de la clase Factory:
 
 ```javascript
 // creamos la instancia del Factory
@@ -163,6 +166,8 @@ var ford = miFactory.createVehicle({tipo:"car", color:"Red"});
 //si queremos una bicicleta Azul
 var orbea = miFactory.createVehicle({tipo:"bike", color:"Blue"});
 ```
+
+*Demostrar con un ejemplo que efectivamente funciona bien*
 
 ### SubClases del Factory
 
@@ -239,9 +244,16 @@ return {
 Aquí el factory abstracto no tiene porque conocer lo que está instanciando, solo necesita mantener un registro de los objetos a crear:
 
 ```javascript
+//Creamos la clase gato
+function Gato (params){
+    this.color = params.color || "Pardo";
+    this.carnivoro= params.carnivoro|| true;
+    this.nombre = params.nombre || "Misifu";
+    this.actitud = params.actitud || "Perezos";
+}
+
 // Registramos la clase Gato
 AbstractAnimalFactory.registerClass("gato", Gato );
-
 
 // instanciamos un gatito
 var minino = AbstractAnimalFactory.createAnimal( "gato" , {nombre:"Chelsea"} );
