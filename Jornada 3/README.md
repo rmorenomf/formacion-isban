@@ -23,6 +23,10 @@ var namespace = {
 
 Si necesitamos crear el singleton bajo demanda (lo que conocemos generalmente con el término lazily), el código se complica un poco:
 
+Es posible que tengamos que habilitar algunas funciones como las Arrow Functions en Chrome, en ese caso habilitar:
+
+```chrome://flags/#enable-javascript-harmony```
+
 ```javascript
 var namespace = {
   _singleton: null,
@@ -41,6 +45,10 @@ var namespace = {
 ```
 
 Usando ES6:
+
+Ya que hablamos de ES6 es bueno saber el estado en el que está en los diferentes navegadores:
+
+http://kangax.github.io/compat-table/es6/
 
 ```javascript
 var namespace = {
