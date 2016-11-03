@@ -2,6 +2,8 @@
 
 ## Teoría web components (Template, Shadow Dom, Custom Elements e Imports).
 
+El objetivo es formalizar los conceptos y las herramientas en lo que se asiente el concepto de Web Component.
+
 ### Custom elements:
 
 http://w3c.github.io/webcomponents/spec/custom/
