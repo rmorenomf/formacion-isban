@@ -266,7 +266,9 @@ https://docs.npmjs.com/cli/shrinkwrap
 #### Manipulates packages cache
 
 > npm cache add <tarball file> => add: Add the specified package to the local cache. This command is primarily intended to be used internally by npm
+
 > npm cache ls [<path>]
+
 > npm cache clean [<path>]
 
 #### Tab Completion for npm
@@ -279,11 +281,17 @@ Yo uso windows esto no me vale ;-).
 #### Manage the npm configuration files
 
 > npm config set <key> <value> [-g|--global]
+
 > npm config get <key>
+
 > npm config delete <key>
+
 > npm config list
+
 > npm config edit
+
 > npm get <key>
+
 > npm set <key> <value> [-g|--global]
 
 #### dedupe
@@ -301,8 +309,11 @@ The deduplication algorithm walks the tree, moving each dependency as far up in 
 Docs for a package in a web browser maybe
 
 > npm docs <pkg-name>
+
 > npm home <pkg-name>
+
 > npm repo <pkg-name> => Open package repository page in the browser
+
 > npm root [-g] => Print the effective node_modules folder to standard out.
 
 #### npm-init
@@ -554,6 +565,7 @@ Parar en install options:
 * -D, --save-dev: Save installed packages into the project’s bower.json devDependencies
 * -E, --save-exact: Configure installed packages with an exact version rather than semver
 
+Explicar que link tiene un signicado diferente quen en NPM.
 
 ## Breve apunto sobre Grunt y Gulp
 
