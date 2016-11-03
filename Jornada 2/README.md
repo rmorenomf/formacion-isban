@@ -471,9 +471,89 @@ In some cases, you want to express the compatibility of your package with a host
 
 ## Bower
 
+Al igual que NPM es un gestor de paquetes pero no de node sino de front. La principal diferencia es que bower no crea un arbol de dependencias solo descarga el paquete y lo deja disponible para ser usado en Front.
+
+### Instalación
+
+Se instala de forma global mediante npm
+
+> npm install -g bower
+
+```html
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+```
+
 ### Práctica: Instalar jquery y bootstrap con Bower
 
+Prácticar un rato con la instalación de paquetes
+
+### Configuración
+
+Bower can be configured using JSON in a .bowerrc file. For example:
+
+```json
+{
+  "cwd": "~/.my-project",
+  "directory": "bower_components",
+  "registry": "https://bower.herokuapp.com",
+  "shorthand-resolver": "git://github.com//.git",
+  "proxy": "http://proxy.local",
+  "https-proxy": "http://proxy.local",
+  "ca": "/var/certificate.pem",
+  "color": true,
+  "timeout": 60000,
+  "save": true,
+  "save-exact": true,
+  "strict-ssl": true,
+  "storage": {
+    "packages" : "~/.bower/packages",
+    "registry" : "~/.bower/registry",
+    "links" : "~/.bower/links"
+  },
+  "interactive": true,
+  "resolvers": [
+    "mercurial-bower-resolver"
+  ],
+  "shallowCloneHosts": [
+    "myGitHost.example.com"
+  ],
+  "scripts": {
+    "preinstall": "",
+    "postinstall": "",
+    "preuninstall": ""
+  },
+  "ignoredDependencies": [
+    "jquery"
+  ]
+}
+```
+
+*Placement & Order*
+
+The config is obtained by merging multiple configurations by this order of importance:
+
+1. CLI arguments via --config
+2. Environment variables
+3. Local .bowerrc located in the current working directory
+4. All .bowerrc files upwards the directory tree
+5. .bowerrc file located in user’s home folder (~)
+6. .bowerrc file located in the global folder (/)
+
+
 ### Repaso a los comandos de Bower
+
+_Revisar directamente en la ayuda de bower_
+
+https://bower.io/docs/api/
+
+Parar en install options:
+
+* -F, --force-latest: Force latest version on conflict
+* -p, --production: Do not install project devDependencies
+* -S, --save: Save installed packages into the project’s bower.json dependencies
+* -D, --save-dev: Save installed packages into the project’s bower.json devDependencies
+* -E, --save-exact: Configure installed packages with an exact version rather than semver
+
 
 ## Breve apunto sobre Grunt y Gulp
 
