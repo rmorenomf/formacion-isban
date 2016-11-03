@@ -149,6 +149,7 @@ NPM instala un árbol de dependencias. Eso significa que, cada package instala s
 
 Por ejemplo, imaginemos estos dos paquetes:
 
+```
 foo
 ├── hello ^0.1.2
 └── world ^1.0.7
@@ -156,10 +157,12 @@ foo
 bar
 ├── hello ^0.2.8
 └── goodbye ^3.4.0
+```
 
 Ahora imaginemos que tenemos dos aplicaciones que tienen depencias de *foo* y *bar*. Con *hello* tenemos un problema, tenemos un conflicto de versiones.
 A diferencia de otros gestores de paquetes NPM no se limita a informar del error. NPM hará esto:
 
+```
 node_modules/
 ├── foo/
 │   └── node_modules/
@@ -169,6 +172,7 @@ node_modules/
     └── node_modules/
         ├── hello/
         └── goodbye/
+```
 
 En realidad depende un poco de la versión: npm 3 intentará optimizar las dependencias compartidas.
 
@@ -206,8 +210,6 @@ _Trabajo en grupo_
 ### Práctica: Usar un paquete alojado en un Git privado.
 
 git clone https://ruben_moreno_fernandez@bitbucket.org/ruben_moreno_fernandez/sng-random-text-generator.git
-
-
 
 ### Repaso a los comandos de NPM
 
