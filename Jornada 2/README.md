@@ -1,3 +1,5 @@
+_Recordar que en la carpeta de la Jornada 3 he dejado un libro sobre patrones de diseño._
+
 # Jornada 2: 
 
 Gestión de dependencias externas con Bower, npm.
@@ -108,8 +110,8 @@ Reglas de versionado semántico:
 * '>'=version etc
 * '<'version
 * '<'=version
-* ~version "Approximately equivalent to version" See semver
-* ^version "Compatible with version" See semver
+* ~version "Approximately equivalent to version"
+* ^version "Compatible with version"
 * 1.2.x 1.2.0, 1.2.1, etc., but not 1.3.0
 * http://... See 'URLs as Dependencies' below
 * '*' Matches any version
@@ -170,6 +172,13 @@ node_modules/
 
 En realidad depende un poco de la versión: npm 3 intentará optimizar las dependencias compartidas.
 
+Eso implica que:
+
+> your 'node_modules' directory structure and therefore you dependency tree, are dependent on INSTALL ORDER
+
+¿Puede afectar la estructura del árbol de dependencias a nuestras aplicaciones?
+
+No. Mientras que tengamos todas las dependecias que necesitamos.
 
 ### Working with scoped packages
 
@@ -188,13 +197,23 @@ The four relevant files are:
 
 ### Repositorios privados
 
+Vamos a echar un ojo en la Web de NPM. Pero nos vamos a centrar en la utilización de git.
+
 ### Práctica: Instalar jquery y bootstrap con NPM
 
-### Práctica: Instalar express para servir una apliación mínima.
+_Trabajo en grupo_
 
 ### Práctica: Usar un paquete alojado en un Git privado.
 
+git clone https://ruben_moreno_fernandez@bitbucket.org/ruben_moreno_fernandez/sng-random-text-generator.git
+
+
+
 ### Repaso a los comandos de NPM
+
+#### shirnkwrap
+
+shrinkwrap es una herramienta con más utilidad para aquellos que desarrollan módulos, en pocas palabras shirnkwrap “bloquea” las versiones que utilizas en determinada aplicación, de esta manera te aseguras que las versiones que van a ser posteriormente instaladas en la cadena de distribución sean las mismas que utilizaste en el desarrollo de tu módulo o aplicación. Este comando generara un nuevo archivo donde estara el árbol o esquema con las versiones que deben ser instaladas al momento de instalar tu módulo. Más información
 
 #### Print the folder where npm will install executables.
 > npm bin [-g] 
@@ -210,7 +229,7 @@ The four relevant files are:
 
 #### Tab Completion for npm
 
-> source <(npm completion)
+> source < (npm completion)
 Enables tab-completion in all npm commands.
 
 Yo uso windows esto no me vale ;-).
@@ -250,6 +269,7 @@ It is a task runner built on Node.js and Node Package Manager (npm), used for au
 ### Cómo eliminar la carpeta node_modules en Windows.
 
 En algunas ocasiones se produce un error cuando queremos eliminar la carpeta node_modules ya que es demasiado profundas. En ese caso podemos eliminar las dependencias del fichero package.json y ejecutar ```npm prune``` o podemos instalar ```npm install rimraf -g``` (si no está instalado ya en node) y ejecutar el comando ```rimraf node_modules``` y dejar que sea el propio node quien elimine los fichero que ha creado.
+No olvidar limpiar la caché de NPM.
 
 ### Actualizar la version de node para poder tener acceso a las últimas mejoras
 
