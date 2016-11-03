@@ -9,7 +9,9 @@ Gestión de dependencias externas con Bower, npm.
 *Node.js* es un proyecto que pretende llevar JavaScript a la línea de comandos. Toma el motor de ejecución de JavaScript de Chrome (V8) lo lleva a un ejecutable que podemos lanzar para interpretar nuestro código javaScript.
 Ahora también podemos utilizar *node* para ejecutar tareas como ejecutar un servidor de páginas web creado en JavaScript. Ofuscar nuestro código. Crear preprocesadores de CSS, linting, etc.
 
-__Discutir las ventajas e incovenientes de esto__
+_Discutir las ventajas e incovenientes de esto_
+
+_Probar el pequeño ejemplo de ejecutar JavaScript en node_
 
 ## ¿Por qué necesitamos gestores de paquetes?
 
@@ -79,6 +81,13 @@ Debería de devolvernos un listado vacío.
 
 Lo eliminamos también del fichero package.json
 
+### Packages and Modules
+
+Node.js and npm have very specific definitions of packages and modules, which are easy to mix up.
+
+* A package is a file or directory that is described by a package.json. 
+* A module is any file or directory that can be loaded by Node.js' require().
+
 ### Fichero package.json
 
 Semantic versioning is a standard that a lot of projects use to communicate what kinds of changes are in this release. It's important to communicate what kinds of changes are in a release because sometimes those changes will break the code that depends on the package.
@@ -89,9 +98,9 @@ If a project is going to be shared with others, it should start at 1.0.0, though
 
 After this, changes should be handled as follows:
 
-Bug fixes and other minor changes: Patch release, increment the last number, e.g. 1.0.*1*
-New features which don't break existing features: Minor release, increment the middle number, e.g. 1.*1*.0
-Changes which break backwards compatibility: Major release, increment the first number, e.g. *2*.0.0
+* Bug fixes and other minor changes: Patch release, increment the last number, e.g. 1.0.*1*
+* New features which don't break existing features: Minor release, increment the middle number, e.g. 1.*1*.0
+* Changes which break backwards compatibility: Major release, increment the first number, e.g. *2*.0.0
 
 Semver for consumers
 
@@ -122,6 +131,17 @@ Reglas de versionado semántico:
 * user/repo See 'GitHub URLs' below
 * tag A specific version tagged and published as tag See npm-tag
 * path/path/path See Local Paths below
+
+Esto es solo el principio, podemos echar un vistazo a la complejidad que puede llegar a tener la semántica de semver: 
+
+https://docs.npmjs.com/misc/semver
+
+Explicar que podemo indicar también un commit en concreto.
+
+git://github.com/user/project.git#commit-ish
+git+ssh://user@hostname:project.git#commit-ish
+git+http://user@hostname/project/blah.git#commit-ish
+git+https://user@hostname/project/blah.git#commit-ish
 
 #### Tags
 
@@ -186,7 +206,19 @@ No. Mientras que tengamos todas las dependecias que necesitamos.
 
 ### Working with scoped packages
 
-14 - TODO
+All npm packages have a name. Some package names also have a scope. 
+A scope follows the usual rules for package names (url-safe characters, no leading dots or underscores). When used in package names, preceded by an @-symbol and followed by a slash, e.g.
+
+@somescope/somepackagename
+Scopes are a way of grouping related packages together, and also affect a few things about the way npm treats the package.
+
+Scoped packages are supported by the public npm registry. The npm client is backwards-compatible with un-scoped registries, so it can be used to work with scoped and un-scoped registries at the same time.
+
+Installing scoped packages
+
+Scoped packages are installed to a sub-folder of the regular installation folder, e.g. if your other packages are installed in node_modules/packagename, scoped modules will be in node_modules/@myorg/packagename. The scope folder (@myorg) is simply the name of the scope preceded by an @-symbol, and can contain any number of scoped packages.
+
+> npm install @myorg/mypackage
 
 ### Configuración
 
@@ -197,7 +229,11 @@ The four relevant files are:
 * per-project config file (/path/to/my/project/.npmrc)
 * per-user config file (~/.npmrc)
 * global config file ($PREFIX/etc/npmrc)
-* npm builtin config file (/path/to/npm/npmrc)
+* npm builtin config file (/path/to/npm/npmrc) => Este es un archivo de configuración "incorporado" inalterable que npm mantiene consistente a través de las actualizaciones. Esto es principalmente para que los mantenedores de distribución sobreescriban las configuraciones por defecto de una manera estándar y consistente.
+
+https://docs.npmjs.com/files/npmrc
+
+> npm config list => muestra la configuración que esta siendo utilizada por npm.
 
 ### Repositorios privados
 
@@ -215,7 +251,11 @@ git clone https://ruben_moreno_fernandez@bitbucket.org/ruben_moreno_fernandez/sn
 
 #### shirnkwrap
 
-shrinkwrap es una herramienta con más utilidad para aquellos que desarrollan módulos, en pocas palabras shirnkwrap “bloquea” las versiones que utilizas en determinada aplicación, de esta manera te aseguras que las versiones que van a ser posteriormente instaladas en la cadena de distribución sean las mismas que utilizaste en el desarrollo de tu módulo o aplicación. Este comando generara un nuevo archivo donde estara el árbol o esquema con las versiones que deben ser instaladas al momento de instalar tu módulo. Más información
+shrinkwrap es una herramienta con más utilidad para aquellos que desarrollan módulos, en pocas palabras shirnkwrap “bloquea” las versiones que utilizas en determinada aplicación, de esta manera te aseguras que las versiones que van a ser posteriormente instaladas en la cadena de distribución sean las mismas que utilizaste en el desarrollo de tu módulo o aplicación. Este comando generara un nuevo archivo donde estara el árbol o esquema con las versiones que deben ser instaladas al momento de instalar tu módulo.
+
+Ver la documentación y el uso del comando.
+
+https://docs.npmjs.com/cli/shrinkwrap
 
 #### Print the folder where npm will install executables.
 > npm bin [-g] 
@@ -245,6 +285,189 @@ Yo uso windows esto no me vale ;-).
 > npm config edit
 > npm get <key>
 > npm set <key> <value> [-g|--global]
+
+#### dedupe
+
+Eliminación de duplicados
+
+> npm dedupe
+
+Searches the local package tree and attempts to simplify the overall structure by moving dependencies further up the tree, where they can be more effectively shared by multiple dependent packages.
+
+The deduplication algorithm walks the tree, moving each dependency as far up in the tree as possible, even if duplicates are not found. This will result in both a flat and deduplicated tree.
+
+#### npm-docs / home / repo / root
+
+Docs for a package in a web browser maybe
+
+> npm docs <pkg-name>
+> npm home <pkg-name>
+> npm repo <pkg-name> => Open package repository page in the browser
+> npm root [-g] => Print the effective node_modules folder to standard out.
+
+#### npm-init
+
+Interactively create a package.json file
+
+If you invoke it with -f, --force, -y, or --yes, it will use only defaults and not prompt you for any options.
+
+#### npm-install
+
+https://docs.npmjs.com/cli/install
+
+Algunos detalles menos conocidos:
+
+* With the --production flag (or when the NODE_ENV environment variable is set to production), npm will not install modules listed in devDependencies.
+* -S, --save: Package will appear in your dependencies.
+* -D, --save-dev: Package will appear in your devDependencies.
+* -O, --save-optional: Package will appear in your optionalDependencies.
+
+When using any of the above options to save dependencies to your package.json, there is an additional, optional flag:
+
+* -E, --save-exact: Saved dependencies will be configured with an exact version rather than using npm's default semver range operator.
+Further, if you have an npm-shrinkwrap.json then it will be updated as well.
+
+To install a package, npm uses the following algorithm:
+
+```
+load the existing node_modules tree from disk
+clone the tree
+fetch the package.json and assorted metadata and add it to the clone
+walk the clone and add any missing dependencies
+  dependencies will be added as close to the top as is possible
+  without breaking any other modules
+compare the original tree with the cloned tree and make a list of
+actions to take to convert one to the other
+execute all of the actions, deepest first
+  kinds of actions are install, update, remove and move
+```
+
+#### npm-uninstall
+
+Remove a package
+
+> npm uninstall [<@scope>/]<pkg>[@<version>]... [-S|--save|-D|--save-dev|-O|--save-optional]
+
+* -S, --save: Package will be removed from your dependencies.
+* -D, --save-dev: Package will be removed from your devDependencies.
+* -O, --save-optional: Package will be removed from your optionalDependencies.
+
+#### npm-update
+
+Update a package
+
+> npm update [-g] [<pkg>...]
+
+This command will update all the packages listed to the latest version (specified by the tag config), respecting semver.
+
+#### npm-link
+
+Symlink a package folder
+
+> npm link express 
+./node_modules/express -> /usr/local/lib/node_modules/express
+
+Creamos un enlace simbolico a la versión del paquete que tenemos instalado en global y lo referenciamos desde nuestro repo local.
+
+Por ejemplo: express.
+
+Para instalarlo haces: npm install -g express, con esto tienes la utilidad de linea de comandos para poder luego hacer:
+
+> npm install
+
+Necesitas instalar las dependencias, pero ¿qué sucede si no tienes acceso a internet en ese momento o no quieres volver a descargar express?, en este caso puedes hacer npm link express, para crear un link simbólico a la versión global de express:
+
+> npm link express 
+./node_modules/express -> /usr/local/lib/node_modules/express
+Con esto ya tienes la habilidad de usar la versión global de express sin necesidad de descargarla de nuevo.
+
+Importante: Cuando haces npm install npm instala una copia local, lo cual es lo mejor, ya que te ayuda a mantener un control mejor de dependencias. Por lo tanto aunque sea útil, no es una práctica recomendada.
+
+“En producción, tu VM puede estar limitada a un servicio, o espacio en disco, en este caso, npm link no es tan malo. Pero por el amor a la debugabilidad y alta disponibilidad, no lo hagas en otros escenarios, por que symlinks son dolorosos en producción…"
+
+#### npm-ls
+
+List installed packages
+
+> npm ls [-j] 
+
+-j lo lista en formato json
+
+#### npm-outdated
+
+Check for outdated packages
+
+> npm outdated
+
+#### npm-prune
+
+Remove extraneous packages
+
+> npm prune [[<@scope>/]<pkg>...] [--production]
+
+Extraneous packages are packages that are not listed on the parent package's dependencies list.
+
+If the --production flag is specified or the NODE_ENV environment variable is set to production, this command will remove the packages specified in your devDependencies.
+
+#### npm start / restart / stop / run-script / test
+
+This runs an arbitrary command specified in the package's "start" property of its "scripts" object. If no "start" property is specified on the "scripts" object, it will run node server.js.
+
+Ejemplo de packet.json con Scripts:
+
+```json
+{
+  "name": "angular-seed",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A starter project for AngularJS",
+  "repository": "https://github.com/angular/angular-seed",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "http-server": "^0.9.0",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-firefox-launcher": "^0.1.7",
+    "karma-jasmine": "^0.3.8",
+    "karma-junit-reporter": "^0.4.1",
+    "protractor": "^3.2.2"
+  },
+  "scripts": {
+    "postinstall": "bower install",
+
+    "prestart": "npm install",
+    "start": "http-server -a localhost -p 8000 -c-1 ./app",
+
+    "pretest": "npm install",
+    "test": "karma start karma.conf.js",
+    "test-single-run": "karma start karma.conf.js --single-run",
+
+    "preupdate-webdriver": "npm install",
+    "update-webdriver": "webdriver-manager update",
+
+    "preprotractor": "npm run update-webdriver",
+    "protractor": "protractor e2e-tests/protractor.conf.js",
+
+    "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
+  }
+}
+```
+
+En este ejemplo vemos las posibilidades de automatizar tareas sin necesidad de grunt, gulp, etc.
+
+#### npm-search
+
+Search for packages
+
+> npm search [-l|--long] [search terms ...]
+
+### Algún detalle final:
+
+#### peerDependencies
+
+In some cases, you want to express the compatibility of your package with a host tool or library, while not necessarily doing a require of this host. This is usually referred to as a plugin. Notably, your module may be exposing a specific interface, expected and specified by the host documentation.
 
 ## Bower
 
