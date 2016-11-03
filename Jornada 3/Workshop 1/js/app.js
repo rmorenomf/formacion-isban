@@ -1,34 +1,46 @@
 console.log("[*] Application Loaded.");
 
-function HabitacionHotel() {
-  this.precio = function () { return 1999; };
+//Creamos un vehículo genérico
+function Vehicle(params){
+    this.color = params.color || "Blue";
+    this.tradeMark = params.tradeMark || "Ford";
 }
 
-function VistasAlMar(room) {
-  var price = room.precio();
-    room.precio = function() {
-    return price + 500;
-  }
+// Creamos el Factory
+function VehicleFactory(){}
+
+// y lo extendemos con prototype para vehículos genéricos
+VehicleFactory.prototype.vehicleClass = Vehicle;
+VehicleFactory.prototype.createVehicle = function(params) {
+  return new this.vehicleClass(params);
+};
+
+// creamos una subclase
+function CarFactory(params) {
+  
+  VehicleFactory.prototype.vehicleClass = CarFactory; 
+  Vehicle.call(this, params);
+
+  this.wheels = 4;
+  this.doors = 5;
 }
 
-/*Decorador 2*/
-function CamaDoble( room ){
-  var price = room.precio();
-    room.precio = function(){
-    return price + 1000;
-  };
-}
+console.log("[*] Car.");
 
-/*Decorador 3*/
-function SuitePresidencial( room ){
-  var price = room.precio();
-  room.precio = function(){
-    return price + 12500;
-  };
-}
+CarFactory.prototype = Object.create(Vehicle.prototype);
+//CarFactory.prototype.constructor = CarFactory;
 
-var burjAlArab = new HabitacionHotel();
-VistasAlMar(burjAlArab);
-CamaDoble(burjAlArab);
-SuitePresidencial(burjAlArab);
-console.log(burjAlArab.precio() ); //15999
+//var iCarFactory = new CarFactory({color:"Yellow", tradeMark:"Seat"}); 
+//console.log( iCarFactory.color );
+//console.log( iCarFactory.wheels );
+
+var car = CarFactory(); 
+var seat = car.createVehicle({color:"Yellow", tradeMark:"Seat"});
+console.log(seat.color);
+console.log(seat.wheels);
+
+/*console.log(miFactory.doors);
+var seat = miFactory.createVehicle({color:"Yellow", tradeMark:"Seat"});
+console.log(seat.color);
+console.log(seat.wheels);
+*/

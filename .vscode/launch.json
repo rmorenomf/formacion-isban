@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to find out which attributes exist for node debugging.
+    // Use hover for the description of the existing attributes.
+    // For further information visit https://go.microsoft.com/fwlink/?linkid=830387.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Iniciar",
+            "program": "${workspaceRoot}\\app.ts",
+            "cwd": "${workspaceRoot}",
+            "outFiles": [],
+            "sourceMaps": true
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Asociar",
+            "port": 5858,
+            "outFiles": [],
+            "sourceMaps": true
+        }
+    ]
+}
