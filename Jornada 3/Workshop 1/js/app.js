@@ -1,34 +1,24 @@
 console.log("[*] Application Loaded.");
 
-function HabitacionHotel() {
-  this.precio = function () { return 1999; };
+let instance = null;
+
+class Cache{  
+    constructor() {
+        if(!instance){
+              instance = this;
+        }
+
+        // to test whether we have singleton or not
+        this.time = new Date()
+
+        return instance;
+      }
 }
 
-function VistasAlMar(room) {
-  var price = room.precio();
-    room.precio = function() {
-    return price + 500;
-  }
-}
+let cache = new Cache()
+console.log(cache.time);
 
-/*Decorador 2*/
-function CamaDoble( room ){
-  var price = room.precio();
-    room.precio = function(){
-    return price + 1000;
-  };
-}
-
-/*Decorador 3*/
-function SuitePresidencial( room ){
-  var price = room.precio();
-  room.precio = function(){
-    return price + 12500;
-  };
-}
-
-var burjAlArab = new HabitacionHotel();
-VistasAlMar(burjAlArab);
-CamaDoble(burjAlArab);
-SuitePresidencial(burjAlArab);
-console.log(burjAlArab.precio() ); //15999
+ setTimeout(function(){
+   let cache = new Cache();
+   console.log(cache.time);
+ },4000);
