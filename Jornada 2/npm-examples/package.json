@@ -1,0 +1,23 @@
+{
+  "name": "sng-npm-example",
+  "version": "1.0.0",
+  "description": "Ejemplo de uso de paquete privado",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "angular",
+    "javascript",
+    "directivas"
+  ],
+  "author": "Ruben Moreno <ruben.moreno@sngular.team>",
+  "license": "ISC",
+  "homepage": "",
+  "engines" : { "node" : "^4.3.1" },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "sng-random-text-generator": "git+https://ruben_moreno_fernandez@bitbucket.org/ruben_moreno_fernandez/sng-random-text-generator.git"
+    
+  }
+}
