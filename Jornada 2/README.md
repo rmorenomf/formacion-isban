@@ -591,3 +591,44 @@ No olvidar limpiar la caché de NPM.
 ### Actualizar la version de node para poder tener acceso a las últimas mejoras
 
 Ir a http://nodejs.org/ e instalar la última versión disponible.
+
+
+Overview - 3
+Transpilers - 6
+Source Maps - 13
+Block Scope - 18
+Default Parameters - 20
+Rest Parameters - 21
+Spread Operator - 22
+Destructuring - 23
+Arrow Functions - 27
+Symbols - 29
+Enhanced Object
+Literals - 32
+Classes - 35
+Getters and Setters - 38
+New Math Functions - 40
+New Number
+Functions - 41
+Numeric Literals - 42
+New String
+Methods - 43
+Template Strings - 44
+New Array Functions
+and Methods - 47
+New Object
+Functions - 49
+Reflect Object - 51
+for-of Loops - 53
+Collections (Set, Map, WeakSet, WeakMap)- 54
+Promises - 65
+Modules - 69
+jspm - 75
+Iterators and
+Iterables - 80
+Generators - 87
+Proxies - 93
+Tail Call
+Optimization - 95
+async and await - 97
+Type Annotations - 99
