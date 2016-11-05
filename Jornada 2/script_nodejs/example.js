@@ -7,7 +7,7 @@ for(let i = 0; i < 10; i++){
 console.log( v8.getHeapStatistics() );
 
 //http://node.green/
-/*
+
 class Point {
     constructor(x, y) {
         this.x = x;
@@ -20,4 +20,3 @@ class Point {
 
 let aPoint = new Point(1,1);
 console.log( aPoint.toString() );
-*/
