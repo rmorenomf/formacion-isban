@@ -80,5 +80,27 @@ Pero para que funcnione tendremos que instalar el preset correspondiente:
 
 > npm install babel-preset-es2015 --save --no-bin-links
 
+## Un apunte sobre 'strict mode'
+
+'strict mode' obliga al navegador a realizar validaciones estáticas del código restringiendo algunos aspectos del lenguaje que si bien son válidos, son un poco cuestionables.
+
+Por ejemplo:
+
+```javascript
+variable1 = 12;
+```
+
+es válido en JavaScript y significa que estamos creando una variable global. Pero al activa el modo 'strict' obligamos a que eso no se pueda hacer y el interprete de JavaScript nos devolverá un error. Obligando a definir todas las variables de esta forma:
+
+```javascript
+var variable1 = 12;
+```
+
+> "Strict mode was added so that there would be an easily statically-analyzable subset of EcmaScript which would be a good target for future versions of the language. Strict mode was also designed in the hope that developers who limit themselves to strict mode would make fewer mistakes and that the bugs they do make would manifest in more obvious ways."
+
+En el Apendice C del documento de definición del lenguaje de ECMA-262 podemos ver mas detalles sobre el modo Strict.
+
+_Echar un vistazo al documento_
+
 
 
