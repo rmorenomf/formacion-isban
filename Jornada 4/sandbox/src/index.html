@@ -3,9 +3,33 @@
         
     <head>
         <title>Ejemplo uso de ES6</title>        
+        <link rel="stylesheet" href="./styles.css">
+        <script type="text/javascript" async src="../node_modules/requirejs/require.js"></script>
         <script type="text/javascript" async src="../lib/app.js"></script>
     </head>
     <body>
         <h1>Ejemplo de ES6 (v2)</h1>
+
+        <nav>
+            <ul>
+                <li><a href="#modules" onclick="goTo('modules');">Modules</a></li>
+                <li><a href="#arrow" onclick="goTo('arrow');">Arrow</a></li>
+                <li><a href="#classes" onclick="goTo('classes');">Classes</a></li>
+            </ul>
+        </nav>
+
+        <aside>
+            <label for="code">Código:</label>
+            <pre id="code">
+-
+            </pre>
+        </aside>
+
+        <main>
+            <label for="process_result">Consola:</label>
+            <output id="process_result">
+            </output>
+        </main>
+
     </body>
 </html>

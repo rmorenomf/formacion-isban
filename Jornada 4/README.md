@@ -104,13 +104,66 @@ _Echar un vistazo al documento_
 
 ## Principales novedades de ES6
 
-La ordenación es un criterio personal de las cosas que mas me gustan:
+## Collections: Map + Set + WeakMap + WeakSet
+
+### Set
+
+* Instances hold collections of unique values: when values are objects, they are compared by reference
+* Values can be any type including objects and arrays
+* To create, let mySet = new Set(): can pass iterable object (such as an array) to constructor to add all its elements
+* To add an element, mySet.add(value); //can chain to add multiple values
+* To test for element, mySet.has(value)
+* To delete an element, mySet.delete(value)
+* To delete all elements, mySet.clear()
+* size property holds number of keys
+* keys method returns iterator over elements
+* values method returns iterator over elements used by default in for-of loop
+* entries method returns iterator over [element, element] pairs
+* forEach method is like in that in Array, but passes value, value and the set to callback
+
+```javascript
+var s = new Set();
+s.add("hello").add("goodbye").add("hello");
+s.size === 2;
+s.has("hello") === true;
+```
+
+### 
+
 
 ## Arrows
 
 TODO
 
 ## Classes
+
+TODO
+
+## Parámetros por defecto
+
+TODO
+
+## Promises
+
+TODO
+
+## Enhanced object literals
+
+TODO
+
+## let 
+
+TODO
+
+## Getter & Setter
+
+TODO
+
+## Templates
+
+TODO
+
+## Reflection
 
 TODO
 
@@ -150,6 +203,16 @@ import ln, {pi, e} from "lib/mathplusplus";
 alert("2π = " + ln(e)*pi*2);
 ```
 
+Cuando tenemos que transpilar el código a ES5 tenemos que añadir algunas cosas más, ya que esto no tiene un soporte nativo y tenemos que usar un module loader.
+
+Babel por defecto genera una llamada del tipo CommondJS.
+
+Por eso tenemos que especificar el loader que queremos usar, en nuestro caso Webpack:
+
+> npm install --save-dev babel-loader babel-core
+
+pero eso es otra historia que veremos en otro momento.
+
 #### Module Loaders
 
 Module loaders support:
@@ -178,34 +241,3 @@ loader.eval("console.log('hello world!');");
 System.get('jquery');
 System.set('jquery', Module({$: $})); // WARNING: not yet finalized
 ```
-
-## Parámetros por defecto
-
-TODO
-
-## Promises
-
-TODO
-
-## Enhanced object literals
-
-TODO
-
-## let 
-
-TODO
-
-## Getter & Setter
-
-TODO
-
-## Templates
-
-TODO
-
-## Reflection
-
-TODO
-
-## 
-

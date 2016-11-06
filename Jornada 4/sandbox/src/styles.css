@@ -1,0 +1,26 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+nav {
+    display: inline-block;
+    width: 39%;
+    vertical-align: top;
+}
+
+aside {
+    display: inline-block;    
+    width: 59%;
+}
+
+aside pre {
+    height: 20rem;
+    border: solid lightgray 1px;
+    overflow: scroll;
+}
+
+output {
+    display: block;
+    border: solid lightgray 1px;
+    min-height: 10rem;
+}

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/examples/console.js"],"names":["console","text","log"],"mappings":";;;;;QAAgBA,O,GAAAA,O;AAAT,SAASA,OAAT,CAAiBC,IAAjB,EAAuB;AAC5BD,UAAQE,GAAR,YAAsBD,IAAtB;AACD","file":"console.js","sourcesContent":["export function console(text) {\r\n  console.log( `[*] - ${text}` );  \r\n}"]}

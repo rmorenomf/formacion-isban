@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/module1.js"],"names":["sum","x","y","pi"],"mappings":";;;;;QAEgBA,G,GAAAA,G;AAFhB;;AAEO,SAASA,GAAT,CAAaC,CAAb,EAAgBC,CAAhB,EAAmB;AACxB,SAAOD,IAAIC,CAAX;AACD;;AAEM,IAAIC,kBAAK,QAAT","file":"module1.js","sourcesContent":["/* Ejemplo de módulo JavaScript */\r\n\r\nexport function sum(x, y) {\r\n  return x + y;\r\n}\r\n\r\nexport var pi = 3.141593;"]}
