@@ -7,8 +7,6 @@ Vamos a partir de la base mas aseptica posible, sin frameworks ni herramientas d
 
 http://www.benfarrell.com/2015/10/26/es6-web-components-part-1-a-man-without-a-framework/
 
-http://www.benfarrell.com/2015/10/26/es6-web-components-part-1-a-man-without-a-framework/
-
 ### Custom elements:
 
 http://w3c.github.io/webcomponents/spec/custom/
@@ -24,3 +22,5 @@ http://w3c.github.io/webcomponents/spec/shadow/
 ### HTML Imports:
 
 http://w3c.github.io/webcomponents/spec/imports/
+
+http://blog.teamtreehouse.com/introduction-html-imports

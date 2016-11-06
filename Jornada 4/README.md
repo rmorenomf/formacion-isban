@@ -108,18 +108,7 @@ _Echar un vistazo al documento_
 
 ### Set
 
-* Instances hold collections of unique values: when values are objects, they are compared by reference
-* Values can be any type including objects and arrays
-* To create, let mySet = new Set(): can pass iterable object (such as an array) to constructor to add all its elements
-* To add an element, mySet.add(value); //can chain to add multiple values
-* To test for element, mySet.has(value)
-* To delete an element, mySet.delete(value)
-* To delete all elements, mySet.clear()
-* size property holds number of keys
-* keys method returns iterator over elements
-* values method returns iterator over elements used by default in for-of loop
-* entries method returns iterator over [element, element] pairs
-* forEach method is like in that in Array, but passes value, value and the set to callback
+Pág. 55 (resources/ES6.pdf)
 
 ```javascript
 var s = new Set();
@@ -128,44 +117,326 @@ s.size === 2;
 s.has("hello") === true;
 ```
 
-### 
+### WeakSet
 
+Pág. 63 (resources/ES6.pdf)
+
+El término Weak hace referencia a que esta estructura tiene un enlace débil con el objeto.
+
+Para entender esto tenemos que entender la forma como el recolector de basura de JavaScript funciona. Un objeto está listo para ser eliminado de la memoria solo cuando no queda ninguna referencia de ese objeto, es decir, cuando hacemos un =null.
+Si tenemos un objeto muy pesado y lo metemos en un objeto Set, este no será eliminado de la memoria, hasta que todas las referencias al objeto, incluida la del set sean eliminadas.
+
+Los objetos Weak son "weakly held" eso significa que la referencia a los objetos que contiene no cuenta como referencia para el colector de basura y significa que pueden ser eliminados en cualquier momento.
+
+La utilidad de esto es que podemos utilizar algoritmos que solo validen la presencia o el calculo según la existencia del objeto, sin el objeto mismo, ya que puede ser eliminado por el colector de basura incluso mientras se ejecuta el algoritmo. ("Taguear" objetos ).
+
+En el caso de WeakMap. Al dejar de estar referenciada la key el recolector de basura puede eliminar el objeto.
+
+Ejemplo: Queremos procesar una lista de objetos, vamos recorriendo y eliminando los objetos, en ese mismo momento, el recolector los eliminaría pese a que aún los tenemos en nuestro listado.
+
+```javascript
+// Weak Sets
+var ws = new WeakSet();
+ws.add({ data: 42 });
+// Because the added object has no other references, it will not be held in the set
+```
+
+### Map
+
+Pág. 59 (resources/ES6.pdf)
+
+```javascript
+var m = new Map();
+m.set("hello", 42);
+m.set(s, 34);
+m.get(s) == 34;
+```
+
+### WeakMap
+
+Pág. 64 (resources/ES6.pdf)
+
+```javascript
+// Weak Maps
+var wm = new WeakMap();
+wm.set(s, { extra: 42 });
+wm.size === undefined
+```
 
 ## Arrows
 
-TODO
+Pág. 27 (resources/ES6.pdf)
+
+```javascript
+// Expression bodies
+var odds = evens.map(v => v + 1);
+var nums = evens.map((v, i) => v + i);
+var pairs = evens.map(v => ({even: v, odd: v + 1}));
+
+// Statement bodies
+nums.forEach(v => {
+  if (v % 5 === 0)
+    fives.push(v);
+});
+
+// Lexical this
+var bob = {
+  _name: "Bob",
+  _friends: [],
+  printFriends() {
+    this._friends.forEach(f =>
+      console.log(this._name + " knows " + f));
+  }
+}
+```
 
 ## Classes
 
-TODO
+Pág. 35 (resources/ES6.pdf)
+
+```javascript
+class SkinnedMesh extends THREE.Mesh {
+  constructor(geometry, materials) {
+    super(geometry, materials);
+
+    this.idMatrix = SkinnedMesh.defaultMatrix();
+    this.bones = [];
+    this.boneMatrices = [];
+    //...
+  }
+  update(camera) {
+    //...
+    super.update();
+  }
+  get boneCount() {
+    return this.bones.length;
+  }
+  set matrixType(matrixType) {
+    this.idMatrix = SkinnedMesh[matrixType]();
+  }
+  static defaultMatrix() {
+    return new THREE.Matrix4();
+  }
+}
+```
 
 ## Parámetros por defecto
 
-TODO
+Pág. 35 (resources/ES6.pdf)
 
-## Promises
+```javascript
+function f(x, y=12, z=y*10 ) {
+  // y is 12 if not passed (or passed as undefined)
+  return x + y + z;
+}
+console.log( f(3) );
+```
 
-TODO
+## Rest
 
-## Enhanced object literals
+Pág. 21 (resources/ES6.pdf)
 
-TODO
+```javascript
+function f(x, ...y) {
+  // y is an Array
+  return x * y.length;
+}
+f(3, "hello", true) == 6
+```
 
-## let 
+## Spread
 
-TODO
+Pág. 22 (resources/ES6.pdf)
 
-## Getter & Setter
+```javascript
+function f(x, y, z) {
+  return x + y + z;
+}
+// Pass each elem of array as argument
+f(...[1,2,3]) == 6
+```
 
-TODO
+## Destructuring
 
-## Templates
+Pág. 23 (resources/ES6.pdf)
 
-TODO
+```javascript
+// list matching
+var [a, , b] = [1,2,3];
 
-## Reflection
+// object matching
+var { op: a, lhs: { op: b }, rhs: c }
+       = getASTNode()
 
-TODO
+// object matching shorthand
+// binds `op`, `lhs` and `rhs` in scope
+var {op, lhs, rhs} = getASTNode()
+
+// Can be used in parameter position
+function g({name: x}) {
+  console.log(x);
+}
+g({name: 5})
+
+// Fail-soft destructuring
+var [a] = [];
+a === undefined;
+
+// Fail-soft destructuring with defaults
+var [a = 1] = [];
+a === 1;
+```
+
+### Enhanced Object Literals
+
+Object literals are extended to support setting the prototype at construction, shorthand for foo: foo assignments, defining methods, making super calls, and computing property names with expressions. Together, these also bring object literals and class declarations closer together, and let object-based design benefit from some of the same conveniences.
+
+```javascript
+var obj = {
+    // __proto__
+    __proto__: theProtoObj,
+    // Shorthand for ‘handler: handler’
+    handler,
+    // Methods
+    toString() {
+     // Super calls
+     return "d " + super.toString();
+    },
+    // Computed (dynamic) property names
+    [ 'prop_' + (() => 42)() ]: 42
+};
+```
+
+### Template Strings
+
+Pág. 44, 45 (resources/ES6.pdf)
+
+Las plantillas de cadena de texto se delimitan con el caracter de comillas o tildes invertidas (` `) (grave accent) , en lugar de las comillas simples o dobles. Las plantillas de cadena de texto pueden contener marcadores, indentificados por el signo de pesos, y envueltos en llaves (${expresión}). Las expresiones contenidas en los marcadores, junto con el texto entre ellas, son enviados como argumentos a una función. La función por defecto simplemente concatena las partes para formar una única cadena de texto. Si hay una expresión antes de la plantilla de cadena de texto (i.e. tag),  llamamos a esta plantilla de cadena de texto "plantilla de cadena de texto con etiqueta". En este caso, la expresión de etiqueta  (típicamente una función) es llamada a partir de la cadena resultante de procesar la plantilla de cadena de texto, que luego puede ser manipulada antes de ser devuelta.
+
+// Basic literal string creation
+`In JavaScript '\n' is a line-feed.`
+
+// Multiline strings
+`In JavaScript this is
+ not legal.`
+
+// String interpolation
+var name = "Bob", time = "today";
+`Hello ${name}, how are you ${time}?`
+
+// Construct an HTTP request prefix is used to interpret the replacements and construction
+POST`http://foo.org/bar?a=${a}&b=${b}
+     Content-Type: application/json
+     X-Credentials: ${credentials}
+     { "foo": ${foo},
+       "bar": ${bar}}`(myOnReadyStateChangeHandler);
+
+##### Plantillas de cadena de texto con postprocesador
+
+Una forma más avanzada de plantillas de cadenas de texto son aquellas que contienen una función de postprocesado . Con ellas es posible modificar la salida de las plantillas, usando una función. El primer argumento contiene un array con las cadenas de texto de la plantilla ("Hola" y "mundo" en el ejemplo). El segundo y subsiguientes argumentos con los valores procesados ( ya cocinados ) de las expresiones de la plantilla (en este caso "15" y "50"). Finalmente, la función devuelve la cadena de texto manipulada. El nombre "tag" de la función no es nada especial, se puede usar cualquier nombre de función en su lugar.
+
+```javascript
+var a = 5;
+var b = 10;
+
+function tag(strings, ...values) {
+  console.log(strings[0]); // "Hola "
+  console.log(strings[1]); // " mundo "
+  console.log(values[0]);  // 15
+  console.log(values[1]);  // 50
+
+  return "Bazinga!";
+}
+
+tag`Hola ${ a + b } mundo ${ a * b}`;
+// "Bazinga!"
+```
+
+##### Cadenas en crudo (raw)
+
+La propiedad especial raw, disponible en el primer argumento de las plantillas de cadenas de texto postprocesadas, nos permite acceder a las cadenas de texto tal como fueron ingresadas.
+
+```javascript
+function tag(strings, ...values) {
+  console.log(strings.raw[0]); 
+  // "linea 1 de cadena de texto \\n línea 2 de cadena de texto"
+}
+
+tag`línea 1 de cadena de texto \n línea 2 de cadena de texto`;
+
+String.raw`Hola\n${2+3}!`;
+// "Hola\\n5!"
+```
+
+### let
+
+La sentencia let declara una variable de alcance local, la cual, opcionalmente, puede ser inicializada con algún valor.
+
+let permite declarar variables limitando su alcance (scope) al bloque, declaración, o expresión donde se está usando. Lo anterior diferencia  la expresión let de la palabra reservada var , la cual define una variable global o local en una *función* sin importar el ámbito del bloque.
+
+```javascript
+if (x > y) {
+  let gamma = 12.7 + y;
+  i = gamma * x;
+}
+
+function varTest() {
+  var x = 31;
+  if (true) {
+    var x = 71;  // misma variable!
+    console.log(x);  // 71
+  }
+  console.log(x);  // 71
+}
+
+function letTest() {
+  let x = 31;
+  if (true) {
+    let x = 71;  // variable diferente
+    console.log(x);  // 71
+  }
+  console.log(x);  // 31
+}
+
+```
+
+### const
+
+Declaración de una constante de solo lectura.
+
+Crea una constante que puede ser global o local a la función en la cual es declarada. Las constantes siguen las mismas reglas de ámbito que las variables.
+
+El valor de una constante no puede ser cambiado por reasignación, y una constante no puede ser re-declarada. El porqué de esto, es que aunque es posible declarar una constante sin inicializarla, sería inútil hacerlo.
+
+Una constante no puede compartir su nombre con una función o variable en el mismo ámbito.
+
+```javascript
+const a = 7;
+document.writeln("a es " + a + ".");
+```
+
+### Iterators + For..Of
+
+Diferencia entre for...of y for...in
+
+El ciclo for...in iterará sobre todas las propiedades de un objeto. Más tecnicamente, iterará sobre cualquier propiedad en el objeto que haya sido internamente definida con su propiedad [[Enumerbale]]configurada como verdadera. 
+
+La sintaxis de  for...of es específica de las colecciones, y no de todos los objetos. Este Iterará  sobre cualquiera de los elementos de una colección que tengan la propiedad [Symbol.iterator].
+
+El siguiente ejemplo muestra las diferencias entre un ciclo for...of y un  ciclo for...in . 
+
+```javascript
+let arr = [3, 5, 7];
+arr.foo = "hello";
+
+for (let i in arr) {
+   console.log(i); // logs "0", "1", "2", "foo"
+}
+
+for (let i of arr) {
+   console.log(i); // logs "3", "5", "7"
+}
+```
 
 ### Modules
 

@@ -1,14 +1,32 @@
 console.log("[*] Application demo.");
 
-let arr = [1, 2, 3, 4];
-let doubled = arr.map(x => x * 2);
-console.log(doubled); // [2, 4, 6, 8]
+class Point{
+    constructor(x=0, y=0){
+        this.x = x;    
+        this.y = y;
+    }
 
-let product = (a, b) => a * b;
-console.log(product(2, 3)); // 6
+    toString(){
+        return `X: ${this.x} Y: ${this.y}`;
+    }
+}
 
-let average = numbers => {
-    let sum = numbers.reduce((a, b) => a + b);
-    return sum / numbers.length;
+class Key{
+    constructor(key){
+        this.key = key;
+    }
+}
+
+var wm = new WeakMap();
+
+function createData(){
+    wm.set(key1, new Point(1,1));
+    console.log( wm.has(key1) );
 };
-console.log(average(arr)); // 2.5
+
+function CheckStatus(ev){
+    console.log( point1 );    
+    key1 = null;
+}
+
+createData();
