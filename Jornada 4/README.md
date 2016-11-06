@@ -102,5 +102,110 @@ En el Apendice C del documento de definición del lenguaje de ECMA-262 podemos v
 
 _Echar un vistazo al documento_
 
+## Principales novedades de ES6
 
+La ordenación es un criterio personal de las cosas que mas me gustan:
+
+## Arrows
+
+TODO
+
+## Classes
+
+TODO
+
+### Modules
+
+Language-level support for modules for component definition. Codifies patterns from popular JavaScript module loaders (AMD, CommonJS). Runtime behaviour defined by a host-defined default loader. Implicitly async model – no code executes until requested modules are available and processed.
+
+```javascript
+// lib/math.js
+export function sum(x, y) {
+  return x + y;
+}
+
+export var pi = 3.141593;
+
+// app.js
+import * as math from "lib/math";
+alert("2π = " + math.sum(math.pi, math.pi));
+
+// otherApp.js
+import {sum, pi} from "lib/math";
+alert("2π = " + sum(pi, pi));
+```
+
+Some additional features include export default and export *:
+
+```javascript
+// lib/mathplusplus.js
+export * from "lib/math";
+export var e = 2.71828182846;
+export default function(x) {
+    return Math.log(x);
+}
+
+// app.js
+import ln, {pi, e} from "lib/mathplusplus";
+alert("2π = " + ln(e)*pi*2);
+```
+
+#### Module Loaders
+
+Module loaders support:
+
+* Dynamic loading
+* State isolation
+* Global namespace isolation
+* Compilation hooks
+* Nested virtualization
+
+The default module loader can be configured, and new loaders can be constructed to evaluate and load code in isolated or constrained contexts.
+
+```javascript
+// Dynamic loading – ‘System’ is default loader
+System.import('lib/math').then(function(m) {
+  alert("2π = " + m.sum(m.pi, m.pi));
+});
+
+// Create execution sandboxes – new Loaders
+var loader = new Loader({
+  global: fixup(window) // replace ‘console.log’
+});
+loader.eval("console.log('hello world!');");
+
+// Directly manipulate module cache
+System.get('jquery');
+System.set('jquery', Module({$: $})); // WARNING: not yet finalized
+```
+
+## Parámetros por defecto
+
+TODO
+
+## Promises
+
+TODO
+
+## Enhanced object literals
+
+TODO
+
+## let 
+
+TODO
+
+## Getter & Setter
+
+TODO
+
+## Templates
+
+TODO
+
+## Reflection
+
+TODO
+
+## 
 
