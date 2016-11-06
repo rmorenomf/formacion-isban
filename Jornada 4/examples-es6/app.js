@@ -1,5 +1,18 @@
 console.log("[*] Application demo.");
 
+// Proxying a normal object
+var target = {};
+var handler = {
+  get: function (receiver, name) {
+    return `Hello, ${name}!`;
+  }
+};
+
+var p = new Proxy(target, handler);
+console.log( p.world );
+p.world === 'Hello, world!';
+
+/*
 class Point{
     constructor(x=0, y=0){
         this.x = x;    
@@ -30,3 +43,4 @@ function CheckStatus(ev){
 }
 
 createData();
+*/

@@ -438,6 +438,172 @@ for (let i of arr) {
 }
 ```
 
+Usando iteradores:
+
+```javascript
+let fibonacci = {
+  [Symbol.iterator]() {
+    let pre = 0, cur = 1;
+    return {
+      next() {
+        [pre, cur] = [cur, pre + cur];
+        return { done: false, value: cur }
+      }
+    }
+  }
+}
+
+for (var n of fibonacci) {
+  // truncate the sequence at 1000
+  if (n > 1000)
+    break;
+  console.log(n);
+}
+```
+
+Con generadores:
+
+```javascript
+function* fibonacci() { // a generator function
+    let [prev, curr] = [0, 1];
+    while (true) {
+        [prev, curr] = [curr, prev + curr];
+        yield curr;
+    }
+}
+
+for (let n of fibonacci()) {
+    console.log(n);
+    // truncate the sequence at 1000
+    if (n >= 1000) {
+        break;
+    }
+}
+```
+
+### Generators
+
+La declaración function* (la palabra clave function seguida de una asterisco) define una función generadora, que devuelve un objeto Generator.
+
+También puedes definir funciones generadoras usando el constructor GeneratorFunction y una function* expression.
+
+Los generadores son funciones de las que se puede salir y volver a entrar. Su contexto (asociación de variables) será conservado entre las reentradas.
+
+La llamada a una función generadora no ejecuta su cuerpo inmediatamente; se devuelve un objeto iterador para la función en su lugar. Cuando el metodo next() del iterador es llamado , the generator function's body is executed until the first yield expression, which specifies the value to be returned from the iterator or, with yield*, delegates to another generator function. The next() method returns an object with a value property containing the yielded value and a done property which indicates whether the generator has yielded its last value.
+
+```javascript
+function* idMaker(){
+  var index = 0;
+  while(index < 3)
+    yield index++;
+}
+
+var gen = idMaker();
+
+console.log(gen.next().value); // 0
+console.log(gen.next().value); // 1
+console.log(gen.next().value); // 2
+console.log(gen.next().value); // undefined
+```
+
+### Symbols
+
+Symbol es un tipo de datos cuyos valores son únicos e immutables. Dichos valores pueden ser utilizados como identificadores (claves) de las propiedades de los objetos.  Cada valor del tipo Symbol tiene asociado un valor del tipo String o Undefined que sirve únicamente como descripción del símbolo.
+
+La función Symbol primitive data type es el constructor de valores del tipo Symbol. Cuando Symbol es llamado como función nos devuelve una nuevo valor del tipo Symbol. El constructor Symbol no debe ser usado con el operador new. Tampoco debe ser extendido mediante clases.
+
+La *description* es opcional:
+Es un valor opcional de tipo String. Unicamente sirve como descripción del símbolo que puede ser útil para depurar. No permite el acceso al símbolo que describe.
+
+No se pueden instanciar con *new*.
+> var sym = new Symbol(); // TypeError
+
+```javascript
+var sym = Symbol("foo");
+typeof sym;     // "symbol" 
+var symObj = Object(sym);
+typeof symObj;  // "object"
+```
+
+Encontrando las claves de tipo símbolo de un objeto:
+
+El método Object.getOwnPropertySymbols() devuelve un array con los símbolos que sirven como claves de las propiedades propias de un ojeto. Hay que destacar que cada objeto es inicializado sin propiedades propias con claves de tipo Symbol, así que este array estará vacio a menos que se hayan creado explicitamente propiedades con clave de tipo símbolo en el objeto.
+
+Además:
+
+Symbols enable access control for object state. Symbols allow properties to be keyed by either string (as in ES5) or symbol. Symbols are a new primitive type. Optional description parameter used in debugging - but is not part of identity. Symbols are unique (like gensym), but not private since they are exposed via reflection features like Object.getOwnPropertySymbols.
+
+```javascript
+var MyClass = (function() {
+
+  // module scoped symbol
+  var key = Symbol("key");
+
+  function MyClass(privateData) {
+    console.log(key);
+    this[key] = privateData;
+  }
+
+  MyClass.prototype = {
+    doStuff: function() {
+      
+    }
+  };
+
+  return MyClass;
+})();
+
+var c = new MyClass("hello")
+c["key"] === undefined
+```
+
+### Reflect Functions
+
+Pág. 51 (resources/ES6.pdf)
+
+### Promises
+
+El objeto Promise se usa para computaciones diferidas o asíncronas. Una Promesa puede estar en uno de estos estados:
+
+* pending ( pendiente ): estado inicial, no cumplida o rechazada.
+* fulfilled ( cumplida ): operación satisfactoria.
+* rejected ( rechazada ): operación fallida.
+
+```javascript
+function timeout(duration = 0) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, duration);
+    })
+}
+
+var p = timeout(1000).then(() => {
+    return timeout(2000);
+}).then(() => {
+    throw new Error("hmm");
+}).catch(err => {
+    return Promise.all([timeout(100), timeout(200)]);
+})
+```
+
+### Proxy
+
+Se utiliza un objeto Proxy para interceptar las operaciones de bajo nivel internas en otro objeto. Los objetos proxy pueden utilizarse, entre otros fines, para la intercepción, virtualización de objetos y los registros/la generación de perfiles.
+Si no se ha definido una captura para una operación determinada en el controlador para el proxy, la operación se reenvía al destino.
+El objeto de controlador define los siguientes métodos (capturas) para implementar un comportamiento personalizado.Los ejemplos que se muestran aquí no son exhaustivos.Para admitir el comportamiento predeterminado condicional en el método de controlador, utilice métodos de Objeto Reflect (JavaScript).
+
+```javascript
+var target = {};
+var handler = {
+  get: function (receiver, name) {
+    // This example includes a template string.
+    return `Hello, ${name}!`;
+  }
+};
+
+var p = new Proxy(target, handler);
+console.log(p.world);
+```
+
 ### Modules
 
 Language-level support for modules for component definition. Codifies patterns from popular JavaScript module loaders (AMD, CommonJS). Runtime behaviour defined by a host-defined default loader. Implicitly async model – no code executes until requested modules are available and processed.
