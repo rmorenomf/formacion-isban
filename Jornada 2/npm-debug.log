@@ -1,20 +1,26 @@
 0 info it worked if it ends with ok
 1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
-1 verbose cli   'C:\\Users\\ruben.moreno\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
-1 verbose cli   'view' ]
-2 info using npm@3.10.8
-3 info using node@v4.3.1
-4 verbose stack Error: Invalid package.json
-4 verbose stack     at C:\Users\ruben.moreno\AppData\Roaming\npm\node_modules\npm\lib\view.js:84:30
-4 verbose stack     at ReadFileContext.<anonymous> (C:\Users\ruben.moreno\AppData\Roaming\npm\node_modules\npm\node_modules\read-package-json\read-json.js:90:21)
-4 verbose stack     at ReadFileContext.callback (C:\Users\ruben.moreno\AppData\Roaming\npm\node_modules\npm\node_modules\graceful-fs\graceful-fs.js:78:16)
-4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:303:13)
-5 verbose cwd C:\workingfolder\formacion-isban\Jornada 2
-6 error Windows_NT 10.0.14393
-7 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\ruben.moreno\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "view"
-8 error node v4.3.1
-9 error npm  v3.10.8
-10 error Invalid package.json
-11 error If you need help, you may report this error at:
-11 error     <https://github.com/npm/npm/issues>
-12 verbose exit [ 1, true ]
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'link',
+1 verbose cli   'express' ]
+2 info using npm@2.15.9
+3 info using node@v4.6.0
+4 verbose link symlinking C:\Users\ruben\AppData\Roaming\npm\node_modules\express to D:\workingfolder\formacion-isban\Jornada 2\node_modules\express
+5 silly gentlyRm D:\workingfolder\formacion-isban\Jornada 2\node_modules\express is being purged
+6 verbose gentlyRm don't care about contents; nuking D:\workingfolder\formacion-isban\Jornada 2\node_modules\express
+7 verbose stack Error: EISDIR: illegal operation on a directory, symlink 'C:\Users\ruben\AppData\Roaming\npm\node_modules\express' -> 'D:\workingfolder\formacion-isban\Jornada 2\node_modules\express'
+7 verbose stack     at Error (native)
+8 verbose cwd D:\workingfolder\formacion-isban\Jornada 2
+9 error Windows_NT 10.0.14393
+10 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "link" "express"
+11 error node v4.6.0
+12 error npm  v2.15.9
+13 error path C:\Users\ruben\AppData\Roaming\npm\node_modules\express
+14 error code EISDIR
+15 error errno -4068
+16 error syscall symlink
+17 error eisdir EISDIR: illegal operation on a directory, symlink 'C:\Users\ruben\AppData\Roaming\npm\node_modules\express' -> 'D:\workingfolder\formacion-isban\Jornada 2\node_modules\express'
+17 error eisdir This is most likely not a problem with npm itself
+17 error eisdir and is related to npm not being able to find a package.json in
+17 error eisdir a package you are trying to install.
+18 verbose exit [ -4068, true ]
