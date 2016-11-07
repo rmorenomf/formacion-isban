@@ -15,7 +15,9 @@ http://w3c.github.io/webcomponents/spec/custom/
 
 Nos permiten crear nuestros propios elementos HTML y después usarlos como si de un TAG estándar se tratase. 
 
-> ```<super-button></super-button>```
+```html
+<super-button></super-button>
+```
 
 Realmente son Elements en el sentido del DOM (ver apartado sobre el DOM). 
 
@@ -23,7 +25,9 @@ Realmente son Elements en el sentido del DOM (ver apartado sobre el DOM).
 
 1. Debe contener un guión (-):
 
-> ```<super-button>```
+```html
+<super-button>
+  ```
 
 2. Antes de usarlo tenemos que reguistarlo:
 
