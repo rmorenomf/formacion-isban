@@ -1,0 +1,17 @@
+{
+  "name": "pifias",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "ruben_moreno_fernandez <ruben.moreno.fernandez.contractor@dev.bbva.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/rmorenomf/formacion-isban",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
