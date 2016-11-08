@@ -31,7 +31,7 @@ Realmente son Elements en el sentido del DOM (ver apartado sobre el DOM).
 
 2. Antes de usarlo tenemos que reguistarlo:
 
-> ```document.registerElement()```
+```document.registerElement()```
 
 Ejemplo:
 
