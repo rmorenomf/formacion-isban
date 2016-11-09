@@ -100,6 +100,10 @@ BEM requiere de una planificación previa, donde el diseñador y el desarrollado
 
 Una vez pruebas este tipo de sistema, te preguntas cómo es posible haber maquetado tu CSS sin él.
 
+Por ampliar miras, hay mas formas de abordar los proyectos de CSS:
+
+http://apuntesalmargen.com/oocss.html
+
 ## Linting
 
 Nos permite revisar nuestro código para encontrar errores potenciales de ejecución. 
