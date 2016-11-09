@@ -1,0 +1,23 @@
+<template id="template">
+    <styles>
+        :host {
+            color: blue;
+        }
+    </styles>
+    <h1>Hola mundo!</h1>
+</template>
+<script>
+    var XHelloPrototype = Object.create(HTMLElement.prototype);    
+    debugger;
+    XHelloPrototype.attachedCallback = function() {
+        var root = this.createShadowRoot();
+        var template = document.querySelector('#template');
+        var clone = document.importNode(template.content, true);
+        root.appendChild(clone);
+    };
+
+    var XHello = document.registerElement('x-hello', {
+            prototype: XHelloPrototype
+    });
+
+</script>

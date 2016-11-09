@@ -2,13 +2,10 @@
 /*
 var XHelloPrototype = Object.create(HTMLElement.prototype);
 XHelloPrototype.createdCallback = function() {
-  this.textContent = `Hello, componented world!`;
+  //this.textContent = `Hello, componented world!`;
   //this.textContent = `Hello, componented world! ${this}`;
   //Trastear con el DOM this.innerHTML = 'AAA' / this.append('ZZZ')
-};
-
-XHelloPrototype.hello = function() {
-  console.log('hello() called');
+  this.innerHTML = '<b>Hola</b>';
 };
 
 var XHello = document.registerElement('x-hello', {
@@ -16,12 +13,12 @@ var XHello = document.registerElement('x-hello', {
 });
 */
 
-// => Y si usamos ES6
 
-/*
+// => Y si usamos ES6
 
 // https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements
 
+/*
 // Create a class for the element
 class XHello extends HTMLElement {
   constructor() {
@@ -34,7 +31,6 @@ class XHello extends HTMLElement {
 customElements.define('x-hello', XHello);
 */
 
-
 // => Probamos un código un poco mas compacto
 /*
 customElements.define('x-hello', class extends HTMLElement {
@@ -44,12 +40,10 @@ customElements.define('x-hello', class extends HTMLElement {
   }  
 });
 */
-
 // **********************************************************************
 
-
-// => Creamos un custom element desde un elemento ya existente.
 /*
+// => Creamos un custom element desde un elemento ya existente.
 var XMyButtonPrototype = Object.create(HTMLButtonElement.prototype);
 XMyButtonPrototype.createdCallback = function() {
   this.textContent = "I'm an cool button!";
@@ -60,7 +54,6 @@ var XMyButton = document.registerElement('x-my-button', {
   extends: 'button'
 });
 */
-
 
 // **********************************************************************
 
@@ -126,19 +119,21 @@ for (i in blogPosts) {
 
 // => Vamos a probar el Shadow DOM
 
-/*
 const header = document.querySelector('#shadow_dom_host');
 const shadowRoot = header.attachShadow({mode: 'open'}); //Sí, hay un modo cerrado.
-//shadowRoot.innerHTML = '<h1>Hello Shadow DOM</h1>'; // Could also use appendChild().
+//shadowRoot.innerHTML = '<h1><div id="shd1">Hello Shadow DOM</div></h1>'; // Could also use appendChild().
+
+//document.getElementById('shd1');
+//console.log(shadowRoot.getElementById('shd1'));
 
 // Usando Slots
 shadowRoot.innerHTML = `<style>
-                            :host { border: solid 1px #ccc; border-radius: 0.5rem; padding: 0.5rem; margin: 0.5rem; }                            
+                            :host { border: solid 1px #ccc; 
+                              border-radius: 0.5rem; 
+                              padding: 0.5rem; margin: 0.5rem; }                            
                         </style>
                         <ul>
                           <li>
                             <slot name="greeting"></slot>                                                           
                           </li>
                         </ul>`;
-
-*/
