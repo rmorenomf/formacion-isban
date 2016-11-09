@@ -77,7 +77,7 @@ Si usamos el selector de idiomas del ejemplo, un modificador claro sería si apa
 
 ```css
 main-header__lang-chooser
-main-header__lang-chooser—isOpen
+main-header__lang-chooser--isOpen
 ```
 
 Te darás cuenta que si la idea de todo esto es generar código reutilizable, nos encontramos ante una pequeña inconsistencia: tendremos que repetir el código. Para solucionar esto, usaremos SASS y su propiedad @extend. De esta manera tendremos un único código.
@@ -88,7 +88,7 @@ position: relative;
 //estilo de nuestro elemento...
 }
 
-main-header__lang-chooser—isOpen{
+main-header__lang-chooser--isOpen{
 @extends main-header__lang-chooser;
 position: block;
 }
