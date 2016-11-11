@@ -1,0 +1,17 @@
+{
+  "name": "integracion_ts_jquery",
+  "description": "",
+  "main": "index.html",
+  "authors": [
+    "Ruben Moreno <rmorenomf@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/rmorenomf/formacion-isban",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

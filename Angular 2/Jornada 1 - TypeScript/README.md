@@ -4,6 +4,10 @@ Un buen lugar por donde empezar es la web del lenguaje:
 
 https://www.typescriptlang.org/docs/tutorial.html
 
+Un buen lugar donde ver diferentes ejemplos de uso del lenguaje:
+
+https://www.typescriptlang.org/samples/
+
 En el apartado de resources he dejado el Pdf de especificación del lenguaje. Pero me parece mas sencillo y accesible el "Handbook" de la web.
 
 ## Instalando el compilador
@@ -55,12 +59,24 @@ Podemos indicar la presencia de código en JavaScript incluyendo la siguiente en
 
 En https://code.visualstudio.com/Docs/languages/typescript podemos ver muchos detalles de como dejar VS Code listo para trabajar.
 
-## Repaso a lo mas descado de TypeScript
+## Repaso a lo más descado de TypeScript
 
 Puesto que TypeScript es un superconjunto de ES6 aka Ecmascript 2015, tengamos en cuenta que nos vamos a encontrar con los siguientes elementos de ES6 en TypeScript.
+El elemento diferenciador mas fácilmente identificable son los tipos de datos, que en el caso de TypeScript son necesarios ya que el lenguaje está fuertemente tipado.
 
-* let / const
-* 
+* Tipos básicos
+    * Inferencia de tipos
+    * Compatibilidad de tipos
+    * Tipos avanzados
+* Clases
+* Funciones
+* Generics
+* Enums
+* Symbols
+* Iteradores y generadores
+* Módulos
+* Mixins
+* Directivas del "transpilador"
 
 Pero además tenemos elementos propios del TypeScript como:
 
@@ -69,3 +85,14 @@ Pero además tenemos elementos propios del TypeScript como:
 * Interfaces
 * Namespaces
 
+## Typings
+
+Podemos utilizar código y librerias escritas en JavaScript desde TypeScript, pero es muy recomendable tener los tipos de acceso para poder hacer una clara integración entre los dos lenguajes. Por eso tenemos typings una iniciativa que permite tener wrappers para muchas de las librerias ya existentes, de esa forma podemos usar lodash, jquery, backbone de cuasinativa en TypeScript.
+
+Desde aquí podemos buscar un paquete en concreto que necesitemos integrar:
+
+http://microsoft.github.io/TypeSearch/
+
+_Vamos a realizar un ejemplo de integración TypeScript-jQuery_
+
+https://github.com/Microsoft/TypeScriptSamples/tree/master/jquery
