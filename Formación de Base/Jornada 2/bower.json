@@ -1,0 +1,17 @@
+{
+  "name": "jornada-2-npm",
+  "description": "Esto es un ejemplo de NPM",
+  "main": "index.html",
+  "authors": [
+    "Rmoreno"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/rmorenomf/formacion-isban",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "jornada-2-npm",
+  "version": "1.0.0",
+  "description": "Esto es un ejemplo de NPM",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rmoreno",
+  "license": "MIT",
+  "devDependencies": {
+    "backbone": "1.3.3",
+    "jquery": "^3.1.1",
+    "lodash": "^4.16.6",
+    "underscore": "^1.8.3"
+  }
+}
