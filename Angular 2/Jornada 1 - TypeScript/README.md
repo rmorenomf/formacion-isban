@@ -1,5 +1,7 @@
 # Typescript ~~orientado a Angular 2~~.
 
+En el directorio de resources he dejado el Pdf de especificación del lenguaje. Pero me parece mas sencillo y accesible el "Handbook" de la web. También hay más material de estudio.
+
 Un buen lugar por donde empezar es la web del lenguaje:
 
 https://www.typescriptlang.org/docs/tutorial.html
@@ -7,8 +9,6 @@ https://www.typescriptlang.org/docs/tutorial.html
 Un buen lugar donde ver diferentes ejemplos de uso del lenguaje:
 
 https://www.typescriptlang.org/samples/
-
-En el apartado de resources he dejado el Pdf de especificación del lenguaje. Pero me parece mas sencillo y accesible el "Handbook" de la web.
 
 ## Instalando el compilador
 
@@ -439,23 +439,81 @@ alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
 
 2. this como parámetro
 
+Echemos un vistazo a este ejemplo:
+
+```javascript
+interface Card {
+    suit: string;
+    card: number;
+}
+interface Deck {
+    suits: string[];
+    cards: number[];
+    createCardPicker(this: Deck): () => Card;
+}
+let deck: Deck = {
+    suits: ["hearts", "spades", "clubs", "diamonds"],
+    cards: Array(52),
+    // NOTE: The function now explicitly specifies that its callee must be of type Deck
+    createCardPicker: function(this: Deck) {
+        return () => {
+            let pickedCard = Math.floor(Math.random() * 52);
+            let pickedSuit = Math.floor(pickedCard / 13);
+
+            return {suit: this.suits[pickedSuit], card: pickedCard % 13};
+        }
+    }
+}
+
+let cardPicker = deck.createCardPicker();
+let pickedCard = cardPicker();
+
+alert("card: " + pickedCard.card + " of " + pickedCard.suit);
+```
+
+La función anónima *createCardPicker* utiliza internamente una referencia al objeto *Deck* desde la que es invocada, pero podemos especificar el tipo de *this* explicitamente en la llamada. Notar que no es necesario incluir *this* como parámetro a la llamada de la función. 
+
 #### Function Types
+
+Ejemplos de usos de tipos en funciones:
+
+```javascript
+function add(x: number, y: number): number {
+    return x + y;
+}
+
+let myAdd = function(x: number, y: number): number { return x+y; }; 
+```
 
 ### Enums
 
-TODO
+```javascript
+enum Direction {
+    Up = 1,
+    Down,
+    Left,
+    Right
+}
+```
+
+```javascript
+const enum Directions {
+    Up,
+    Down,
+    Left,
+    Right
+}
+
+let directions = [Directions.Up, Directions.Down, Directions.Left, Directions.Right]
+```
 
 ### Symbols
 
-TODO
+Lo mismo que en ES6
 
 ### Iteradores y generadores
 
-TODO
-
-### Módulos
-
-TODO
+Lo mismo que en ES6
 
 ### Mixins
 
@@ -463,16 +521,18 @@ TODO
 
 ### Directivas del "transpilador"
 
-TODO
+Son elementos que no pertenecen al lenguaje. Usan la sintaxis XML dentro de un comentario en línea con 3 barras "///" y permiten dar instrucciones de como se quire que se procese determinado elementos. 
+Si están en nuestro código deber ir en la cabecera del fichero.
+
+Ejemplo:
+
+```
+/// <reference path="..." />
+```
+
+Especifica al compilador donde está un determinado módulo. 
 
 ## Pero además tenemos elementos propios del TypeScript como:
-
-* Tipos
-* Decoradores
-* Interfaces
-* Namespaces
-* Generics
-
 
 ### Interfaces
 
@@ -610,6 +670,22 @@ square.sideLength = 10;
 square.penWidth = 5.0;
 ```
 
+### Módulos
+
+TODO
+
+### Decoradores
+
+TODO
+
+### Namespaces
+
+TODO
+
+### Generics
+
+TODO
+
 ## Typings
 
 Podemos utilizar código y librerias escritas en JavaScript desde TypeScript, pero es muy recomendable tener los tipos de acceso para poder hacer una clara integración entre los dos lenguajes. Por eso tenemos typings una iniciativa que permite tener wrappers para muchas de las librerias ya existentes, de esa forma podemos usar lodash, jquery, backbone de cuasinativa en TypeScript.
@@ -622,7 +698,7 @@ _Vamos a realizar un ejemplo de integración TypeScript-jQuery_
 
 https://github.com/Microsoft/TypeScriptSamples/tree/master/jquery
 
-## Lo más importante
+## Lo más importante:
 
 * Los nuevos tipos de datos
 * interfaces
