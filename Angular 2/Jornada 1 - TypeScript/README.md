@@ -680,24 +680,435 @@ square.penWidth = 5.0;
 
 ### Generics
 
-TODO
+Mucho de nuestro código no depende realmente del tipo de dato.
+
+```
+function reverse<T>(items: T[]): T[] {
+    var toreturn = [];
+    for (let i = items.length - 1; i >= 0; i--) {
+        toreturn.push(items[i]);
+    }
+    return toreturn;
+}
+
+var sample = [1, 2, 3];
+var reversed = reverse(sample);
+console.log(reversed); // 3,2,1
+
+// Safety!
+reversed[0] = '1'; // Error!
+reversed = ['1', '2']; // Error!
+reversed[0] = 1; // Okay
+reversed = [1, 2]; // Okay
+```
+
+En este ejemplo estamos diciendo que la función *reverse* mira te voy a pasar un Array de elementos de un tipo que no importa y me vas a devolver un Array de elementos de un tipo que no importa.
+
+Para esto sirven los genéricos, para hacer nuestro código más reutilizable.
+
+Un ejemplo de genérico que no es un Array:
+
+```
+function loggingIdentity<T>(arg: T): T {
+    console.log(arg.length);  // Error: T doesn't have .length
+    return arg;
+}
+```
+
+También podemos crear clases genéricas:
+
+```
+class GenericNumber<T> {
+    zeroValue: T;
+    add: (x: T, y: T) => T;
+}
+
+let myGenericNumber = new GenericNumber<number>();
+myGenericNumber.zeroValue = 0;
+myGenericNumber.add = function(x, y) { return x + y; };
+```
+
+Podemos hacer algo mas restrictivas nuestras clases. Podemos crear clases genéricas de forma que solo acepten objetos que extiendan de una determinada clase:
+
+```
+interface Lengthwise {
+    length: number;
+}
+
+function loggingIdentity<T extends Lengthwise>(arg: T): T {
+    console.log(arg.length);  // Now we know it has a .length property, so no more error
+    return arg;
+}
+```
 
 ### Mixins
 
-TODO
+Nos permite crear clases combinando clases sencillas sin necesidad de un mecanismo de herencia.
 
-### Módulos
+```javascript
+// Disposable Mixin
+class Disposable {
+    isDisposed: boolean;
+    dispose() {
+        this.isDisposed = true;
+    }
 
-TODO
+}
+
+// Activatable Mixin
+class Activatable {
+    isActive: boolean;
+    activate() {
+        this.isActive = true;
+    }
+    deactivate() {
+        this.isActive = false;
+    }
+}
+
+//Next, we’ll create the class that will handle the combination of the two mixins. Let’s look at this in more detail to see how it does this:
+class SmartObject implements Disposable, Activatable {
+    constructor() {
+        setInterval(() => console.log(this.isActive + " : " + this.isDisposed), 500);
+    }
+
+    interact() {
+        this.activate();
+    }
+
+    // Disposable
+    isDisposed: boolean = false;
+    dispose: () => void;
+    // Activatable
+    isActive: boolean = false;
+    activate: () => void;
+    deactivate: () => void;
+}
+
+//Finally, we mix our mixins into the class, creating the full implementation.
+applyMixins(SmartObject, [Disposable, Activatable]);
+
+let smartObj = new SmartObject();
+setTimeout(() => smartObj.interact(), 1000);
+
+////////////////////////////////////////
+// In your runtime library somewhere
+////////////////////////////////////////
+
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            derivedCtor.prototype[name] = baseCtor.prototype[name];
+        });
+    });
+}
+```
 
 ### Decoradores
 
-TODO
+Un decorador es un objeto que añaden funcionalidad a otro objeto de forma dinámica. Se puede utilizar para mejorar el comportamiento de un objeto sin requerir editar la clase. 
+
+Cuando usarlo:
+
+* Cuando se desea añadir capacidades de forma individual a objetos sin necesidad de utilizar los mecanismos de herencia.
+* Cuando sea deseable eliminar una funcionalidad en el futuro. Mediante quitar el decorador.
+* Cuando extender clases mediante subclases sea inmanejable o sobrecargue el modelo de clases.
+
+Pros and Contras:
+
+* Bueno: Más flexible que los mecanismos de herencia.
+* Bueno: No carga en exceso la jerarquía de clases.
+* Malo: Creamos muchos pequeños objetos.
+
+> NOTE  Decorators are an experimental feature that may change in future releases.
+
+> tsc --target ES5 --experimentalDecorators
+
+*tsconfig.json:*
+
+```json
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "experimentalDecorators": true
+    }
+}
+```
+
+Tenemos varios tipos de decoradores:
+
+* Decoradores de funciones
+* Decoradores de clases
+
+#### Decoradores de funciones.
+
+Factorias de decoradores:
+
+```javascript
+function color(value: string) { // this is the decorator factory
+    return function (target) { // this is the decorator
+        // do something with 'target' and 'value'...
+    }
+}
+```
+
+Ejemplo de decorador de clase:
+
+```javascript
+function f() {
+    console.log("f(): evaluated");
+    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
+        console.log("f(): called");
+    }
+}
+
+function g() {
+    console.log("g(): evaluated");
+    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
+        console.log("g(): called");
+    }
+}
+
+class C {
+    @f()
+    @g()
+    method() {}
+}
+```
+
+#### Decoradores de clase
+
+The class decorator is applied to the constructor of the class and can be used to observe, modify, or replace a class definition. A class decorator cannot be used in a declaration file, or in any other ambient context (such as on a declare class).
+
+```javascript
+
+function sealed(constructor: Function) {
+    Object.seal(constructor);
+    Object.seal(constructor.prototype);
+}
+
+@sealed
+class Greeter {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+}
+```
+
+### Modules
+
+Los módulos de TypeScript son un equivalente conceptual de los módulos de ES6. Un módulo se ejecuta dentro de su propio contexto. eso significa que las variables, fuciones, clases, etc ... declaradas dentro de un módulo no son visables fuera del módulo salvo que las expongamos explicitamente mediante *export*. 
+Un módulo es herramientas de encapsulación de código.  
+
+Ejemplo de *export*:
+
+```javascript
+export interface StringValidator {
+    isAcceptable(s: string): boolean;
+}
+
+export const numberRegexp = /^[0-9]+$/;
+
+export class ZipCodeValidator implements StringValidator {
+    isAcceptable(s: string) {
+        return s.length === 5 && numberRegexp.test(s);
+    }
+}
+```
+
+Export statements are handy when exports need to be renamed for consumers, so the above example can be written as:
+
+```javascript
+export { ZipCodeValidator };
+export { ZipCodeValidator as mainValidator };
+```
+
+Ejemplo de import:
+
+```javascript
+import { ZipCodeValidator } from "./ZipCodeValidator";
+
+let myValidator = new ZipCodeValidator();
+```
+
+Podemos renombrar elementos:
+
+```javascript
+import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
+let myValidator = new ZCV();
+```
+
+También podemos importar todos los elementos de un módulo:
+
+```javascript
+import * as validator from "./ZipCodeValidator";
+let myValidator = new validator.ZipCodeValidator();
+```
+
+*Default exports*
+
+Each module can optionally export a default export. Default exports are marked with the keyword default; and there can only be one default export per module. default exports are imported using a different import form.
+
+default exports are really handy. For instance, a library like JQuery might have a default export of jQuery or $, which we’d probably also import under the name $ or jQuery.
+
+* JQuery.d.ts
+
+```javascript
+declare let $: JQuery;
+export default $;
+```
+
+* App.ts
+
+```javascript
+import $ from "JQuery";
+
+//Otra forma de verlo sería:
+import jq from "JQuery";
+
+$("button.continue").html( "Next Step..." );
+```
+
+Esto nos permite ser más flexibles a la hora de referenciar a los elementos importados:
+
+```javascript
+export default "123";
+
+import num from "./OneTwoThree";
+
+console.log(num); // "123"
+```
+
+_Echar un vistato a la el typings de jQuery_
+
+*Do not use namespaces in modules*
+
+When first moving to a module-based organization, a common tendency is to wrap exports in an additional layer of namespaces. Modules have their own scope, and only exported declarations are visible from outside the module. With this in mind, namespace provide very little, if any, value when working with modules.
+
+On the organization front, namespaces are handy for grouping together logically-related objects and types in the global scope. For example, in C#, you’re going to find all the collection types in System.Collections. By organizing our types into hierarchical namespaces, we provide a good “discovery” experience for users of those types. Modules, on the other hand, are already present in a file system, necessarily. We have to resolve them by path and filename, so there’s a logical organization scheme for us to use. We can have a /collections/generic/ folder with a list module in it.
 
 ### Namespaces
 
-TODO
+Los Namespaces nos permiten agrupar de una forma lógica un grupo de elementos. Permitiendo evitar la colisión de nombres con otros elementos.
+Es importante notar que es necesario indicar los elementos que vamos a exponer usando *export*.
 
+```javascript
+namespace Validation {
+    export interface StringValidator {
+        isAcceptable(s: string): boolean;
+    }
+
+    const lettersRegexp = /^[A-Za-z]+$/;
+    const numberRegexp = /^[0-9]+$/;
+
+    export class LettersOnlyValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return lettersRegexp.test(s);
+        }
+    }
+
+    export class ZipCodeValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return s.length === 5 && numberRegexp.test(s);
+        }
+    }
+}
+
+// Some samples to try
+let strings = ["Hello", "98052", "101"];
+
+// Validators to use
+let validators: { [s: string]: Validation.StringValidator; } = {};
+validators["ZIP code"] = new Validation.ZipCodeValidator();
+validators["Letters only"] = new Validation.LettersOnlyValidator();
+
+// Show whether each string passed each validator
+for (let s of strings) {
+    for (var name in validators) {
+        console.log(`"${ s }" - ${ validators[name].isAcceptable(s) ? "matches" : "does not match" } ${ name }`);
+    }
+}
+```
+
+Podemos tener elmentos pertenecientes a un mismo *Namespace* usando directivas ///:
+
+* Validation.ts
+
+```javascript
+namespace Validation {
+    export interface StringValidator {
+        isAcceptable(s: string): boolean;
+    }
+}
+```
+
+* LettersOnlyValidator.ts
+
+```javascript
+/// <reference path="Validation.ts" />
+namespace Validation {
+    const lettersRegexp = /^[A-Za-z]+$/;
+    export class LettersOnlyValidator implements StringValidator {
+        isAcceptable(s: string) {
+            return lettersRegexp.test(s);
+        }
+    }
+}
+```
+
+* Test.ts
+
+```javascript
+/// <reference path="Validation.ts" />
+/// <reference path="LettersOnlyValidator.ts" />
+/// <reference path="ZipCodeValidator.ts" />
+
+// Some samples to try
+let strings = ["Hello", "98052", "101"];
+
+// Validators to use
+let validators: { [s: string]: Validation.StringValidator; } = {};
+validators["ZIP code"] = new Validation.ZipCodeValidator();
+validators["Letters only"] = new Validation.LettersOnlyValidator();
+
+// Show whether each string passed each validator
+for (let s of strings) {
+    for (let name in validators) {
+        console.log(""" + s + "" " + (validators[name].isAcceptable(s) ? " matches " : " does not match ") + name);
+    }
+}
+```
+
+Es importante notar que para poder usar un namespace tenemos que tenerlo cargado y para eso usamos los elementos declarativos de HTML:
+
+```html
+<script src="Validation.js" type="text/javascript" />
+<script src="LettersOnlyValidator.js" type="text/javascript" />
+<script src="ZipCodeValidator.js" type="text/javascript" />
+<script src="Test.js" type="text/javascript" /> 
+```
+
+## Modules vs Namespaces
+
+* Using Namespaces
+
+Namespaces are simply named JavaScript objects in the global namespace. This makes namespaces a very simple construct to use. They can span multiple files, and can be concatenated using --outFile. Namespaces can be a good way to structure your code in a Web Application, with all dependencies included as <script> tags in your HTML page.
+
+Just like all global namespace pollution, it can be hard to identify component dependencies, especially in a large application.
+
+* Using Modules
+
+Just like namespaces, modules can contain both code and declarations. The main difference is that modules declare their dependencies.
+
+Modules also have a dependency on a module loader (such as CommonJs/Require.js). For a small JS application this might not be optimal, but for larger applications, the cost comes with long term modularity and maintainability benefits. Modules provide for better code reuse, stronger isolation and better tooling support for bundling.
+
+It is also worth noting that, for Node.js applications, modules are the default and the recommended approach to structure your code.
+
+Starting with ECMAScript 2015, modules are native part of the language, and should be supported by all compliant engine implementations. Thus, for new projects modules would be the recommended code organization mechanism.
 
 ## Typings
 
