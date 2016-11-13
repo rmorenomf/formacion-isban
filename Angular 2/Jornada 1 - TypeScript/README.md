@@ -64,19 +64,81 @@ En https://code.visualstudio.com/Docs/languages/typescript podemos ver muchos de
 Puesto que TypeScript es un superconjunto de ES6 aka Ecmascript 2015, tengamos en cuenta que nos vamos a encontrar con los siguientes elementos de ES6 en TypeScript.
 El elemento diferenciador mas fácilmente identificable son los tipos de datos, que en el caso de TypeScript son necesarios ya que el lenguaje está fuertemente tipado.
 
-* Tipos básicos
+### Tipos básicos
+
+#### Boolean
+    
+```javascript
+let isDone: boolean = false;
+```
+
+#### Number
+
+```javascript
+let decimal: number = 6;
+let hex: number = 0xf00d;
+let binary: number = 0b1010;
+let octal: number = 0o744;
+```
+
+#### String
+
+```javascript
+let color: string = "blue";
+color = 'red';
+
+let fullName: string = `Bob Bobbington`;
+let age: number = 37;
+
+
+// => String templates are wellcome.
+let sentence: string = `Hello, my name is ${ fullName }.
+
+I'll be ${ age + 1 } years old next month.`
+```
+
+#### Array
+
+```javascript
+let list: number[] = [1, 2, 3];
+let list: Array<number> = [1, 2, 3]; //Usando genericos
+```
+
+#### Tuple
+
+Tuple types allow you to express an array where the type of a fixed number of elements is known, but need not be the same. For example, you may want to represent a value as a pair of a string and a number:
+
+```javascript
+// Declare a tuple type
+let x: [string, number];
+// Initialize it
+x = ["hello", 10]; // OK
+// Initialize it incorrectly
+x = [10, "hello"]; // Error
+```
+
+When accessing an element with a known index, the correct type is retrieved:
+
+```javascript
+console.log(x[0].substr(1)); // OK
+console.log(x[1].substr(1)); // Error, 'number' does not have 'substr'
+```
+
+
+
     * Inferencia de tipos
     * Compatibilidad de tipos
     * Tipos avanzados
-* Clases
-* Funciones
-* Generics
-* Enums
-* Symbols
-* Iteradores y generadores
-* Módulos
-* Mixins
-* Directivas del "transpilador"
+
+### Clases
+### Funciones
+### Generics
+### Enums
+### Symbols
+### Iteradores y generadores
+### Módulos
+### Mixins
+### Directivas del "transpilador"
 
 Pero además tenemos elementos propios del TypeScript como:
 
