@@ -124,28 +124,194 @@ console.log(x[0].substr(1)); // OK
 console.log(x[1].substr(1)); // Error, 'number' does not have 'substr'
 ```
 
+#### Enum
 
+```javascript
+enum Color {Red, Green, Blue};
+let c: Color = Color.Green;
+```
 
-    * Inferencia de tipos
-    * Compatibilidad de tipos
-    * Tipos avanzados
+#### Any
+
+El valor desconocido. Cuando no sabemos el tipo de dato. Especialmente interesante cuando tratamos con librerias en JS.
+
+```javascript
+let notSure: any = 4;
+notSure = "maybe a string instead";
+notSure = false; // okay, definitely a boolean
+```
+
+#### Void
+
+Nada.
+
+```javascript
+function warnUser(): void {
+    alert("This is my warning message");
+}
+```
+
+#### Null and Undefined
+
+La herencia de JS.
+
+#### Never
+
+Representa un tipo de valor que nunca ocurre. Es el resultado de las funciones o expresión que "siempre" devuelve una excepción. 
+
+```javascript
+// Function returning never must have unreachable end point
+function error(message: string): never {
+    throw new Error(message);
+}
+
+// Inferred return type is never
+function fail() {
+    return error("Something failed");
+}
+
+// Function returning never must have unreachable end point
+function infiniteLoop(): never {
+    while (true) {
+    }
+}
+```
+
+#### Type assertions
+
+La idea es aportar pistas al compilador de TypeScript sobre el tipo de dato que estamos manejando:
+
+"Type assertions are a way to tell the compiler “trust me, I know what I’m doing.” A type assertion is like a type cast in other languages, but performs no special checking or restructuring of data. It has no runtime impact, and is used purely by the compiler. TypeScript assumes that you, the programmer, have performed any special checks that you need."
+
+Usando:
+
+```
+let someValue: any = "this is a string";
+
+let strLength: number = (<string>someValue).length;
+
+// O usando "as"
+
+let someValue: any = "this is a string";
+
+let strLength: number = (someValue as string).length;
+```
+
+### Recordar un poco el uso de *let* y *const*
+
+-
 
 ### Clases
+
+TODO
+
 ### Funciones
-### Generics
+
+TODO
+
 ### Enums
+
+TODO
+
 ### Symbols
+
+TODO
+
 ### Iteradores y generadores
+
+TODO
+
 ### Módulos
+
+TODO
+
 ### Mixins
+
+TODO
+
 ### Directivas del "transpilador"
 
-Pero además tenemos elementos propios del TypeScript como:
+TODO
+
+## Pero además tenemos elementos propios del TypeScript como:
 
 * Tipos
 * Decoradores
 * Interfaces
 * Namespaces
+* Generics
+
+
+### Interfaces
+
+Las interfaces, al igual que en otros lenguajes, especifican una estructura de clase; propiedades, métodos, sin especificar su implementación.
+
+```javascript
+interface LabelledValue {
+    label: string;
+}
+
+function printLabel(labelledObj: LabelledValue) {
+    console.log(labelledObj.label);
+}
+
+let myObj = {size: 10, label: "Size 10 Object"};
+printLabel(myObj);
+```
+
+#### Propiedades opcionales
+
+```javascript
+interface SquareConfig {
+    color?: string;
+    width?: number;
+}
+
+function createSquare(config: SquareConfig): {color: string; area: number} {
+    let newSquare = {color: "white", area: 100};
+    if (config.color) {
+        newSquare.color = config.color;
+    }
+    if (config.width) {
+        newSquare.area = config.width * config.width;
+    }
+    return newSquare;
+}
+
+let mySquare = createSquare({color: "black"});
+```
+
+#### Propiedades Readonly
+
+```javascript
+interface Point {
+    readonly x: number;
+    readonly y: number;
+}
+```
+
+El valor se asigna en el constructor:
+
+```javascript
+let p1: Point = { x: 10, y: 20 };
+p1.x = 5; // error!
+```
+
+Recordad que *const* lo usaremos para variables y *readonly* para propiedades: 
+
+También tenemos un tipo 'ReadonlyArray':
+
+```javascript
+let a: number[] = [1, 2, 3, 4];
+let ro: ReadonlyArray<number> = a;
+ro[0] = 12; // error!
+ro.push(5); // error!
+ro.length = 100; // error!
+a = ro; // error!
+```
+
+
+
 
 ## Typings
 

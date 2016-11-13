@@ -1,4 +1,4 @@
 /// <reference path="./jscode.js" />
 
-ShowHello("World!!");
-
+let i: string = ShowHello("World!!");
+console.log(i);
