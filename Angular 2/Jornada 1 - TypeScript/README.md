@@ -90,7 +90,6 @@ color = 'red';
 let fullName: string = `Bob Bobbington`;
 let age: number = 37;
 
-
 // => String templates are wellcome.
 let sentence: string = `Hello, my name is ${ fullName }.
 
@@ -183,7 +182,7 @@ La idea es aportar pistas al compilador de TypeScript sobre el tipo de dato que 
 
 "Type assertions are a way to tell the compiler “trust me, I know what I’m doing.” A type assertion is like a type cast in other languages, but performs no special checking or restructuring of data. It has no runtime impact, and is used purely by the compiler. TypeScript assumes that you, the programmer, have performed any special checks that you need."
 
-Usando:
+Usando Generics:
 
 ```
 let someValue: any = "this is a string";
@@ -203,11 +202,244 @@ let strLength: number = (someValue as string).length;
 
 ### Clases
 
-TODO
+En realidad es una extensión de ES6:
+
+```javascript
+class Animal {
+    name: string;
+    constructor(theName: string) { this.name = theName; }
+    move(distanceInMeters: number = 0) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
+}
+
+class Snake extends Animal {
+    constructor(name: string) { super(name); }
+    move(distanceInMeters = 5) {
+        console.log("Slithering...");
+        super.move(distanceInMeters);
+    }
+}
+
+class Horse extends Animal {
+    constructor(name: string) { super(name); }
+    move(distanceInMeters = 45) {
+        console.log("Galloping...");
+        super.move(distanceInMeters);
+    }
+}
+
+let sam = new Snake("Sammy the Python");
+let tom: Animal = new Horse("Tommy the Palomino");
+
+sam.move();
+tom.move(34);
+```
+
+pero al que podemos incluir visibilidad a los miembros de la clase:
+
+* private 
+* public 
+* protected
+
+```javascript
+class Animal {
+    private name: string;
+    public constructor(theName: string) { this.name = theName; }
+    public move(distanceInMeters: number) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
+    protected moveInternal(distanceInMeters: number) {
+        console.log(`${this.name} moved ${distanceInMeters}m.`);
+    }
+}
+```
+
+ejemplo de *protected*:
+
+```javascript
+class Person {
+    protected name: string;
+    constructor(name: string) { this.name = name; }
+}
+
+class Employee extends Person {
+    private department: string;
+
+    constructor(name: string, department: string) {
+        super(name);
+        this.department = department;
+    }
+
+    public getElevatorPitch() {
+        return `Hello, my name is ${this.name} and I work in ${this.department}.`;
+    }
+}
+
+let howard = new Employee("Howard", "Sales");
+console.log(howard.getElevatorPitch());
+console.log(howard.name); // error
+```
+
+Recordar que también podemos indicar si es *readonly*.
+
+También podemos utilizar *get/set* para crear Accessors:
+
+```javascript
+let passcode = "secret passcode";
+
+class Employee {
+    private _fullName: string;
+
+    get fullName(): string {
+        return this._fullName;
+    }
+
+    set fullName(newName: string) {
+        if (passcode && passcode == "secret passcode") {
+            this._fullName = newName;
+        }
+        else {
+            console.log("Error: Unauthorized update of employee!");
+        }
+    }
+}
+
+let employee = new Employee();
+employee.fullName = "Bob Smith";
+if (employee.fullName) {
+    console.log(employee.fullName);
+}
+```
+
+Otro aspecto importante es que podemos hacer uso de *static* para definir elementos estáticos de clase, tanto propiedades como métodos.
+
+Algo muy interesante es que podemos crear clases abstractas, en el sentido clásico. Estas clases están parcialmente implementadas, son por decirlo así, una mezcla entre una clase y una intefaz. No se pueden instanciar directamente. Es necesario extenderlas para poder instanciarlas.
+
+```javascript
+abstract class Department {
+
+    constructor(public name: string) {
+    }
+
+    printName(): void {
+        console.log("Department name: " + this.name);
+    }
+
+    abstract printMeeting(): void; // must be implemented in derived classes
+}
+
+class AccountingDepartment extends Department {
+
+    constructor() {
+        super("Accounting and Auditing"); // constructors in derived classes must call super()
+    }
+
+    printMeeting(): void {
+        console.log("The Accounting Department meets each Monday at 10am.");
+    }
+
+    generateReports(): void {
+        console.log("Generating accounting reports...");
+    }
+}
+
+let department: Department; // ok to create a reference to an abstract type
+department = new Department(); // error: cannot create an instance of an abstract class
+department = new AccountingDepartment(); // ok to create and assign a non-abstract subclass
+department.printName();
+department.printMeeting();
+department.generateReports(); // error: method doesn't exist on declared abstract type
+```
+
+#### Advanced Techniques
+
+_Si hay tiempo_
 
 ### Funciones
 
-TODO
+Con nombre y anónimas:
+
+```javascript
+// Named function
+function add(x, y) {
+    return x + y;
+}
+
+// Anonymous function
+let myAdd = function(x, y) { return x+y; };
+```
+
+Recordar que gracias a ES6, tenemos: 
+
+* Parámetros opcionales.
+* Parámetros por defecto.
+* Parámetros REST.
+* lexical this.
+
+Pero además tenemos:
+
+1. Sobrecargas
+
+Este código es un poco "pincho" ya que *pickCard* no especifica el tipo devuelto:
+
+```javascript
+let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+function pickCard(x): any {
+    // Check to see if we're working with an object/array
+    // if so, they gave us the deck and we'll pick the card
+    if (typeof x == "object") {
+        let pickedCard = Math.floor(Math.random() * x.length);
+        return pickedCard;
+    }
+    // Otherwise just let them pick the card
+    else if (typeof x == "number") {
+        let pickedSuit = Math.floor(x / 13);
+        return { suit: suits[pickedSuit], card: x % 13 };
+    }
+}
+
+let myDeck = [{ suit: "diamonds", card: 2 }, { suit: "spades", card: 10 }, { suit: "hearts", card: 4 }];
+let pickedCard1 = myDeck[pickCard(myDeck)];
+alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+
+let pickedCard2 = pickCard(15);
+alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
+```
+
+Podemos usar esta forma de definir la función sobrecargada y la ventaja es que ahora tenemos un tipado completo:
+
+```javascript
+let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+function pickCard(x: {suit: string; card: number; }[]): number;
+function pickCard(x: number): {suit: string; card: number; };
+function pickCard(x): any {
+    // Check to see if we're working with an object/array
+    // if so, they gave us the deck and we'll pick the card
+    if (typeof x == "object") {
+        let pickedCard = Math.floor(Math.random() * x.length);
+        return pickedCard;
+    }
+    // Otherwise just let them pick the card
+    else if (typeof x == "number") {
+        let pickedSuit = Math.floor(x / 13);
+        return { suit: suits[pickedSuit], card: x % 13 };
+    }
+}
+
+let myDeck = [{ suit: "diamonds", card: 2 }, { suit: "spades", card: 10 }, { suit: "hearts", card: 4 }];
+let pickedCard1 = myDeck[pickCard(myDeck)];
+alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+
+let pickedCard2 = pickCard(15);
+alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
+```
+
+2. this como parámetro
+
+#### Function Types
 
 ### Enums
 
@@ -310,8 +542,73 @@ ro.length = 100; // error!
 a = ro; // error!
 ```
 
+#### Function Types
 
+No solo podemos crear interfaces de clases también podemos crear interfaces de funciones. (Ver la potencia de )
+Primero definimos la interfaz de la función.
 
+```javascript
+interface SearchFunc {
+    (source: string, subString: string): boolean;
+}
+```
+
+después podemos instanciar esa interfaz creando su implementación.
+
+```javascript
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) : boolean {
+    let result = source.search(subString);
+    if (result == -1) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+```
+
+como convención se puede nombrar ficheros _*.d.ts_ para indicar que se trata de un fichero de definición. _Ver el apartado de typings_
+
+#### Interfaces de clase
+
+```javascript
+interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date);
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date;
+    setTime(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { }
+}
+```
+
+#### Herencia de interfaces
+
+Las interfaces también pueden extender mediante el mecanimos de herencia: 
+
+```
+interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = <Square>{};
+square.color = "blue";
+square.sideLength = 10;
+square.penWidth = 5.0;
+```
 
 ## Typings
 
@@ -324,3 +621,12 @@ http://microsoft.github.io/TypeSearch/
 _Vamos a realizar un ejemplo de integración TypeScript-jQuery_
 
 https://github.com/Microsoft/TypeScriptSamples/tree/master/jquery
+
+## Lo más importante
+
+* Los nuevos tipos de datos
+* interfaces
+* Modulos y Namespaces
+* Decorators
+* Mixins
+* Ambient declarations. declare => Permiten declarar variables, funciones, o clases que estarán disponibles en el código aunque sin emitir código javascript al respecto. Esto es útil en los archivos de definición especialmente. Y se hace mediante la palabra reservada “declare”
