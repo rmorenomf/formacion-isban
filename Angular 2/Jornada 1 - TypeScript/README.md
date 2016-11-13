@@ -1,6 +1,6 @@
 # Typescript ~~orientado a Angular 2~~.
 
-En el directorio de resources he dejado el Pdf de especificación del lenguaje. Pero me parece mas sencillo y accesible el "Handbook" de la web. También hay más material de estudio.
+En el directorio de resources he dejado el PDF de especificación del lenguaje. Pero me parece mas sencillo y accesible el "Handbook" de la web. También hay más material de estudio.
 
 Un buen lugar por donde empezar es la web del lenguaje:
 
@@ -9,6 +9,24 @@ https://www.typescriptlang.org/docs/tutorial.html
 Un buen lugar donde ver diferentes ejemplos de uso del lenguaje:
 
 https://www.typescriptlang.org/samples/
+
+## Plan para esta sesión
+
+* En primer lugar dejar en cada uno de los equipos de los asistentes el compilador y las herramientas para codificar TypeScript.
+* Repasar los elementos mas importantes de TypeScript, partiendo de la base del curso anterior en el que se repasó ES6.
+    
+    * Tipos
+    * Clases: Modificadores de visibilidad, Static y clases abstractas.
+    * Interfaces
+    * Decoradores
+    * Mixins
+    * Funciones. Sobrecarga.
+    * Generics
+    * Modules
+    * Namespaces
+    * declare: Ambient declarations
+
+* Entender la integración con JavaScript, en especial Typings.
 
 ## Instalando el compilador
 
@@ -182,8 +200,6 @@ La idea es aportar pistas al compilador de TypeScript sobre el tipo de dato que 
 
 "Type assertions are a way to tell the compiler “trust me, I know what I’m doing.” A type assertion is like a type cast in other languages, but performs no special checking or restructuring of data. It has no runtime impact, and is used purely by the compiler. TypeScript assumes that you, the programmer, have performed any special checks that you need."
 
-Usando Generics:
-
 ```
 let someValue: any = "this is a string";
 
@@ -194,11 +210,11 @@ let strLength: number = (<string>someValue).length;
 let someValue: any = "this is a string";
 
 let strLength: number = (someValue as string).length;
-```
+
 
 ### Recordar un poco el uso de *let* y *const*
 
--
+Igual que en ES6
 
 ### Clases
 
@@ -370,6 +386,16 @@ function add(x, y) {
 let myAdd = function(x, y) { return x+y; };
 ```
 
+Recordad que ahora tenemos tipos, tanto para los parámetros de entrada como para el parámetro de salida:
+
+```javascript
+function add(x: number, y: number): number {
+    return x + y;
+}
+
+let myAdd = function(x: number, y: number): number { return x+y; }; 
+```
+
 Recordar que gracias a ES6, tenemos: 
 
 * Parámetros opcionales.
@@ -473,18 +499,6 @@ alert("card: " + pickedCard.card + " of " + pickedCard.suit);
 
 La función anónima *createCardPicker* utiliza internamente una referencia al objeto *Deck* desde la que es invocada, pero podemos especificar el tipo de *this* explicitamente en la llamada. Notar que no es necesario incluir *this* como parámetro a la llamada de la función. 
 
-#### Function Types
-
-Ejemplos de usos de tipos en funciones:
-
-```javascript
-function add(x: number, y: number): number {
-    return x + y;
-}
-
-let myAdd = function(x: number, y: number): number { return x+y; }; 
-```
-
 ### Enums
 
 ```javascript
@@ -515,10 +529,6 @@ Lo mismo que en ES6
 
 Lo mismo que en ES6
 
-### Mixins
-
-TODO
-
 ### Directivas del "transpilador"
 
 Son elementos que no pertenecen al lenguaje. Usan la sintaxis XML dentro de un comentario en línea con 3 barras "///" y permiten dar instrucciones de como se quire que se procese determinado elementos. 
@@ -531,8 +541,6 @@ Ejemplo:
 ```
 
 Especifica al compilador donde está un determinado módulo. 
-
-## Pero además tenemos elementos propios del TypeScript como:
 
 ### Interfaces
 
@@ -670,6 +678,14 @@ square.sideLength = 10;
 square.penWidth = 5.0;
 ```
 
+### Generics
+
+TODO
+
+### Mixins
+
+TODO
+
 ### Módulos
 
 TODO
@@ -682,9 +698,6 @@ TODO
 
 TODO
 
-### Generics
-
-TODO
 
 ## Typings
 
