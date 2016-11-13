@@ -368,10 +368,6 @@ department.printMeeting();
 department.generateReports(); // error: method doesn't exist on declared abstract type
 ```
 
-#### Advanced Techniques
-
-_Si hay tiempo_
-
 ### Funciones
 
 Con nombre y anónimas:
