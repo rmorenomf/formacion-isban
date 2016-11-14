@@ -52,17 +52,4 @@ _Práctica descargar una semilla desde:_ http://yeoman.io/generators/
 
 Semilla de serenity: https://github.com/serenity-frontstack/angular2-basic
 
-### Angular CLI
-
-Aún no está fina, es lenta y personalmente no me gusta. No me aporta nada que VS Code y una semilla puede hacer.
-
-### Ciclo de vida.
-
-
-
-_Todo lo expuestro procede del excelente y completo post de Matt Fehskens accesible desde:_ 
-
-https://semaphoreci.com/community/tutorials/setting-up-angular-2-with-webpack
-
-El proyecto completo se encuentra en: https://github.com/gonzofish/semaphore-ng2-webpack
-
+## Revisar los ejemplos de funcionamiento 
