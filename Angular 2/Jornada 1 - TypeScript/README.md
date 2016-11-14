@@ -1120,9 +1120,9 @@ https://github.com/Microsoft/TypeScriptSamples/tree/master/jquery
 
 ## Lo más importante:
 
+Todo, hay que tener en cuenta que es nuestro nuevo lenguaje de trabajo.
+
 * Los nuevos tipos de datos
 * interfaces
 * Modulos y Namespaces
 * Decorators
-* Mixins
-* Ambient declarations. declare => Permiten declarar variables, funciones, o clases que estarán disponibles en el código aunque sin emitir código javascript al respecto. Esto es útil en los archivos de definición especialmente. Y se hace mediante la palabra reservada “declare”
