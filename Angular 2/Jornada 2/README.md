@@ -11,7 +11,7 @@ El objetivo es instalar todo lo necesario para poder crear un proyecto Angular 2
 
 ![alt text](./resources/Ciclo_de_vida_angular2.jpg "Ciclo de vida clásico de una apliación angular 2")
 
-1. Crear eñ proyecto e instalar dependencias
+1. Crear el proyecto e instalar dependencias
 2. Codificar
 3. Probar en local
 4. Linting
