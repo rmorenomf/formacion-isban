@@ -48,7 +48,7 @@ _Este proceso puede ser largo ... muy largo_
 
 ## Starter Kit
 
-TODO
+https://github.com/AngularClass/angular2-webpack-starter
 
 ## Semillas
 
