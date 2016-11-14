@@ -40,7 +40,7 @@ Entramos en la carpeta "primerprograma" y echamos un vistazo al fichero "hellowo
 
 Ejecutamos el código generado en node:
 
-> tsc helloword.ts
+> node helloword.ts
 
 ## Visual Studio code
 

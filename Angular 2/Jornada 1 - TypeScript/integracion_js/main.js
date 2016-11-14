@@ -1,3 +1,8 @@
-/// <reference path="./jscode.js" />
-var i = ShowHello("World!!");
-console.log(i.substring(0, 2));
+var obj1 = {
+    p1: "Hola",
+    f1 : function(){
+        console.log(this.p1);
+    }
+};
+
+obj1.f1();
