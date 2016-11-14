@@ -834,66 +834,23 @@ Pros and Contras:
 Tenemos varios tipos de decoradores:
 
 * Decoradores de funciones
+* Decoradores de propiedades
+* Decoradores de parametros
 * Decoradores de clases
 
-#### Decoradores de funciones.
+Vamos a ver los ejemplos de cada uno de ellos en este github:
 
-Factorias de decoradores:
+https://gist.github.com/remojansen/16c661a7afd68e22ac6e
 
-```javascript
-function color(value: string) { // this is the decorator factory
-    return function (target) { // this is the decorator
-        // do something with 'target' and 'value'...
-    }
-}
-```
+que también lo tenemos descargado en la carpeta: _ejemplos-decoradores_
 
-Ejemplo de decorador de clase:
+Una pequeña aclaración sobre los parámetros de los decoradores:
 
-```javascript
-function f() {
-    console.log("f(): evaluated");
-    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
-        console.log("f(): called");
-    }
-}
+A method decorators takes a 3 arguments:
 
-function g() {
-    console.log("g(): evaluated");
-    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
-        console.log("g(): called");
-    }
-}
-
-class C {
-    @f()
-    @g()
-    method() {}
-}
-```
-
-#### Decoradores de clase
-
-The class decorator is applied to the constructor of the class and can be used to observe, modify, or replace a class definition. A class decorator cannot be used in a declaration file, or in any other ambient context (such as on a declare class).
-
-```javascript
-
-function sealed(constructor: Function) {
-    Object.seal(constructor);
-    Object.seal(constructor.prototype);
-}
-
-@sealed
-class Greeter {
-    greeting: string;
-    constructor(message: string) {
-        this.greeting = message;
-    }
-    greet() {
-        return "Hello, " + this.greeting;
-    }
-}
-```
+* _target_ the method being decorated.
+* _key_ the name of the method being decorated.
+* _value_ a property descriptor of the given property if it exists on the object, undefined otherwise. The property descriptor is obtained by invoking the Object.getOwnPropertyDescriptor() function.
 
 ### Modules
 
