@@ -3,19 +3,22 @@
 Use the Platform: 
 Ciclo de vida de Angular 2 y herramientas nativas y gestión de dependencias.
 
-* Creación del proyecto
-* Instalación de dependencias
-* Configuración de TypeScript
-* Angular 2 CLI
-* TypeScript Typings
-* Edición de código con VS
-* Webpack y SystemJS => https://github.com/systemjs/systemjs/tree/master/docs
-* Testing
-* Linting
-
 ## Objetivo de esta sesión.
 
 El objetivo es instalar todo lo necesario para poder crear un proyecto Angular 2. Entender las diferentes piezas y herramientas que se necesitan para trabajar con Angular 2.
+
+## Ciclo de vida
+
+![alt text](./resources/Ciclo_de_vida_angular2.jpg "Ciclo de vida clásico de una apliación angular 2")
+
+1. Crear eñ proyecto e instalar dependencias
+2. Codificar
+3. Probar en local
+4. Linting
+5. Testing
+6. Desplegar
+
+Cada una de estas partes del ciclo requieren de sus propias herramientas.
 
 ## Creación del proyecto
 
@@ -25,8 +28,9 @@ Si vamos a crear un nuevo proyecto y empezamos desde cero tenemos varias opcione
 
 1. Utilizamos el CLI para crear un nuevo proyecto.
 2. Nos bajamos el Starter Kit y empezamos a construir sobre eso.
-3. Buscamos unas "semilla" que tenga el proyecto lo mas parecido a lo quq quremos.
-4. Construimos he instalamos nuestro proyecto desde cero.
+3. Buscamos unas "semilla" que tenga el proyecto lo mas parecido a lo que queremos.
+4. Buscamos un generador yeoman => http://yeoman.io/generators/ 
+5. Construimos he instalamos nuestro proyecto desde cero.
 
 Vamos a ver un pequeño ejemplo de cada una de las formas.
 
