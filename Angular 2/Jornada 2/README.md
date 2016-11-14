@@ -54,9 +54,11 @@ Semilla de serenity: https://github.com/serenity-frontstack/angular2-basic
 
 ### Angular CLI
 
-Aúnn no está fina, es lenta y personalmente no me gusta. No me aporta nada que VS Code y una semilla puede hacer.
+Aún no está fina, es lenta y personalmente no me gusta. No me aporta nada que VS Code y una semilla puede hacer.
 
 ### Ciclo de vida.
+
+
 
 _Todo lo expuestro procede del excelente y completo post de Matt Fehskens accesible desde:_ 
 
@@ -64,16 +66,3 @@ https://semaphoreci.com/community/tutorials/setting-up-angular-2-with-webpack
 
 El proyecto completo se encuentra en: https://github.com/gonzofish/semaphore-ng2-webpack
 
-[-1]. Un vistazo por la documentación de Angular 2.
-
-1. Instalación de dependencias
-2. Configuración de herramientas
-    * Webpack
-    * ...
-4. Codificación y herramientas de ayuda a la codificación
-3. Testing
-5. Despliege en producción (JIT vs "Ahead-of-time")
-
-##  Instalación de dependencias
-
-### Lista de la compra
