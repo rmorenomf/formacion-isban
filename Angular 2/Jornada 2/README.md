@@ -32,6 +32,8 @@ Si vamos a crear un nuevo proyecto y empezamos desde cero tenemos varias opcione
 4. Buscamos un generador yeoman => http://yeoman.io/generators/ 
 5. Construimos he instalamos nuestro proyecto desde cero.
 
+Semilla de serenity: https://github.com/serenity-frontstack/angular2-basic
+
 Vamos a ver un pequeño ejemplo de cada una de las formas.
 
 ### Angular CLI
