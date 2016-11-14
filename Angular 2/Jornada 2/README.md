@@ -26,43 +26,35 @@ Cada una de estas partes del ciclo requieren de sus propias herramientas.
 
 Si vamos a crear un nuevo proyecto y empezamos desde cero tenemos varias opciones:
 
-1. Utilizamos el CLI para crear un nuevo proyecto.
+1. Utilizamos el CLI para crear un nuevo proyecto. 
+
+*Este proceso puede ser largo ... muy largo*
+
+> npm install -g angular-cli
+> ng --help
+> ng new PROYECT_NAME
+
+_Práctica instalar todos el angular-cli_
+
 2. Nos bajamos el Starter Kit y empezamos a construir sobre eso.
+
+_Práctica descargar el Starter Kit desde:_ https://github.com/AngularClass/angular2-webpack-starter
+
 3. Buscamos unas "semilla" que tenga el proyecto lo mas parecido a lo que queremos.
-4. Buscamos un generador yeoman => http://yeoman.io/generators/ 
-5. Construimos he instalamos nuestro proyecto desde cero.
+
+_Práctica descargar la semilla más sencilla desde:_ https://github.com/AngularClass/angular2-seed
+
+4. Buscamos un generador yeoman 
+
+_Práctica descargar una semilla desde:_ http://yeoman.io/generators/ 
+
+5. Construimos e instalamos nuestro proyecto desde cero.
 
 Semilla de serenity: https://github.com/serenity-frontstack/angular2-basic
 
-Vamos a ver un pequeño ejemplo de cada una de las formas.
-
 ### Angular CLI
 
-https://github.com/angular/angular-cli
-
-#### Instalación
-
-> npm install -g angular-cli
-
-##### Uso
-
-> ng --help
-
-> ng new PROYECT_NAME
-
-_Este proceso puede ser largo ... muy largo_
-
-## Starter Kit
-
-https://github.com/AngularClass/angular2-webpack-starter
-
-## Semillas
-
-TODO / Tanto totales como donantes de código. 
-
-## Crear proyecto desde cero
-
-TODO - Lo iportante es establecer un plan, tener una idea clara de la arquitectura de nuestro proyecto.
+Aúnn no está fina, es lenta y personalmente no me gusta. No me aporta nada que VS Code y una semilla puede hacer.
 
 ### Ciclo de vida.
 

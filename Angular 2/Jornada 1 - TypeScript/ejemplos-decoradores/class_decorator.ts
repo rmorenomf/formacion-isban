@@ -14,6 +14,7 @@ function logClass(target: any) {
  
   // the new constructor behaviour
   var f : any = function (...args) {
+    console.log("Overrider constructor");
     console.log("New: " + original.name);
     return construct(original, args);
   }
@@ -32,6 +33,7 @@ class Person {
   public surname: string;
 
   constructor(name : string, surname : string) { 
+    console.log("Initial constructor");
     this.name = name;
     this.surname = surname;
   }
