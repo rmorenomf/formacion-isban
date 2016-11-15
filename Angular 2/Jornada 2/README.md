@@ -26,29 +26,31 @@ Cada una de estas partes del ciclo requieren de sus propias herramientas.
 
 Si vamos a crear un nuevo proyecto y empezamos desde cero tenemos varias opciones:
 
-1. Utilizamos el CLI para crear un nuevo proyecto. 
+* _Utilizamos el CLI para crear un nuevo proyecto._ 
 
 *Este proceso puede ser largo ... muy largo*
 
 > npm install -g angular-cli
+
 > ng --help
+
 > ng new PROYECT_NAME
 
 _Práctica instalar todos el angular-cli_
 
-2. Nos bajamos el Starter Kit y empezamos a construir sobre eso.
+* _Nos bajamos el Starter Kit y empezamos a construir sobre eso._
 
 _Práctica descargar el Starter Kit desde:_ https://github.com/AngularClass/angular2-webpack-starter
 
-3. Buscamos unas "semilla" que tenga el proyecto lo mas parecido a lo que queremos.
+* _Buscamos unas "semilla" que tenga el proyecto lo mas parecido a lo que queremos._
 
 _Práctica descargar la semilla más sencilla desde:_ https://github.com/AngularClass/angular2-seed
 
-4. Buscamos un generador yeoman 
+* _Buscamos un generador yeoman_ 
 
 _Práctica descargar una semilla desde:_ http://yeoman.io/generators/ 
 
-5. Construimos e instalamos nuestro proyecto desde cero.
+* _Construimos e instalamos nuestro proyecto desde cero._
 
 Semilla de serenity: https://github.com/serenity-frontstack/angular2-basic
 
