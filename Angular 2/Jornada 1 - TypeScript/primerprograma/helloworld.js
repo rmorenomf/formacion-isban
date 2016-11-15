@@ -1,9 +1,10 @@
-var notSure = 4;
-notSure = "maybe a string instead";
-notSure = false; // okay, definitely a boolean
-function warnUser() {
-    alert("This is my warning message");
-    throw new Error();
-}
-
-(department as AccountingDepartment).generateReports(); 
+var Car = (function () {
+    function Car() {
+    }
+    Car.prototype.MyFunction = function (x, s, y) {
+        console.log("Fucionado");
+    };
+    return Car;
+}());
+var car = new Car();
+car.MyFunction(1, "", 1);
