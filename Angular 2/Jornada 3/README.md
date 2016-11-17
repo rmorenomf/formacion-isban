@@ -253,6 +253,12 @@ _Taller crear un nuevo módulo y usarlo dentro de nuestra aplicación_
 
 ## Components:
 
+Passing data to compnent ver pdf.
+
+@Input()
+@Output()
+
+
 https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html
 https://angular.io/docs/ts/latest/tutorial/toh-pt3.html
