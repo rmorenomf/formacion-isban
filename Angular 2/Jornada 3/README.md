@@ -1,5 +1,8 @@
 # Jornada 3: Comenzando con Angular 2: Componentes, módulos e inyectables.
 
+Repasar temas pendientes de jornadas anteriores en especial decoradores.
+Recordar que hay dos Pdfs en la carpeta "resources". 
+
 ## Plan de trabajo:
 
 El objetivo de esta jornada es dar una primera vista de la arquitectura. Centrarnos en Modules, Components e Injectors. Vamos a hacer varias sesiones de trabajo para, *partiendo del proyecto mini-demo*, crear y usar esos elementos.
@@ -31,11 +34,28 @@ Como vemos en la imagen anterior tenemos los siguientes elementos:
 * Services
 * Dependency injection
 
-## Modules
+### Modules
 
 Every Angular app has at least one module, the root module, conventionally named AppModule.
 
 An Angular module, whether a root or feature, is a class with an @NgModule decorator.
+
+Ejemplo:
+
+```typescript
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import
+       { AppComponent }  from './app.component';
+
+@NgModule({
+  imports: [ BrowserModule ],
+  declarations: [ AppComponent ],
+  bootstrap:    [ AppComponent ]
+})
+export class AppModule { }
+```
 
 * NgModule is a decorator function that takes a single metadata object whose properties describe the module. The most important properties are:
 
@@ -45,22 +65,202 @@ An Angular module, whether a root or feature, is a class with an @NgModule decor
     * *providers* - creators of services that this module contributes to the global collection of services; they become accessible in all parts of the app.
     * *bootstrap* - the main application view, called the root component, that hosts all other app views. Only the root module should set this bootstrap property. (Solo para el mainmodule).
 
-
 *BrowserModule* registers critical application service providers. It also includes common directives like NgIf and NgFor which become immediately visible and usable in any of this modules component templates.
 
-Components:
+Los módulos son elementos de agrupación y estructuración de elementos y son una pieza clave a la hora de establecer nuestra estrategía de carga de la aplicación.
+
+_Sesión de trabajo: Crear un nuevo módulo en el proyecto de ejemplo_
+
+Hay dos tipos de módulos:
+
+1. root modules.
+2. feature module.
+
+Los módulos Angular no son exactamente módulos JavaScript. Se identifican con el decorador *@ngModule*.
+
+### Components
+
+Es un elemento visual, es una vista. Es algo muy similar a un webcomponent en cierta forma.
+
+Así lo definen el equipo de Angular 2:
+
+> A component controls a patch of screen real estate that we could call a view, and
+declares reusable UI building blocks for an application.
+
+Ejemplo:
+
+```typescript
+import {Component} from '@angular/core';
+
+@Component({
+    selector: 'hello',
+    template: '<p>Hello, {{name}}</p>'
+})
+
+export class Hello {
+    name: string;
+    constructor() {
+        this.name = 'World';
+    }
+}
+```
+
+Posibles configuraciones para un @Component:
+
+* *moduleId*: sets the source of the base address (module.id) for module-relative URLs such as the templateUrl.
+* *selector*: CSS selector that tells Angular to create and insert an instance of this component where it finds a *hero-list* tag in parent HTML. For example, if an app's HTML contains *hero-list**/hero-list*, then Angular inserts an instance of the HeroListComponent view between those tags.
+* *templateUrl*: module-relative address of this component's HTML template, shown above.
+* *providers*: array of dependency injection providers for services that the component requires. This is one way to tell Angular that the component's constructor requires a HeroService so it can get the list of heroes to display.
+
+### Templates
+
+Es un trozo de HTML que le dice a Angular como pintar el componente.
+
+```html
+<h2>Hero List</h2>
+<p><i>Pick a hero from the list</i></p>
+<ul>
+  <li *ngFor="let hero of heroes" (click)="selectHero(hero)">
+    {{hero.name}}
+  </li>
+</ul>
+<hero-detail *ngIf="selectedHero" [hero]="selectedHero"></hero-detail>
+```
+
+No es un simple HTML ya que contiene su pripia sintaxis. También puede contener elementos de otros controladores, ejemplo: *hero-detail*.
+
+### Metadata
+
+Los metadatos le dicen a Angular 2 cómo procesar una clase. Como hemos visto hasta ahora, todos los elementos son clases, pero se pueden inicializar y cambiar su comportamiento usando decoradores.
+
+```typescript
+@Component({
+  moduleId: module.id,
+  selector:    'hero-list',
+  templateUrl: 'hero-list.component.html',
+  providers:  [ HeroService ]
+})
+export class HeroListComponent implements OnInit {
+/* . . . */
+}
+```
+
+El decorador @Component le dice a Angular toda la información que necesita para crea y presentar el componente y su vista. 
+
+* @Injectable, @Input, and @Output are a few of the more popular decorators.
+
+### Data binding
+
+Angular supports data binding, a mechanism for coordinating parts of a template with parts of a component. Add binding markup to the template HTML to tell Angular how to connect both sides.
+
+![alt text](./resources/databinding.png "Arquitectura angular 2")
+
+Ejemplo:
+
+```html
+<li>{{hero.name}}</li>
+<hero-detail [hero]="selectedHero"></hero-detail>
+<li (click)="selectHero(hero)"></li>
+```
+
+* The *{{hero.name}}* interpolation displays the component's hero.name property value within the *li* tags.
+* The *[hero]* property binding passes the value of selectedHero from the parent HeroListComponent to the hero property of the child HeroDetailComponent.
+* The *(click)* event binding calls the component's selectHero method when the user clicks a hero's name.
+
+Two-way data binding is an important fourth form that combines property and event binding in a single notation, using the ngModel directive. Here's an example from the HeroDetailComponent template:
+
+```html
+<input [(ngModel)]="hero.name">
+```
+
+### Directivas
+
+A directive is a class with directive metadata. In TypeScript, apply the @Directive decorator to attach metadata to the class.
+A component is a directive-with-a-template; a @Component decorator is actually a @Directive decorator extended with template-oriented features.
+While a component is technically a directive, components are so distinctive and central to Angular applications that this architectural overview separates components from directives.
+
+Hay dos tipos de directivas:
+
+1. structural. Structural directives alter layout by adding, removing, and replacing elements in DOM.
+
+```html
+<li *ngFor="let hero of heroes"></li>
+<hero-detail *ngIf="selectedHero"></hero-detail>
+```
+
+ *ngFor y *ngIf son directivas.
+
+2. attribute . Attribute directives alter the appearance or behavior of an existing element. In templates they look like regular HTML attributes, hence the name.
+
+```html
+<input [(ngModel)]="hero.name">
+```
+
+Angular has a few more directives that either alter the layout structure (for example, *ngSwitch*) or modify aspects of DOM elements and components (for example, *ngStyle* and *ngClass*).
+
+Nosotros podemos crear nuestras propias directivas.
+
+### Services
+
+Son clases que hacen algo en nuestra aplicación.
+
+Ejemplos:
+
+* logging service
+* data service
+* message bus
+* tax calculator
+* application configuration
+
+### Dependency injection
+
+Dependency injection is a way to supply a new instance of a class with the fully-formed dependencies it requires. Most dependencies are services. Angular uses dependency injection to provide new components with the services they need.
+
+![alt text](./resources/overview3.png "Arquitectura angular 2")
+
+When Angular creates a component, it first asks an injector for the services that the component requires.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { HEROES }     from './mock-heroes';
+
+@Injectable()
+export class HeroService {
+  getHeroes() { return HEROES;  }
+}
+
+//De component Code.
+
+import { Component }          from '@angular/core';
+import { HeroService }        from './hero.service';
+
+@Component({
+  selector: 'my-heroes',
+  providers: [HeroService],
+  template: `
+  <h2>Heroes</h2>
+  <hero-list></hero-list>
+  `
+})
+export class HeroesComponent { }
+```
+
+## Modulos
+
+Documentación de referencia: https://angular.io/docs/ts/latest/guide/ngmodule.html
+
+_Taller crear un nuevo módulo y usarlo dentro de nuestra aplicación_
+
+## Components:
 
 https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html
 https://angular.io/docs/ts/latest/tutorial/toh-pt3.html
 https://angular.io/docs/ts/latest/cookbook/component-communication.html
 
-Modules:
-
-https://angular.io/docs/ts/latest/guide/ngmodule.html
-
-Inyectables:
+## Inyectables:
 
 https://angular.io/docs/ts/latest/guide/dependency-injection.html
 https://angular.io/docs/ts/latest/guide/hierarchical-dependency-injection.html
+
 
