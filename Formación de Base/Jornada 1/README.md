@@ -411,7 +411,7 @@ Y si utiliza formularios (Prioridad 3)
 * 10.4 Hasta que las aplicaciones de usuario manejen correctamente los controles vacíos, incluya caracteres por defecto en los cuadros de edición y áreas de texto.
 
 
-### Herramientas de verificación WEI-ARIA
+### Herramientas de verificación WAI-ARIA
 
 La más importante, cerrar los ojos e intentar usar un lector de pantalla.
 
