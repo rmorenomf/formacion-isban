@@ -12,7 +12,7 @@ Para cualquier consulta o sugerencia relacionada con la formación contactar con
 
 3. Jornada 3: Comenzando con Angular 2: Componentes, módulos e inyectables.
 4. Jornada 4: Angular 2: Pipes (puras e impuras), directivas, template syntax.
-5. Jornada 6: Angular 2: Routing y módulo http.
+5. Jornada 6: Angular 2: Routing (Lazy loading) y módulo http.
 
 6. Jornada 7: Estrategias de detección de cambios y zonas en Angular 2.
 7. Jornada 5: Construyendo Angular 2: Webpack y SystemJS.
