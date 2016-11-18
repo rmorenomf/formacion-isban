@@ -258,7 +258,6 @@ Passing data to compnent ver pdf.
 @Input()
 @Output()
 
-
 https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html
 https://angular.io/docs/ts/latest/tutorial/toh-pt3.html
@@ -268,5 +267,3 @@ https://angular.io/docs/ts/latest/cookbook/component-communication.html
 
 https://angular.io/docs/ts/latest/guide/dependency-injection.html
 https://angular.io/docs/ts/latest/guide/hierarchical-dependency-injection.html
-
-
