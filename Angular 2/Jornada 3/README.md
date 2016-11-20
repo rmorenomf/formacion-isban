@@ -394,14 +394,159 @@ Por eso vamos a reorganizar nuestro código de forma que facilite la claridad y 
 └── main.ts
 ```
 
+Casi todo el código anterior nos vale, pero primero tenemos que crear el módulo:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CreditCardMaskPipe } from './credit-card-mask.pipe';
+import { CreditCardService } from './credit-card.service';
+import { CreditCardComponent } from './credit-card.component';
+
+@NgModule({
+  imports: [CommonModule],
+  declarations: [
+    CreditCardMaskPipe,
+    CreditCardComponent
+  ],
+  providers: [CreditCardService],
+  exports: [CreditCardComponent]
+})
+export class CreditCardModule {}
+```
+
+Es casi igual salvo dos diferencias:
+
+1. No hemos importado *BrowserModule*, hemos importado *CommonModule*, esto entre otras cosas hace que nuestro código sea utilizable en otras plataformas.
+2. Hemos usado una nueva propiedad *exports*. Todos los elementos en el Array *declarations* son por defecto provados. Solo podemos exportar lo que esté explicitamente indicado en la propieda *exports*. 
+
+Claro, también tenemos que cambiar el módulo desde el que se vaya a consumir los elementos de este módulo, en nuestro caso el appModule:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { CreditCardModule } from '../credit-card/credit-card.module';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    CreditCardModule
+  ],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent]
+})
+
+export class AppModule { }
+```
+
+Lazy loading:
+
+Llegados a este punto tenemos que aclarar que: los componentes, pipes y dirctivas pertenecen al módulo y no se pueden usar salvo ue sean explicitamente exportados. Además, los servicios con visibles y utilizables globalmente a menos que se realice una una carga lazy del módulo. (Esto tiene que ver con que los servicios son singletons, ya veremos mas sobre servicios mas adelante). 
+
+Cuando un módulo es cargado de forma Lazy angular entonces creará un inyector hijo y generará ña instancia del servicio.
+
+Si realizasemos una carga lazy del módulo *CreditCardModule* tal y como lo hemos definido anteriormente, sin cambiar nada, después de la carga del módulo tendríamos dos instancias del "singleton" y eso podría tener muchos problemas. Veremos mas detalles más adelante, cuando veamos el Lazy Loading.
+
+Pero en nuestro caso podríamos hacer lo siguiente:
+
+```typescript
+import { NgModule, ModuleWithProviders } from '@angular/core';
+/* ...other imports... */
+@NgModule({
+  imports: [CommonModule],
+  declarations: [
+    CreditCardMaskPipe,
+    CreditCardComponent
+  ],
+  exports: [CreditCardComponent]
+})
+export class CreditCardModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: CreditCardModule,
+      providers: [CreditCardService]
+  }
+}
+}
+```
+
+que comparado con lo anterior:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CreditCardMaskPipe } from './credit-card-mask.pipe';
+import { CreditCardService } from './credit-card.service';
+import { CreditCardComponent } from './credit-card.component';
+
+@NgModule({
+  imports: [CommonModule],
+  declarations: [
+    CreditCardMaskPipe,
+    CreditCardComponent
+  ],
+  providers: [CreditCardService],
+  exports: [CreditCardComponent]
+})
+export class CreditCardModule {}
+```
+podemos ver que no hemos expuesto *providers* directamente, sino a través de la función estática *forRoot*
+
+pero claro, también tenemos que cambiar la forma como importamos el módulo:
+
+```typescript
+/* ...imports... */
+@NgModule({
+  imports: [
+    BrowserModule,
+    CreditCardModule.forRoot()
+  ],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+La documentación indica que siempre se use *forRoot* para exportar servicios desde módulos *feature* a menos que queramos tener varias instancias a diferentes niveles de inyección de dependencia.
+
+No hemos terminado con los módulos, ya que tenemos que ver mas detalles cuando veamos el Lazy loading mas adelante.
+
 _Taller crear un nuevo módulo y usarlo dentro de nuestra aplicación_
 
 ## Components:
 
-Passing data to component ver pdf.
+Un componente es algoq que es visible por el usuario final y que puede ser reutilizado varias veces dentro de la apliación.
 
-@Input()
-@Output()
+Vamos a echar un ojo a un componente sencillo:
+
+```typescript
+import {Component} from '@angular/core';
+@Component({
+  selector: 'hello',
+  template: '<p>Hello, {{name}}</p>'
+})
+export class Hello {
+  name: string;
+  constructor() {
+    this.name = 'World';
+  }
+}
+```
+
+Los componentes pueden estar anidados y ser utilizados unos dentro de otros:
+
+```html
+<TodoApp>
+  <TodoList>
+    <TodoItem></TodoItem>
+    <TodoItem></TodoItem>
+    <TodoItem></TodoItem>
+  </TodoList>
+  <TodoForm></TodoForm>
+</TodoApp>
+```
+
 
 https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html
