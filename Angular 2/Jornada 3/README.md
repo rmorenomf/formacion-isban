@@ -694,21 +694,16 @@ Accessing Child Component Classes
 
 Component	Description
 
-| Hook | Description
-| OnChanges	| See how Angular calls the ngOnChanges hook with a changes object every time one of the component input properties changes. Shows how to interpret the changes object.
-| DoCheck | Implements an ngDoCheck method with custom change detection. See how often Angular calls this hook and watch it post changes to a log.
-
-AfterView	
-Shows what Angular means by a view. Demonstrates the ngAfterViewInit and ngAfterViewChecked hooks.
-
-AfterContent	
-Shows how to project external content into a component and how to distinguish projected content from a component's view children. Demonstrates the ngAfterContentInit and ngAfterContentChecked hooks.
-
-Counter	
-Demonstrates a combination of a component and a directive each with its own hooks.
-
-In this example, a CounterComponent logs a change (via ngOnChanges) every time the parent component increments its input counter property. Meanwhile, the SpyDirective from the previous example is applied to the CounterComponent log where it watches log entries being created and destroyed.
-
+| Hook | Purpose and Timing
+| --- | ---
+| ngOnChanges	| Respond when Angular (re)sets data-bound input properties. The method receives a SimpleChanges object of current and previous property values. Called before ngOnInit and whenever one or more data-bound input properties change.
+| ngOnInit| Initialize the directive/component after Angular first displays the data-bound properties and sets the directive/component's input properties. Called once, after the first ngOnChanges.
+| ngDoCheck| Detect and act upon changes that Angular can't or won't detect on its own. Called during every change detection run, immediately after ngOnChanges and ngOnInit.
+| ngAfterContentInit| Respond after Angular projects external content into the component's view. Called once after the first NgDoCheck. A component-only hook.
+| ngAfterContentChecked	| Respond after Angular checks the content projected into the component. Called after the ngAfterContentInit and every subsequent NgDoCheck. A component-only hook.
+| ngAfterViewInit | Respond after Angular initializes the component's views and child views. Called once after the first ngAfterContentChecked. A component-only hook.
+| ngAfterViewChecked | Respond after Angular checks the component's views and child views. Called after the ngAfterViewInit and every subsequent ngAfterContentChecked. A component-only hook.
+| ngOnDestroy | Cleanup just before Angular destroys the directive/component. Unsubscribe observables and detach event handlers to avoid memory leaks. Called just before Angular destroys the directive/component.
 
 Información de base: 
 
