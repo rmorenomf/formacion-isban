@@ -676,12 +676,11 @@ export class App {
 }
 ```
 
-
-Accessing Child Component Classes
-@ViewChild & @ViewChildren
-@ContentChild & @ContentChildren
-
 ### Ciclo de vida de un componente:
+
+_Ver este ejemplo y trastear un rato_
+
+http://plnkr.co/edit/SUxXHr0SV4Fvx2zCiRlE?p=preview
 
 * ngOnChanges - called when an input binding value changes
 * ngOnInit - after the first ngOnChanges
@@ -704,6 +703,67 @@ Component	Description
 | ngAfterViewInit | Respond after Angular initializes the component's views and child views. Called once after the first ngAfterContentChecked. A component-only hook.
 | ngAfterViewChecked | Respond after Angular checks the component's views and child views. Called after the ngAfterViewInit and every subsequent ngAfterContentChecked. A component-only hook.
 | ngOnDestroy | Cleanup just before Angular destroys the directive/component. Unsubscribe observables and detach event handlers to avoid memory leaks. Called just before Angular destroys the directive/component.
+
+### Acceso a las clases de los hijos de un componente
+
+Con los decoradores; @ViewChild y @ViewChildren podemos acceder a las clases de los los componentes utilizados en una instancia:
+
+```typescript
+import {Component, ViewChild} from '@angular/core';
+import {Hello} from './hello.component';
+
+@Component({
+  selector: 'app',
+  template: `
+    <div>
+    <hello></hello>
+    </div>
+    <button (click)="onClick()">Call Child function</button>`
+})
+export class App {
+
+  @ViewChild(Hello) child: Hello;
+  
+  constructor() {}
+  
+  onClick() {
+    this.child.exampleFunction();
+  }
+}
+```
+
+En el caso de @ViewChildren lo usaremos cuando tengamos mas de un componente del tipo indicado:
+
+```typescript
+import {Component, QueryList, ViewChildren} from '@angular/core';
+import {Hello} from './hello.component';
+
+@Component({
+  selector: 'app',
+  template: `
+    <div>
+    <hello></hello>
+    <hello></hello>
+    <hello></hello>
+    </div>
+    <button (click)="onClick()">Call Child function</button>`
+})
+export class App {
+
+  @ViewChildren(Hello) helloChildren: QueryList<Hello>;
+  
+  constructor() {}
+  
+  onClick() {
+    this.helloChildren.forEach((child) => child.exampleFunction());
+  }
+}
+``` 
+También podemo usar; @ContentChild y @ContentChildren de las misma forma que @ViewChild, @ViewChildren. En este caso accedemos al contenido proyectado dentro del componente. En este caso tendremos que esperar a que los elementos estén disponibles después del evento *ngAfterContentInit* del ciclo de vida del componente.
+
+Ver este ejemplo:
+
+http://plnkr.co/edit/IsivWgg8A6zKVSuOLfE8?p=preview
 
 Información de base: 
 
