@@ -919,5 +919,84 @@ import { App } from './containers/app'; // hypothetical app component
 export class DiExample {};
 ```
 
+Jeraquía de la inyección de dependecias:
+
+En Angular 2 no hay solo un Injector por aplicación, hay al menos un Injector por aplicación. Los inyectores en Angular 2 están organizados en árboles de componentes.
+
+Para ello tenemos que incluir un array de providers en un component, de esa forma cada componente tendrá su propia instancia del Injector.
+
+Insisto, los @Components no tiene provaiders de forma natural, estos elementos los suele gestionar el @ngModule, pero si el @Component tiene su provider, tengamos por seguro que cada componente va a tener una copia del @Injectable. 
+
+Veamos un ejemplo completo:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { App } from './app.component';
+import { ChildInheritor, ChildOwnInjector } from './components/index';
+import { Unique } from './services/unique';
+const randomFactory = () => { return Math.random(); };
+@NgModule({
+  imports: [
+    BrowserModule
+  ],
+  declarations: [
+    App,
+    ChildInheritor,
+    ChildOwnInjector,
+  ],
+  /** Provide dependencies here */
+  providers: [
+    Unique,
+  ],
+  bootstrap: [ App ],
+})
+export class AppModule {}
+
+// => El servicio:
+
+import { Injectable } from '@angular/core';
+@Injectable()
+export class Unique {
+  value: string;
+  constructor() {
+    this.value = (+Date.now()).toString(16) + '.' + Math.floor(Math.random() * 500);
+  }
+}
+
+// => El componente:
+
+import { Component, Inject } from '@angular/core';
+import { Unique } from '../services/unique';
+@Component({
+  selector: 'child-inheritor',
+  template: `<span>{{ value }}</span>`
+})
+export class ChildInheritor {
+  value: number;
+  constructor(u: Unique) {
+    this.value = u.value;
+  }
+}
+
+// => Si queremos el valor aleatorio sea único para cada component, tendremos que sobreescribirlo de esta forma:
+
+import { Component, Inject } from '@angular/core';
+import { Unique } from '../services/unique';
+@Component({
+  selector: 'child-own-injector',
+  template: `<span>{{ value }}</span>`,
+  providers: [Unique]
+})
+export class ChildOwnInjector {
+  value: number;
+  constructor(u: Unique) {
+    this.value = u.value;
+  }
+}
+```
+
+Cuidado si nos confundimos podemos liarla parada y cargarnos el rendimiento
+
 https://angular.io/docs/ts/latest/guide/dependency-injection.html
 https://angular.io/docs/ts/latest/guide/hierarchical-dependency-injection.html
