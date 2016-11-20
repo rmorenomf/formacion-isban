@@ -704,5 +704,3 @@ https://angular.io/docs/ts/latest/cookbook/component-communication.html
 
 https://angular.io/docs/ts/latest/guide/dependency-injection.html
 https://angular.io/docs/ts/latest/guide/hierarchical-dependency-injection.html
-
-
