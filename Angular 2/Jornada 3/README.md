@@ -692,6 +692,23 @@ Accessing Child Component Classes
 * ngAfterViewChecked - after every check of a component's view(s)
 * ngOnDestroy - just before the component is destroyed
 
+Component	Description
+
+| Hook | Description
+| OnChanges	| See how Angular calls the ngOnChanges hook with a changes object every time one of the component input properties changes. Shows how to interpret the changes object.
+| DoCheck | Implements an ngDoCheck method with custom change detection. See how often Angular calls this hook and watch it post changes to a log.
+
+AfterView	
+Shows what Angular means by a view. Demonstrates the ngAfterViewInit and ngAfterViewChecked hooks.
+
+AfterContent	
+Shows how to project external content into a component and how to distinguish projected content from a component's view children. Demonstrates the ngAfterContentInit and ngAfterContentChecked hooks.
+
+Counter	
+Demonstrates a combination of a component and a directive each with its own hooks.
+
+In this example, a CounterComponent logs a change (via ngOnChanges) every time the parent component increments its input counter property. Meanwhile, the SpyDirective from the previous example is applied to the CounterComponent log where it watches log entries being created and destroyed.
+
 
 Información de base: 
 
