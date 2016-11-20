@@ -45,9 +45,6 @@ System.config({
     'rxjs': { main: 'index' },
     'app': {
       defaultExtension: 'ts'
-    },
-    'modules': {
-      defaultExtension: 'ts'
     }
   }
 });

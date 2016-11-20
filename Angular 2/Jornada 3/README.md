@@ -46,8 +46,7 @@ Ejemplo:
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import
-       { AppComponent }  from './app.component';
+import { AppComponent }  from './app.component';
 
 @NgModule({
   imports: [ BrowserModule ],
@@ -84,8 +83,7 @@ Es un elemento visual, es una vista. Es algo muy similar a un webcomponent en ci
 
 Así lo definen el equipo de Angular 2:
 
-> A component controls a patch of screen real estate that we could call a view, and
-declares reusable UI building blocks for an application.
+> "A component controls a patch of screen real estate that we could call a view, and declares reusable UI building blocks for an application."
 
 Ejemplo:
 
@@ -127,7 +125,7 @@ Es un trozo de HTML que le dice a Angular como pintar el componente.
 <hero-detail *ngIf="selectedHero" [hero]="selectedHero"></hero-detail>
 ```
 
-No es un simple HTML ya que contiene su pripia sintaxis. También puede contener elementos de otros controladores, ejemplo: *hero-detail*.
+No es un simple HTML ya que contiene su propia sintaxis. También puede contener elementos de otros controladores, ejemplo: *hero-detail*.
 
 ### Metadata
 
@@ -190,7 +188,7 @@ Hay dos tipos de directivas:
 
  *ngFor y *ngIf son directivas.
 
-2. attribute . Attribute directives alter the appearance or behavior of an existing element. In templates they look like regular HTML attributes, hence the name.
+2. attribute. Attribute directives alter the appearance or behavior of an existing element. In templates they look like regular HTML attributes, hence the name.
 
 ```html
 <input [(ngModel)]="hero.name">
@@ -229,7 +227,7 @@ export class HeroService {
   getHeroes() { return HEROES;  }
 }
 
-//De component Code.
+//The component Code.
 
 import { Component }          from '@angular/core';
 import { HeroService }        from './hero.service';
@@ -245,19 +243,165 @@ import { HeroService }        from './hero.service';
 export class HeroesComponent { }
 ```
 
-## Modulos
+## Módulos
 
 Documentación de referencia: https://angular.io/docs/ts/latest/guide/ngmodule.html
+
+Un Modulo Abgular 2 es un mecanismo de agrupación de elementos: componentes, directivas, pipes, servicios, etc que están relacionados entre si y que pueden ser utilizados en otros elementos de la aplicación.
+
+Podría decirse que los módulos son clases que definen métodos públicos y privados.
+
+```typescript
+import { NgModule } from '@angular/core';
+
+@NgModule({
+  imports: [ ... ],
+  declarations: [ ... ],
+  bootstrap: [ ... ]
+})
+export class AppModule { }
+```
+
+_Revisar los comentado en la parte de arquitéctura._
+
+Existen dos tipos de módulos:
+
+1. root
+2. feature
+
+Es importante recordar que el *root*, es único en la aplicación y que siempre deberemos importar *BrowserModule*, pero en el caso de los módulos de tipo *feature* no deberemos de importar BrowserModule, pero si es obligatorio importar *CommonModule*. Si vamos a usar LazyLoading importar *BrowserModule* podría darnos problemas.
+
+Puesto el que módulo root es obligartorio este es la entrada a la aplacación, es el *main* de toda la aplicación y es necesario cargarlo de un modo especial, si no lo hiciesemos nuestra aplicación no arrancaría. Esta carga del *AppModule* se demonina *Boostrapping* y se realiza de la siguiente manera:
+
+```typescript
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { AppModule } from './app/app.module';
+
+platformBrowserDynamic().bootstrapModule(AppModule);
+```
+
+Hemos usado *platformBrowserDynamic* porque estamos cargando nuestra apliación en un navegador, pero el Boostrapping va a depender de la plataforma en la que estemos cargando nuestra aplicación, en el caso de que nuestra aplicación se ejecute en node la llamada será otra.
+Y en el caso de que estemos usando AOT (Ahead of Time) usaremos *platformBrowser*.
+
+Un módulo vácio no sirve de nadam, ya que al ser elementos de agrupación su principal beneficio se produce cuando cargamos el módulo con elementos propios: components, pipes, directivas, servicios, etc.
+
+Vamos a crear un component:
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { CreditCardService } from './credit-card.service';
+
+@Component({
+  selector: 'rio-credit-card',
+  template: `
+      <p>Your credit card is: {{ creditCardNumber | creditCardMask }}</p>
+  `
+  })
+  export class CreditCardComponent implements OnInit {
+    creditCardNumber: string;
+    constructor(private creditCardService: CreditCardService) {}
+    ngOnInit() {
+      this.creditCardNumber = this.creditCardService.getCreditCard();
+    }
+}
+```
+
+que a su vez utiliza un servicio:
+
+```typescript
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class CreditCardService {
+  getCreditCard(): string {
+    return '2131313133123174098';
+  }
+}
+```
+
+además tiene una pipe:
+
+```typescript
+import { Pipe, PipeTransform } from '@angular/core';
+@Pipe({
+  name: 'creditCardMask'
+})
+export class CreditCardMaskPipe implements PipeTransform {
+  transform(plainCreditCard: string): string {
+    const visibleDigits = 4;
+    let maskedSection = plainCreditCard.slice(0, -visibleDigits);
+    let visibleSection = plainCreditCard.slice(-visibleDigits);
+    return maskedSection.replace(/./g, '*') + visibleSection;
+  }
+}
+```
+
+Ahora tenemos que declararlo al módulo que los contiene:
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { CreditCardMaskPipe } from './credit-card-mask.pipe';
+import { CreditCardService } from './credit-card.service';
+import { CreditCardComponent } from './credit-card.component';
+@NgModule({
+  imports: [BrowserModule],
+  providers: [CreditCardService],
+  declarations: [
+    AppComponent,
+    CreditCardMaskPipe,
+    CreditCardComponent
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+Ahora con "to' el muñeco montao'" ya podemos usarlo en el root component:
+
+```typescript
+import { Component } from "@angular/core";
+@Component({
+  selector: 'rio-app',
+  template: `
+    <h1>My Angular 2 App</h1>
+    <rio-credit-card></rio-credit-card>
+    `
+})
+export class AppComponent {}
+```
+
+*Cuidado con la forma como hemos definido el servicio en la propiedad *providers*, esto solo lo debemos hacer así en el root module. Podemos tener problemas en el lazy loading de los feature modules.
+
+Ahora vamos a echar un ojo a los feature modules:
+
+No podemos tener solo un módulo root que contenga toda la lógica de nuestra aplicación, porqué: _discutir razones_
+
+Por eso vamos a reorganizar nuestro código de forma que facilite la claridad y la reutilización:
+
+```
+.
+├── app
+│ ├── app.component.ts
+│ └── app.module.ts
+├── credit-card
+│ ├── credit-card-mask.pipe.ts
+│ ├── credit-card.component.ts
+│ ├── credit-card.module.ts
+│ └── credit-card.service.ts
+├── index.html
+└── main.ts
+```
 
 _Taller crear un nuevo módulo y usarlo dentro de nuestra aplicación_
 
 ## Components:
 
-Passing data to compnent ver pdf.
+Passing data to component ver pdf.
 
 @Input()
 @Output()
-
 
 https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html
