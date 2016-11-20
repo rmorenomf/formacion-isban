@@ -547,6 +547,153 @@ Los componentes pueden estar anidados y ser utilizados unos dentro de otros:
 </TodoApp>
 ```
 
+Paso de datos a un componente:
+
+Realamente el componete crea una API que permite explotar las posibilidades del componente, para ello crea una serie de propiedades y métodos de clase que pueden ser invocados y consumidos por los elementos que usan dichos componentes. Tanto de forma declarativa como programática:
+
+```typescript
+import {Component, Input} from '@angular/core';
+@Component({
+  selector: 'hello',
+  template: '<p>Hello, {{name}}</p>'
+})
+export class Hello {
+  @Input() name: string;
+}
+``` 
+
+En este caso *@Input() name: string;* define un parametro que puede ser pasado desde el componente padre.
+
+```html
+<!-- To bind to a raw string -->
+<hello name="World"></hello>
+<!-- To bind to a variable in the parent scope -->
+<hello [name]="name"></hello>
+```
+
+Por otro lado también podemos indicar que eventos va a disparar nuestro componente. En general vamos a usar el siguiente mecanismo de comunicación entre le padre y el componente:
+
+* El padre se comunica con el componente mediante propiedades.
+* El componente se comunica con el padre mediante eventos.
+
+Vemos que también tenemos otra forma de comunicarnos que permite una comunicación bidireccional. Lo veremos más adelante.
+
+Supongamos que queremos notificar al componente padre que se ha pulsado el botón dentro de nuestro componente, podemos hacer algo así:
+
+```typescript
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+@Component({
+  selector: 'counter',
+  template: `
+    <div>
+    <p>Count: {{ count }}</p>
+    <button (click)="increment()">Increment</button>
+    </div>
+  `
+})
+export class Counter {
+  @Input() count: number = 0;
+  @Output() result: EventEmitter = new EventEmitter();
+
+  increment() {
+    this.count++;
+    this.result.emit(this.count);
+  }
+
+}
+``` 
+
+y lo consumiriamos de esta forma:
+
+```typescript
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'app',
+  template: `
+    <div>
+      Parent Num: {{ num }}<br />
+      Parent Count: {{ parentCount }}
+	    <counter [count]="num" (result)="onChange($event)">
+	    </counter>
+	  </div>
+  `
+})
+export class App {
+  num: number;
+  parentCount: number;
+  
+  constructor() {
+    this.num = 0;
+    this.parentcount = 0;
+  }
+  
+  onChange(val: any) {
+    this.parentCount = val;
+  }
+}
+```
+
+Los componentes también soportan *Projection* mediante la directiva *ngContent*:
+
+```typescript
+import {Component} from '@angular/core';
+
+@Component({
+	selector: 'child',
+	template: `
+	  <div style="border: 2px solid blue; padding: 1rem; margin: 2px;">
+	    <h4>Child Component</h4>
+	    <ng-content></ng-content>
+    </div>
+	`
+})
+export class Child {
+  childCount: number = 24;
+}
+
+// Lo usariamos de la siguiente forma:
+
+import {Component} from '@angular/core';
+
+@Component({
+	selector: 'app',
+	template: `
+    <div style="border: 2px solid black; padding: 1rem;">
+      <h4>App Component</h4>
+	    <child>
+	      <p>My <i>projected</i> content.</p>
+	      <p>
+	        <b>Count:</b> {{ count }} <br/>
+	        <b>Child Count:</b> {{ childCount || 'N/A' }}
+	     </p>
+	    </child>	    
+	  </div>
+	`
+})
+export class App {
+  count: number = 12;
+}
+```
+
+
+Accessing Child Component Classes
+@ViewChild & @ViewChildren
+@ContentChild & @ContentChildren
+
+### Ciclo de vida de un componente:
+
+* ngOnChanges - called when an input binding value changes
+* ngOnInit - after the first ngOnChanges
+* ngDoCheck - after every run of change detection
+* ngAfterContentInit - after component content initialized
+* ngAfterContentChecked - after every check of component content
+* ngAfterViewInit - after component's view(s) are initialized
+* ngAfterViewChecked - after every check of a component's view(s)
+* ngOnDestroy - just before the component is destroyed
+
+
+Información de base: 
 
 https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html
 https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html

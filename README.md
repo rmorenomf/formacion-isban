@@ -23,9 +23,9 @@ Para cualquier consulta o sugerencia relacionada con la formación contactar con
 2. Jornada 2: Use the Platform: Ciclo de vida de Angular 2 y herramientas nativas y gestión de dependencias.
 3. Jornada 3: Comenzando con Angular 2: Componentes, módulos e inyectables.
 4. Jornada 4: Angular 2: Pipes (puras e impuras), directivas, template syntax.
-5. Jornada 5: Angular 2: Routing, módulo http, Lazy loading.
-6. Jornada 7: Estrategias de detección de cambios y zonas en Angular 2.  Data binding.
-7. Jornada 5: Construyendo Angular 2: Webpack y SystemJS.
+5. Jornada 5: Angular 2: Routing, módulo http, Observables, Lazy loading.
+6. Jornada 6: Estrategias de detección de cambios y zonas en Angular 2. Data binding. Forms.
+7. Jornada 7: Construyendo Angular 2: Webpack y SystemJS.
 8. Jornada 8: Trabajando con Web Components y eventos en Angular 2.
 9. Jornada 9: Construyendo una primera web con Angular 2.
 10. Jornada 10: Angular 2: Angular Universal. Prerenderizado en servidor o cliente.
