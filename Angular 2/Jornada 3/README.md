@@ -357,7 +357,6 @@ import { CreditCardComponent } from './credit-card.component';
 })
 export class AppModule { }
 ```
-
 Ahora con "to' el muñeco montao'" ya podemos usarlo en el root component:
 
 ```typescript
@@ -704,9 +703,9 @@ Component	Description
 | ngAfterViewChecked | Respond after Angular checks the component's views and child views. Called after the ngAfterViewInit and every subsequent ngAfterContentChecked. A component-only hook.
 | ngOnDestroy | Cleanup just before Angular destroys the directive/component. Unsubscribe observables and detach event handlers to avoid memory leaks. Called just before Angular destroys the directive/component.
 
-### Acceso a las clases de los hijos de un componente
+### Acceso a las clases de los hijos de un componente y a su contenido proyectado
 
-Con los decoradores; @ViewChild y @ViewChildren podemos acceder a las clases de los los componentes utilizados en una instancia:
+Con los decoradores; *@ViewChild* y *@ViewChildren* podemos acceder a las clases de los los componentes utilizados en una instancia:
 
 ```typescript
 import {Component, ViewChild} from '@angular/core';
@@ -732,7 +731,7 @@ export class App {
 }
 ```
 
-En el caso de @ViewChildren lo usaremos cuando tengamos mas de un componente del tipo indicado:
+En el caso de *@ViewChildren* lo usaremos cuando tengamos mas de un componente del tipo indicado:
 
 ```typescript
 import {Component, QueryList, ViewChildren} from '@angular/core';
@@ -759,7 +758,7 @@ export class App {
   }
 }
 ``` 
-También podemo usar; @ContentChild y @ContentChildren de las misma forma que @ViewChild, @ViewChildren. En este caso accedemos al contenido proyectado dentro del componente. En este caso tendremos que esperar a que los elementos estén disponibles después del evento *ngAfterContentInit* del ciclo de vida del componente.
+También podemo usar; *@ContentChild* y *@ContentChildren* de las misma forma que @ViewChild, @ViewChildren. En este caso accedemos al contenido proyectado dentro del componente. En este caso tendremos que esperar a que los elementos estén disponibles después del evento *ngAfterContentInit* del ciclo de vida del componente.
 
 Ver este ejemplo:
 
@@ -773,6 +772,152 @@ https://angular.io/docs/ts/latest/tutorial/toh-pt3.html
 https://angular.io/docs/ts/latest/cookbook/component-communication.html
 
 ## Inyectables:
+
+El proposito es simplificar la gestión de las dependencias de los componentes de software. Si reducimos la cantidad de información que un componente necesita conocer acerda de sus dependencias logramos que sea mas secillo crear test unitarios y el código es más flexible. 
+
+La inyección de dependecias nos permite incluir crear clases mas flexibles a los que se les puede incorporar comportamientos y funcionalidad extra facilmente.
+
+Veamos un ejemplo de servicio:
+
+Imaginad que queremos crear una hamburguesa:
+
+```typescript
+import { Injectable, NgModule } from '@angular/core';
+
+@Injectable()
+class Hamburger {
+  constructor(private bun: Bun, private patty: Patty,
+  private toppings: Toppings) {}
+}
+
+//Ahora lo usamos.
+
+@NgModule({
+  providers: [ Hamburger ],
+})
+export class DiExample {};
+```
+
+Podemos hacer más flexible y hacer que la hamburguesa se pueda crear de más elementos:
+
+```typescript
+import { Injectable, NgModule } from '@angular/core';
+@Injectable()
+class Hamburger {
+  constructor(private bun: Bun, private patty: Patty, private toppings: Toppings) {}
+}
+
+@Injectable()
+class Patty {}
+
+@Injectable()
+class Bun {}
+
+@Injectable()
+class Toppings {}
+
+@NgModule({
+  providers: [ Hamburger, Patty, Bun, Toppings ],
+})
+```
+
+Estamos dando al módulo todos los elementos para crear la hamburguesa.
+
+Vale, ya tenemos los "ingredientes" para crear nuestra hamburguesa, ahora toca cocinarla. En este caso se lo vamos a pasar al controlador:
+
+En este caso vamos a usar *@Inject()* ese decorador le dice a Angular 2 que ese parámetro tiene que ser inyectado: 
+
+```typescript
+import { Component, Inject } from '@angular/core';
+import { Hamburger } from '../services/hamburger';
+@Component({
+  selector: 'app',
+  template: `Bun Type: {{ bunType }}`
+})
+export class App {
+  bunType: string;
+  constructor(@Inject(Hamburger) h) {
+    this.bunType = h.bun.type;
+  }
+}
+```
+
+Un detalle importante es que no estamos instanciando ninguna clase hamburguesa, estamos usando el singleton y que todo esto lo está haciendo Angular 2.
+
+Solo un detalle cuando usamos, en TypeScript, @Inject solo es necesario para primitivas. Para clases compuestas podemos simplificar a:
+
+```typescript
+import { Component } from '@angular/core';
+import { Hamburger } from '../services/hamburger';
+@Component({
+  selector: 'app',
+  template: `Bun Type: {{ bunType }}`
+})
+export class App {
+  bunType: string;
+  constructor(h: Hamburger) {
+    this.bunType = h.bun.type;
+  }
+}
+```
+
+En Angular 2 no solo es posible inyectar clases, también podemos inyectar otros elementos.
+
+Objetos literales:
+
+En este caso vamos tener varias implementaciones del servicio y elegir la que mas nos convenga.
+
+```typescript
+import { NgModule } from '@angular/core';
+import { App } from './containers/app'; // hypothetical app component
+import {Hamburger} from './services/hamburger';
+import {DoubleHamburger} from './services/double-hamburger';
+
+@NgModule({
+  providers: [ { provide: Hamburger, useClass: DoubleHamburger } ],
+})
+export class DiExample {};
+```
+
+Además de usar *userClass* podemos usar: *useValue* y *useFactory*
+
+#### useFactory
+
+```typescript
+import { NgModule } from '@angular/core';
+import { App } from './containers/app'; // hypothetical app component
+const randomFactory = () => { return Math.random(); };
+@NgModule({
+  providers: [ { provide: 'Random', useFactory: randomFactory } ],
+})
+export class DiExample {};
+
+// Y su uso:
+
+import { Component, Inject, provide } from '@angular/core';
+import { Hamburger } from '../services/hamburger';
+@Component({
+  selector: 'app',
+  template: `Random: {{ value }}`
+})
+export class App {
+  value: number;
+  constructor(@Inject('Random') r) {
+    this.value = r;
+  }
+}
+```
+
+#### useValue
+
+```typescript
+import { NgModule } from '@angular/core';
+import { App } from './containers/app'; // hypothetical app component
+@NgModule({
+  providers: [ { provide: 'Random', useValue: Math.random() } ],
+})
+export class DiExample {};
+```
 
 https://angular.io/docs/ts/latest/guide/dependency-injection.html
 https://angular.io/docs/ts/latest/guide/hierarchical-dependency-injection.html
