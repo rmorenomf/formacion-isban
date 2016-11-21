@@ -65,6 +65,8 @@ Las expresiones no pueden hacer referencia a nada global, como *window* o *docum
 
 ## Databinding
 
+> "Data binding is a mechanism for coordinating what users see with application data values. While we could push values to and pull values from HTML, the application is easier to write, read, and maintain if we turn these chores over to a binding framework. We simply declare bindings between binding sources and target HTML elements and let the framework do the work."
+
 Uno de los principales valores de Angular es que nos abstrae de la lógica pull/push asociada a insertar y actualizar valores en el HTML y convertir las respuestas de usuario (inputs, clicks, etc) en acciones concretas
 
 Angular 2 dispone de 4 formas de data binding:
