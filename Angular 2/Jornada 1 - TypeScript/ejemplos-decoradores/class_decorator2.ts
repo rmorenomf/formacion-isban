@@ -1,5 +1,5 @@
 function sealed(constructor: Function) {
-    console.log("Overrider constructor");
+    consoled.log("Overrider constructor");
     Object.seal(constructor);
     Object.seal(constructor.prototype);
 }
@@ -7,7 +7,7 @@ function sealed(constructor: Function) {
 @sealed
 class Greeter {
     greeting: string;
-    constructor(message: string) {
+    constructor(message: string, sealed: boolean) {
         console.log("Initial constructor");
         this.greeting = message;
     }
