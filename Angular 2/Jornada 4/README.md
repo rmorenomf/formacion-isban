@@ -284,7 +284,127 @@ Recordar que podemos crear nuestros propios elementos no asociados a eventos del
 
 ### Two-way binding
 
+Angular offers a special two-way data binding syntax for this purpose, [(x)]. The [(x)] syntax combines the brackets of property binding, [x], with the parentheses of event binding, (x).
 
+> [( )] = BANANA IN A BOX => Visualize a banana in a box to remember that the parentheses go inside the brackets. :-)
+
+The [(x)] syntax is easy to demonstrate when the element has a settable property called x and a corresponding event named xChange. Here's a SizerComponent that fits the pattern. It has a size value property and a companion sizeChange event:
+
+Tomemos este caso:
+
+```typescript
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+@Component({
+  selector: 'my-sizer',
+  template: `
+  <div>
+    <button (click)="dec()" title="smaller">-</button>
+    <button (click)="inc()" title="bigger">+</button>
+    <label [style.font-size.px]="size">FontSize: {{size}}px</label>
+  </div>`
+})
+export class SizerComponent {
+  @Input()  size: number | string;
+  @Output() sizeChange = new EventEmitter<number>();
+  dec() { this.resize(-1); }
+  inc() { this.resize(+1); }
+  resize(delta: number) {
+    this.size = Math.min(40, Math.max(8, +this.size + delta));
+    this.sizeChange.emit(this.size);
+  }
+}
+```
+
+Así más sencillo:
+
+```html
+<my-sizer [(size)]="fontSizePx"></my-sizer>
+<div [style.font-size.px]="fontSizePx">Resizable Text</div>
+```
+
+#### Two-way binding with NgModel
+
+Two-way data binding with the NgModel directive makes that easy. Here's an example:
+
+```html
+<input [(ngModel)]="currentHero.firstName">
+```
+
+Before we can use the ngModel directive in a two-way data binding, we must import the FormsModule and add it to the Angular module's imports list. Learn more about the FormsModule and ngModel in the Forms chapter.
+
+Here's how to import the FormsModule to make [(ngModel)] available.
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule }  from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule
+  ],
+  declarations: [
+    AppComponent
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+```
+
+### Template reference variables
+
+A template reference variable is a reference to a DOM element or directive within a template.
+
+It can be used with native DOM elements but also with Angular components — in fact, it will work with any custom web component.
+
+We can refer to a template reference variable anywhere in the current template.
+
+```html
+<!-- phone refers to the input element; pass its `value` to an event handler -->
+<input #phone placeholder="phone number">
+<button (click)="callPhone(phone.value)">Call</button>
+
+<!-- fax refers to the input element; pass its `value` to an event handler -->
+<input ref-fax placeholder="fax number">
+<button (click)="callFax(fax.value)">Fax</button>
+```
+
+The hash (#) prefix to "phone" means that we're defining a phone variable.
+
+Folks who don't like using the # character can use its canonical alternative, the ref- prefix. For example, we can declare the our phone variable using either #phone or ref-phone.
+
+Otro ejemplo:
+
+```typescript
+import {Component, QueryList, ViewChildren} from '@angular/core';
+import {Hello} from './hello.component';
+@Component({
+    selector: 'app',
+    template: `
+        <div>
+        <hello></hello>
+        <hello #middle></hello>
+        <hello></hello>
+        </div>
+        <button (click)="onClick()">Call Child function</button>`
+})
+export class App {
+    
+    @ViewChildren('middle') helloChildren: QueryList<Hello>;
+    constructor() {}
+    onClick() {
+        this.helloChildren.forEach((child) => child.exampleFunction());
+    }
+}
+```
+
+Otro ejemplo más:
+
+```html
+<red-ball #myBall></red-ball>
+The ball is {{ myBall.color }}.
+```
 
 Otro de los elementos que podemos utilizar dentro de los templates son las Directivas.
 
