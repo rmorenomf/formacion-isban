@@ -159,6 +159,130 @@ _Template binding works with properties and events, not attributes._
 
 Ver la tabla "Binding targets" en https://angular.io/docs/ts/latest/guide/template-syntax.html#!#binding-syntax
 
+#### Property binding
+
+We write a template property binding when we want to set a property of a view element to the value of a template expression.
+
+The most common property binding sets an element property to a component property value. An example is binding the src property of an image element to a component’s heroImageUrl property:
+
+Algunos ejemplos:
+
+```html
+<img [src]="heroImageUrl">
+<button [disabled]="isUnchanged">Cancel is disabled</button> <!-- disabling a button when the component says that it isUnchanged -->
+<div [ngClass]="classes">[ngClass] binding to the classes property</div> <!-- setting a property of a directive -->
+```
+
+An element property between enclosing square brackets identifies the target property. The target property in the following code is the image element’s src property.
+
+```html
+<img [src]="heroImageUrl">
+```
+
+Some people prefer the bind- prefix alternative, known as the canonical form:
+
+```html
+<img bind-src="heroImageUrl">
+```
+
+Remember the brackets
+The brackets tell Angular to evaluate the template expression. If we forget the brackets, Angular treats the string as a constant and initializes the target property with that string. It does not evaluate the string!
+
+Don't make the following mistake:
+
+```html
+<!-- ERROR: HeroDetailComponent.hero expects a
+     Hero object, not the string "currentHero" -->
+  <hero-detail hero="currentHero"></hero-detail>
+```
+
+We should omit the brackets when all of the following are true:
+
+* The target property accepts a string value.
+* The string is a fixed value that we can bake into the template.
+* This initial value never changes.
+
+##### Property binding or interpolation?
+
+```html
+<p><img src="{{heroImageUrl}}"> is the <i>interpolated</i> image.</p>
+<p><img [src]="heroImageUrl"> is the <i>property bound</i> image.</p>
+
+<p><span>"{{title}}" is the <i>interpolated</i> title.</span></p>
+<p>"<span [innerHTML]="title"></span>" is the <i>property bound</i> title.</p>
+```
+
+Por seguridad:
+
+```html
+evilTitle = 'Template <script>alert("evil never sleeps")</script>Syntax';
+```
+
+No obstante angular intercepta estas cosas y las purga.
+
+#### Attribute binding
+
+We must use attribute binding when there is no element property to bind.
+
+Consider the ARIA, SVG, and table span attributes. They are pure attributes. They do not correspond to element properties, and they do not set element properties. There are no property targets to bind to.
+
+```html
+<table border=1>
+  <!--  expression calculates colspan=2 -->
+  <tr><td [attr.colspan]="1 + 1">One-Two</td></tr>
+
+  <!-- ERROR: There is no `colspan` property to set!
+    <tr><td colspan="{{1 + 1}}">Three-Four</td></tr>
+  -->
+
+  <tr><td>Five</td><td>Six</td></tr>
+</table>
+```
+
+#### Class binding
+
+We can add and remove CSS class names from an element’s class attribute with a class binding.
+
+```html
+<!-- toggle the "special" class on/off with a property -->
+<div [class.special]="isSpecial">The class binding is special</div>
+
+<!-- binding to `class.special` trumps the class attribute -->
+<div class="special"
+     [class.special]="!isSpecial">This one is not so special</div>
+```
+
+#### Style binding
+
+We can set inline styles with a style binding.
+
+```html
+<button [style.color] = "isSpecial ? 'red': 'green'">Red</button>
+<button [style.background-color]="canSave ? 'cyan': 'grey'" >Save</button>
+<button [style.font-size.em]="isSpecial ? 3 : 1" >Big</button>
+<button [style.font-size.%]="!isSpecial ? 150 : 50" >Small</button>
+```
+
+#### Event binding
+
+Such user actions may result in a flow of data in the opposite direction compared with previous bing¡dings: from an element to a component.
+
+*Target event*
+A name between parentheses — for example, (click) — identifies the target event. In the following example, the target is the button’s click event.
+
+```html
+<button (click)="onSave()">Save</button>
+```
+
+Some people prefer the on- prefix alternative, known as the canonical form:
+
+```html
+<button on-click="onSave()">On Save</button>
+```
+
+Recordar que podemos crear nuestros propios elementos no asociados a eventos del DOM:
+
+### Two-way binding
 
 
 
