@@ -1,12 +1,16 @@
 # Jornada 4
 
-Jornada 4: Angular 2: Pipes (puras e impuras) y directivas.
+Angular 2: Templates, Databinding, Directivas, Pipes (solo introducción).
 
 ## Plan de trabajo
 
-El objetivo es comprender y utilizar estos elementos de Angular 2. Vamos a explicar cada uno de los elementos. Después vamos a organizar varias tareas individuales, para resolver varios problemas usando estos elementos.
+Vamos a revisar los conceptos de inyección de dependencias en especial vamos a ver ejemplos de su comportamiento entre módulos.
+También vamos a profundizar en los siguientes conceptos:
 
-Además vamos a trastear con AoT. Para mostrar como podemos precompliar Angular 2. => https://angular.io/docs/ts/latest/cookbook/aot-compiler.html
+* Templates
+* Directivas
+* Observables
+* Pipes
 
-Lazy loading:
-RouterModule.forRoot
+## Temnplates
+
