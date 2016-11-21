@@ -456,3 +456,178 @@ episodes: any[] = [
     }
 }
 ```
+
+### También podemos crear nuestras propias directivas:
+
+#### Vamos a crear una Attribute Directive:
+
+Para ello vamos a dibiujar el siguiente escenario. Tenemos una componente con un botón que lleva al usuario a una página distinta:
+
+```typescript
+@Component({
+    selector: 'visit-rangle',
+    template: `
+        <button type="button" (click)="visitRangle()">Visit Rangle</button>
+    `
+})
+export class VisitRangleComponent {
+    visitRangle() {
+        location.href = 'https://rangle.io';
+    }
+} 
+```
+
+Ahora queremos preguntar al usuario si desea navegar antes de lanzarle a lo desconocido:
+
+```typescript
+@Directive({
+    selector: `[confirm]`
+})
+export class ConfirmDirective {
+    
+    @Input('confirm') onConfirmed: Function = () => {};
+    
+    @HostListener('click', ['$event'])
+    confirmFirst() {
+        const confirmed = window.confirm('Are you sure you want to do this?');
+        if(confirmed) {
+            this.onConfirmed();
+        }
+    }
+}
+```
+
+Tendriamos que utilizar nuestra directiva de la siguiente forma:
+
+```html
+<button type="button" [confirm]="visitRangle">Visit Rangle</button>
+```
+
+Podemos ver de forma general como crear una directiva propia:
+
+* Usando el decorador @Directive
+* Especificando un selector, este debe ser CamelCase y estar dento de corchetes [] para especificar que se trata de un binding de atributos.
+
+En nuestro caso concreto hemos usado el decorador @HostListener para escuchar los eventos de del componente al que hemos adjuntado nuestra directiva. Esta es una de las principales formas de extender el comportamiento de un componente mediante directivas. 
+Este es un mecanismo muy potente que nos permite escuchar eventos de elementos externos como *window* o *document*:
+
+```typescript
+@Directive({
+    selector: `[highlight]`
+})
+export class HighlightDirective {
+    constructor(private el: ElementRef, private renderer: Renderer) {}
+    
+    @HostListener('document:click', ['$event'])
+    handleClick(event: Event) {
+        if (this.el.nativeElement.contains(event.target)) {
+            this.highlight('yellow');
+        } else {
+            this.highlight(null);
+        }
+    }
+
+    highlight(color) {
+        this.renderer.setElementStyle(this.el.nativeElement, 'backgroundColor', color);
+    }
+}
+```
+
+En este caso estamos interceptando un evento, pero también podemos modificar los atributos del elemento *Host*. Para ello usaremos el decorador *@HostBinding*:
+
+```typescript
+import { Directive, HostBinding, HostListener } from '@angular/core';
+@Directive({
+    selector: '[buttonPress]'
+})
+export class ButtonPressDirective {
+    @HostBinding('attr.role') role = 'button';
+    @HostBinding('class.pressed') isPressed: boolean;
+    @HostListener('mousedown') hasPressed() {
+        this.isPressed = true;
+    }
+    @HostListener('mouseup') hasReleased() {
+        this.isPressed = false;
+    }
+}
+```
+
+#### Vamos a crear una Structural Directive:
+
+Vamos a crear una directiva super chorra que retrasa la instaciación de un componente unos segundos:
+
+```typescript
+import {Directive, Input, TemplateRef, ViewContainerRef} from '@angular/core';
+@Directive({
+    selector: '[delay]'
+})
+export class DelayDirective {
+    constructor(
+        private templateRef: TemplateRef<any>,
+        private viewContainerRef: ViewContainerRef
+    ) { }
+
+    @Input('delay')
+    set delayTime(time: number): void {
+        setTimeout(
+            () => {
+                this.viewContainerRef.createEmbeddedView(this.templateRef);
+                },
+            time);
+    }
+}
+```
+
+En este caso la diferencia con el ejemplo de directivas de atributo es que estamos accediendo a *TemplateRef* que es un objeto que representa la etiqueta *template* a la que esta adjunta la directiva.
+
+Necesitamos de *viewContainerRef: ViewContainerRef* que la la directiva renderice los componentes contenidos en el template, pero para ello necesitamos pasar un referencia a la vista contenedora.
+
+> View Containers are containers where one or more Views can be attached. Views represent some sort of layout to be rendered and the context under which to render it. View containers are anchored to components and are responsible for generating its output so this means that changing which views are attached to the view container affect the final rendered output of the component. Two types of views can be attached to a view container: Host Views which are linked to a Component, and Embedded Views which are linked to a template. Since structural directives interact with templates, we are interested in using Embedded Views in this case. Directives get access to the view container by injecting a ViewContainerRef. Embedded views are created and attached to a view container by calling the ViewContainerRef 's createEmbeddedView method and passing in the template. We want to use the template our directive is attached to so we pass in the injected TemplateRef .
+
+## Pipes (Introducción)
+
+Son el equivalente Angular 2 a los Filters de Angular 1.X
+
+```typescript
+import {Component} from '@angular/core';
+@Component({
+    selector: 'product-price',
+    template: `<p>Total price of product is {{ price | currency }}</p>`
+})
+export class ProductPrice {
+    price: number = 100.1234;
+}
+```
+
+Podemos pasar parametros adicionales de esta forma:
+
+```pipeName: parameter1: parameter2```
+
+```typescript
+import {Component} from '@angular/core';
+@Component({
+    selector: 'product-price',
+    template: '<p>Total price of product is {{ price | currency: "CAD": true: "1.2-4"}}</p>'
+})
+export class ProductPrice {
+    price: number = 100.123456;
+}
+```
+
+Podemos encadenar las Pipes:
+
+```typescript
+import {Component} from '@angular/core';
+@Component({
+    selector: 'product-price',
+    template: '<p>Total price of product is {{ price | currency: "CAD": true: "1.2-4" | lowercase }}</p>'
+})
+export class ProductPrice {
+    price: number = 100.123456;
+}
+```
+
+También podemos crear nuestras propias Pipes.
+
+
+
