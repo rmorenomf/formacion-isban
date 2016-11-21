@@ -157,7 +157,302 @@ This is so important, we’ll say it again.
 
 _Template binding works with properties and events, not attributes._
 
+Ver la tabla "Binding targets" en https://angular.io/docs/ts/latest/guide/template-syntax.html#!#binding-syntax
+
+
+
+
 Otro de los elementos que podemos utilizar dentro de los templates son las Directivas.
 
 ## Directivas
 
+Directives are entities that change the behavior of components or elements and are one of the core building blocks Angular 2 uses to build applications.
+
+Hay dos tipos de directivas:
+
+1. *Attribute directives*: Directivas que cambian el comportamiento de un componente o elementos pero que no afectan al template.
+2. *Structural directives*: Directivas que cambian el comportamiento del componente o elemento y que afectan a como el template es renderizado.
+
+### Attribute directives
+
+Algunas directivas incorporadas a Angular 2:
+
+#### ngStyle
+
+```typescript
+@Component({
+selector: 'style-example',
+template: `
+    <p style="padding: 1rem"
+        [ngStyle]="{
+            color: 'red',
+            'font-weight': 'bold',
+            borderBottom: borderStyle
+        }">
+        <ng-content></ng-content>
+    </p>`
+})
+export class StyleExampleComponent {
+    borderStyle: string = '1px solid black';
+}
+```
+
+Podemos pasar cualquier cosa a la directiva *ngStyle* ya que se realiza un binding de atributo de componente, en este caso estamos pasando un objeto literal con un atributo de componente, pero las combinaciones son múltiples.
+
+#### NgClass
+
+```typescript
+@Component({
+    selector: 'class-as-string',
+    template: `
+        <p ngClass="centered-text underlined" class="orange">
+        <ng-content></ng-content>
+        </p>
+    `,
+    styles: [`
+        .centered-text {
+            text-align: center;
+        }
+        .underlined {
+            border-bottom: 1px solid #ccc;
+        }
+        .orange {
+            color: orange;
+        }
+    `]
+})
+export class ClassAsStringComponent {
+}
+```
+
+En este caso estamos estamos pasando los estilo en dentro del metadato del componente, además podemos ver que podemos usarlo en combinación con el atributo HTML 'class'.
+
+En este otro caso vamos a pasar un array de clases:
+
+```typescript
+@Component({
+    selector: 'class-as-array',
+    template: `
+        <p [ngClass]="['warning', 'big']">
+            <ng-content></ng-content>
+        </p>
+        `,
+    styles: [`
+        .warning {
+            color: red;
+            font-weight: bold;
+        }
+        .big {
+            font-size: 1.2rem;
+        }
+    `]
+})
+export class ClassAsArrayComponent {
+}
+```
+
+También podemos pasar un objeto con los un valor *boolean* indicando si esa clase está activa o no:
+
+```typescript
+@Component({
+    selector: 'class-as-object',
+    template: `
+        <p [ngClass]="{ card: true, dark: false, flat: flat }">
+        <ng-content></ng-content>
+        <br/>
+        <button type="button" (click)="flat=!flat">Toggle Flat</button>
+        </p>
+    `,
+    styles: [`
+        .card {
+            border: 1px solid #eee;
+            padding: 1rem;
+            margin: 0.4rem;
+            font-family: sans-serif;
+            box-shadow: 2px 2px 2px #888888;
+        }
+        .dark {
+            background-color: #444;
+            border-color: #000;
+            color: #fff;
+        }
+        .flat {
+            box-shadow: none;
+        }
+    `]
+})
+export class ClassAsObjectComponent {
+    flat: boolean = true;
+}
+```
+
+### Structural Directives
+
+Tienen esta pinta:
+
+```typescript
+@Component({
+    selector: 'directive-example',
+    template: `
+        <p *structuralDirective="expression">
+        Under a structural directive.
+        </p>
+    `
+})
+```
+
+Notice that the binding is still an expression binding even though there are no square brackets. That's due to the fact that it's syntactic sugar that allows using the directive in a more intuitive way and similar to how directives were used in Angular 1. The component template above is equivalent to the following:
+
+```typescript
+@Component({
+    selector: 'directive-example',
+    template: `
+        <template [structuralDirective]="expression">
+        <p>
+        Under a structural directive.
+        </p>
+        </template>
+        `
+})
+```
+
+En realidad también podemos escribirlo de esta forma:
+
+```typescript
+@Component({
+    selector: 'directive-example',
+    template: `
+        <p template="structuralDirective expression">
+        Under a structural directive.
+        </p>
+    `
+})
+```
+
+#### NgIf
+
+The ngIf directive conditionally renders components or elements based on whether or not
+an expression is true or false.
+
+```typescript
+@Component({
+    selector: 'app',
+    template: `
+        <button type="button" (click)="toggleExists()">Toggle Component</button>
+        <hr/>
+        <if-example *ngIf="exists">
+        Hello
+        </if-example>
+    `
+})
+export class AppComponent {
+    exists: boolean = true;
+    toggleExists() {
+        this.exists = !this.exists;
+    }
+}
+```
+
+Realmente no ocultamos el elementos, realmente lo creamos y lo destruimos, el elemento DOM. Por eso, si tenemos estrucuturas muy complejas, usar ngIf tenga una sobrecarga en el rendimiento y sea mejor utilizar otra estrategia.
+
+#### NgFor
+
+```typescript
+@Component({
+    selector: 'app',
+    template: `
+        <for-example *ngFor="let episode of episodes" [episode]="episode">
+        {{episode.title}}
+        </for-example>
+    `
+})
+export class AppComponent {
+    episodes: any[] = [
+        { title: 'Winter Is Coming', director: 'Tim Van Patten' },
+        { title: 'The Kingsroad', director: 'Tim Van Patten' },
+        { title: 'Lord Snow', director: 'Brian Kirk' },
+        { title: 'Cripples, Bastards, and Broken Things', director: 'Brian Kirk' },
+        { title: 'The Wolf and the Lion', director: 'Brian Kirk' },
+        { title: 'A Golden Crown', director: 'Daniel Minahan' },
+        { title: 'You Win or You Die', director: 'Daniel Minahan' },
+        { title: 'The Pointy End', director: 'Daniel Minahan' }
+    ];
+}
+```
+
+ngFor también aporta algunos elementos adicionales:
+
+* index - position of the current item in the iterable starting at 0
+* first - true if the current item is the first item in the iterable
+* last - true if the current item is the last item in the iterable
+* even - true if the current index is an even number
+* odd - true if the current index is an odd number
+
+```typescript
+@Component({
+    selector: 'app',
+    template: `
+        <for-example
+            *ngFor="let episode of episodes; let i = index; let isOdd = odd"
+                [episode]="episode"
+                [ngClass]="{ odd: isOdd }">
+                {{i+1}}. {{episode.title}}
+        </for-example>
+        <hr/>
+        <h2>Desugared</h2>
+            <template ngFor [ngForOf]="episodes" let-episode let-i="index" let-isOdd="odd">
+                <for-example [episode]="episode" [ngClass]="{ odd: isOdd }">
+                    {{i+1}}. {{episode.title}}
+                </for-example>
+            </template>`
+})
+```
+
+
+*trackBy*
+
+Often ngFor is used to iterate through a list of objects with a unique ID field. In this case, we can provide a trackBy function which helps Angular keep track of items in the list so that it can detect which items have been added or removed and improve performance.
+Angular 2 will try and track objects by reference to determine which items should be created and destroyed. However, if you replace the list with a new source of objects, perhaps as a result of an API request - we can get some extra performance by telling Angular 2 how we want to keep track of things.
+
+```typescript
+@Component({
+    selector: 'app',
+    template: `
+        <button (click)="addOtherEpisode()" [disabled]="otherEpisodes.length === 0">Add Episode</button>
+        <for-example
+            *ngFor="let episode of episodes;
+                    let i = index; let isOdd = odd;
+                    trackBy: trackById" [episode]="episode"
+                    [ngClass]="{ odd: isOdd }">
+                    {{episode.title}}
+            </for-example>`
+})
+export class AppComponent {
+    otherEpisodes: any[] = [
+{ title: 'Two Swords', director: 'D. B. Weiss', id: 8 },
+{ title: 'The Lion and the Rose', director: 'Alex Graves', id: 9 },
+{ title: 'Breaker of Chains', director: 'Michelle MacLaren', id: 10 },
+{ title: 'Oathkeeper', director: 'Michelle MacLaren', id: 11 }]
+
+episodes: any[] = [
+{ title: 'Winter Is Coming', director: 'Tim Van Patten', id: 0 },
+{ title: 'The Kingsroad', director: 'Tim Van Patten', id: 1 },
+{ title: 'Lord Snow', director: 'Brian Kirk', id: 2 },
+{ title: 'Cripples, Bastards, and Broken Things', director: 'Brian Kirk', id: 3 },
+{ title: 'The Wolf and the Lion', director: 'Brian Kirk', id: 4 },
+{ title: 'A Golden Crown', director: 'Daniel Minahan', id: 5 },
+{ title: 'You Win or You Die', director: 'Daniel Minahan', id: 6 }
+{ title: 'The Pointy End', director: 'Daniel Minahan', id: 7 }
+];
+
+    addOtherEpisode() {
+        // We want to create a new object reference for sake of example
+        let episodesCopy = JSON.parse(JSON.stringify(this.episodes))
+        this.episodes=[...episodesCopy,this.otherEpisodes.pop()];
+    }
+
+    trackById(index: number, episode: any): number {
+        return episode.id;
+    }
+}
+```
