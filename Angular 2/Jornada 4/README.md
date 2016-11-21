@@ -86,20 +86,78 @@ Angular 2 dispone de 4 formas de data binding:
 * Two-way binding: (Desde/Hacia el DOM) Un caso importante que no hemos visto con los ejemplos anteriores es el binding bi-direccional, que combina event binding y property binding, como podemos ver en el siguiente ejemplo:
 
 ```html
-<input [(ngModel)]="todo.subject">
+<input [(ngModel)]="name" >
 ```
 
 Eso es equivalente a:
 
 ```html
-<input [value]="todo.subject" (input)="todo.subject = $event.target.value">
+<input [ngModel]="name" (ngModelChange)="name=$event">
 ```
 
 En este caso, el valor de la propiedad fluye a la caja de input como en el caso property binding, pero los cambios del usuario también fluyen de vuelta al componente, actualizando el valor de dicha propiedad.
 
+Veamos un ejemplo mas complejo:
+
+```typescript
+@Component({/*....*/})
+export default class Counter {
+    
+    @Input() count: number = 0;
+    @Output() countChange: EventEmitter<number> = new EventEmitter<number>();
+
+    increment() {
+        this.count++;
+        this.countChange.emit(this.count);
+    }
+}
+
+@Component({
+    template:'<counter [(count)]="myNumber"></counter>'
+    directives:[Counter]
+})
+class SomeComponent {
+// ...
+}
+```
+
 Angular mapea los eventos típicos de cualquier elemento del DOM para que los podamos utilizar como event binding.
 
-Otro de los elementos que podemos utilzar dentro de los templates son las Directivas.
+Sobre esto del DOM tenemos que hacer una aclaración:
+
+*HTML attribute vs. DOM property*
+
+The distinction between an HTML attribute and a DOM property is crucial to understanding how Angular binding works.
+
+*Attributes are defined by HTML. Properties are defined by the DOM (Document Object Model).*
+
+* A few HTML attributes have 1:1 mapping to properties. id is one example.
+* Some HTML attributes don't have corresponding properties. colspan is one example.
+* Some DOM properties don't have corresponding attributes. textContent is one example.
+* Many HTML attributes appear to map to properties ... but not in the way we might think!
+* That last category can be especially confusing ... until we understand this general rule:
+
+*Attributes initialize DOM properties and then they are done. Property values can change; attribute values can't.*
+
+For example, when the browser renders <input type="text" value="Bob">, it creates a corresponding DOM node with a value property initialized to "Bob".
+
+When the user enters "Sally" into the input box, the DOM element value property becomes "Sally". But the HTML value attribute remains unchanged as we discover if we ask the input element about that attribute: input.getAttribute('value') // returns "Bob"
+
+The HTML attribute value specifies the initial value; the DOM value property is the current value.
+
+The disabled attribute is another peculiar example. A button's disabled property is false by default so the button is enabled. When we add the disabled attribute, its presence alone initializes the button's disabled property to true so the button is disabled.
+
+Adding and removing the disabled attribute disables and enables the button. The value of the attribute is irrelevant, which is why we cannot enable a button by writing <button disabled="false">Still Disabled</button>.
+
+Setting the button's disabled property (say, with an Angular binding) disables or enables the button. The value of the property matters.
+
+*The HTML attribute and the DOM property are not the same thing, even when they have the same name.*
+
+This is so important, we’ll say it again.
+
+*Template binding works with properties and events, not attributes.*
+
+Otro de los elementos que podemos utilizar dentro de los templates son las Directivas.
 
 ## Directivas
 
