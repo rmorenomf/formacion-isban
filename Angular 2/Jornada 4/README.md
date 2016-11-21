@@ -123,13 +123,13 @@ class SomeComponent {
 
 Angular mapea los eventos típicos de cualquier elemento del DOM para que los podamos utilizar como event binding.
 
-Sobre esto del DOM tenemos que hacer una aclaración:
+_Sobre esto del DOM tenemos que hacer una aclaración:_
 
-*HTML attribute vs. DOM property*
+_HTML attribute vs. DOM property_
 
 The distinction between an HTML attribute and a DOM property is crucial to understanding how Angular binding works.
 
-*Attributes are defined by HTML. Properties are defined by the DOM (Document Object Model).*
+_Attributes are defined by HTML. Properties are defined by the DOM (Document Object Model)._
 
 * A few HTML attributes have 1:1 mapping to properties. id is one example.
 * Some HTML attributes don't have corresponding properties. colspan is one example.
@@ -137,9 +137,9 @@ The distinction between an HTML attribute and a DOM property is crucial to under
 * Many HTML attributes appear to map to properties ... but not in the way we might think!
 * That last category can be especially confusing ... until we understand this general rule:
 
-*Attributes initialize DOM properties and then they are done. Property values can change; attribute values can't.*
+_Attributes initialize DOM properties and then they are done. Property values can change; attribute values can't._
 
-For example, when the browser renders <input type="text" value="Bob">, it creates a corresponding DOM node with a value property initialized to "Bob".
+For example, when the browser renders ```<input type="text" value="Bob">```, it creates a corresponding DOM node with a value property initialized to "Bob".
 
 When the user enters "Sally" into the input box, the DOM element value property becomes "Sally". But the HTML value attribute remains unchanged as we discover if we ask the input element about that attribute: input.getAttribute('value') // returns "Bob"
 
@@ -147,15 +147,15 @@ The HTML attribute value specifies the initial value; the DOM value property is 
 
 The disabled attribute is another peculiar example. A button's disabled property is false by default so the button is enabled. When we add the disabled attribute, its presence alone initializes the button's disabled property to true so the button is disabled.
 
-Adding and removing the disabled attribute disables and enables the button. The value of the attribute is irrelevant, which is why we cannot enable a button by writing <button disabled="false">Still Disabled</button>.
+Adding and removing the disabled attribute disables and enables the button. The value of the attribute is irrelevant, which is why we cannot enable a button by writing ```<button disabled="false">Still Disabled</button>```.
 
 Setting the button's disabled property (say, with an Angular binding) disables or enables the button. The value of the property matters.
 
-*The HTML attribute and the DOM property are not the same thing, even when they have the same name.*
+_The HTML attribute and the DOM property are not the same thing, even when they have the same name._
 
 This is so important, we’ll say it again.
 
-*Template binding works with properties and events, not attributes.*
+_Template binding works with properties and events, not attributes._
 
 Otro de los elementos que podemos utilizar dentro de los templates son las Directivas.
 
