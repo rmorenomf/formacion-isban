@@ -14,10 +14,11 @@ Imagínate que estas desarrollando una nueva página web y debes registrar el mo
  document.onmousemove = function (t) {};
  ```
 
- Esta función va a registrar ingentes cantidades de datos puesto que el ratón es algo que se mueve mucho. Pues bien, esto es un flujo de datos o stream.
+Esta función va a registrar ingentes cantidades de datos puesto que el ratón es algo que se mueve mucho. Pues bien, esto es un flujo de datos o stream.
 
 Los Observables se basan en dos patrones de programación bien conocidos que es el patrón “Observer” y el patrón “Iterator”. Un Observable es un mecanismo creado para representar los flujos que ya hemos visto. De esta manera no debemos pensar en arrays, eventos de ratón, llamadas http al servidor… separados, sino en algo que los agrupa a todos, el Observable. De alguna manera, cuando quieras hacer programación reactiva con un array, habrá un método para poder transformar el array en Observable y poder trabajar con él de esta manera.
 
+Podríamos decir que un Observable es un objeto que guarda un valor y que emite un evento a todos sus suscriptores cada vez que ese valor se actualiza. En palabras de la RxJS, un Observable es un conjunto de valores a lo largo de cualquier intervalo de tiempo.
 Veamos un ejemplo en Angular 2:
 
 ```typescript
@@ -200,11 +201,232 @@ Como podeis ver, hemos limpiado el setTimeOut para que no se dispare, sino hicie
 
 Por defecto, se produce un *unsubscribe* automático cuando se produce un *complete* o un *error*.
 
+### Cold y Hot Observables
+
+Podemos clasificar a los Observables en dos tipos:
+
+```typescript
+const obsv = new Observable(observer => {
+    setTimeout(() => {
+        observer.next(1);
+    }, 1000);
+    setTimeout(() => {
+        observer.next(2);
+    }, 2000);
+    setTimeout(() => {
+        observer.next(3);
+    }, 3000);
+    setTimeout(() => {
+        observer.next(4);
+    }, 4000);
+});
+
+// Subscription A
+setTimeout(() => {
+    obsv.subscribe(value => console.log(value));
+}, 0);
+
+// Subscription B
+setTimeout(() => {
+    obsv.subscribe(value => console.log(`>>>> ${value}`));
+}, 2500);
+```
+
+1. Cold, nos subscribimos porque queremos tener todos el Stream completo. Estamos allí desde el principio.
+2. Hot, nos queremos subscribir en cualquier momento y solo nos interesa el Stream generado de ese momento.
+
+¿Cómo podemos crear Hot observables?
+
+Pues usando el método *publish*. es emétodo toma un Observable Cold y su fuente y devuelve una instacia de *ConnectableObservable*. En este caso tendremos que llamar explicitamente a *connect* para comenzar la emisión a todos los *subscribers.*.
+
+```typescript
+const obsv = new Observable(observer => {
+    setTimeout(() => {
+        observer.next(1);
+    }, 1000);
+    setTimeout(() => {
+        observer.next(2);
+    }, 2000);
+    setTimeout(() => {
+        observer.next(3);
+    }, 3000);
+    setTimeout(() => {
+        observer.next(4);
+    }, 4000);
+}).publish();
+
+obsv.connect();
+
+// Subscription A
+setTimeout(() => {
+    obsv.subscribe(value => console.log(value));
+}, 0);
+
+// Subscription B
+setTimeout(() => {
+    obsv.subscribe(value => console.log(` ${value}`));
+}, 2500);
+```
+
+Otro método muy chulo es *refCount*, si lo usamos en vez de *connect* eso hace que no comienze la emisión hasta que almenos tengamos un subscriber y detiene la emisión cuando el último subscriber se marcha.
+
+RxJS ("Reactive Extensions") is a 3rd party library, endorsed by Angular, that implements the asynchronous observable pattern.
+
+La librería RxJS te aporta además varias operadores para transformar los resultados de tus Observables, como el operador map (equivalente al método map de los arrays JS para manipular cada elemento del array), el operador *debounce* para ignorar eventos demasiado seguidos, el operador *merge* para combinar los eventos de 2 o más observables en uno…
+
+En http://rxmarbles.com/ podemo ver gráficos animados que muestran el funcionamiento de estas funciones.
+
 ## HTTP
 
 Vamos a ver aplicados los Observables en otro elemento de Angular 2. El módulo http.
 
+Para poder utilizar el servicio Http antes que nada tienes que importarlo en el componente o servicio donde lo quieres usar, desde el paquete @angular/http, y pasarlo por DI.
 
+```typescript
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+
+@Injectable()
+export class MyComponent {
+  constructor(private http: Http) { }
+}
+```
+
+Es importante destacar que el servicio Http no pertenece al núcleo de Angular, por lo que hay que importar también su módulo HttpModule y pasarlo en la fase de bootstrap
+
+```typescript
+//main.ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from '@angular/http';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  imports: [ BrowserModule, HttpModule ],
+  declarations: [ AppComponent ],
+  bootstrap: [ AppComponent ]
+})
+
+export class AppModule{}
+```
+
+### GET:
+
+```typescript
+//productsService.ts
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import 'rxjs/add/operator/map';
+
+@Injectable()
+export class ProductsService {
+  constructor(private http: Http) { }
+  public categoryId = 0;
+
+  get products() {
+    return http.get(`base_url/category/${categoryId}/products`)
+      .map(response => response.json());
+  }
+}
+```
+
+Como podemos ver, en el getter de productos, estamos usando el método GET del servicio Http y le pasamos únicamente la URL. Además, ejecutamos el método map sobre el Observable que me devuelve la llamada anterior, para coger los datos de la respuesta HTTP en formato JSON.
+
+Hay que indicar que lo que está devolviendo *products()* es un Observable y eso abré la puesta a usar toda su potencia:
+
+```typescript
+//myApp.ts
+import { ProductsService } from './productsService';
+
+@Component({
+  selector: 'my-app',
+  template: `<div *ng-for="let product of products">{{product.name}} - {{product.price}}</div>`
+})
+export class App {
+  constructor(productsService: ProductsService) {
+    productsService.products
+      .subscribe(
+        products => this.products = products,
+        error => console.error(`Error: ${error}`)
+      );
+  }
+}
+```
+
+Veamos un ejemplo un poco mas elaborado:
+
+```typescript
+import { Injectable }     from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Hero }           from './hero';
+import { Observable }     from 'rxjs/Observable';
+@Injectable()
+export class HeroService {
+  private heroesUrl = 'app/heroes';  // URL to web API
+  constructor (private http: Http) {}
+  getHeroes (): Observable<Hero[]> {
+    return this.http.get(this.heroesUrl)
+                    .map(this.extractData)
+                    .catch(this.handleError);
+  }
+  private extractData(res: Response) {
+    let body = res.json();
+    return body.data || { };
+  }
+  private handleError (error: Response | any) {
+    // In a real world app, we might use a remote logging infrastructure
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
+  }
+}
+```
+
+### POST 
+
+```
+//productsService.ts
+import { Headers, RequestOptions } from '@angular/http';
+//...more imports...
+
+@Injectable()
+export class ProductsService {
+  constructor(private http: Http) { }
+  //..previous stuff...
+
+  sendOpinion(rating:number, description:string, productId:number){
+
+    //build header options
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    //build POST body
+    let body = JSON.stringify({rating, description});
+
+    //send data to server
+    this.http
+       .post(`base_url/category/products/${productId}`, body, options)
+       .map(response => response.json())
+       .subscribe(
+           data => console.log('Success uploading the opinion ', data),
+           error => console.error(`Error: ${error}`
+       );
+  }
+}
+```
 
 ## Routing
 
+Probablemente los mas importante es que usemos esto:
+
+
+
+The ```<base>``` tag specifies the base URL/target for all relative URLs in a document.
