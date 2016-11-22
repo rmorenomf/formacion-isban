@@ -10,6 +10,8 @@ import { Module1Service } from '../module1/module1.service';
     imports: [Module1Module],
     exports: [Module2Component],
     declarations: [Module2Component],
-    providers: [GlobalServiceService, Module1Service],
+    providers: [
+        GlobalServiceService, 
+        Module1Service],
 })
 export class Module2Module { }

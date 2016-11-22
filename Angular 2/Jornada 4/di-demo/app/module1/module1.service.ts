@@ -20,5 +20,4 @@ export class Module1Service {
         return this.value++;
     }
 
-    constructor() { }
 }

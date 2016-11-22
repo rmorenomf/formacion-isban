@@ -8,10 +8,6 @@ import { GlobalServiceService } from '../services/service1.service';
 @NgModule({
     imports: [CommonModule],
     exports: [Module1Component],
-    declarations: [Module1Component],
-    providers: [
-            GlobalServiceService, 
-            Module1Service
-    ]
+    declarations: [Module1Component]
 })
 export class Module1Module { }
