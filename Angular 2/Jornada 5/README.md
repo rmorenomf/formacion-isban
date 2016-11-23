@@ -427,6 +427,362 @@ export class ProductsService {
 
 Probablemente los mas importante es que usemos esto:
 
-
-
 The ```<base>``` tag specifies the base URL/target for all relative URLs in a document.
+
+El objeto *Routes* es un array de rutas que define el routing de la aplicación.
+
+```typescript
+const routes: Routes = [
+    { path: 'component-one', component: ComponentOne },
+    { path: 'component-two', component: ComponentTwo }
+];
+```
+
+Estos son los atributos que puede tener:
+
+* path - URL to be shown in the browser when application is on the specific route
+* component - component to be rendered when the application is on the specific route
+* redirectTo - redirect route if needed; each route can have either component or redirect attribute defined in the route (covered later in this chapter)
+* pathMatch - optional property that defaults to 'prefix'; determines whether to match full URLs or just the beginning. When defining a route with empty path string set pathMatch to 'full', otherwise it will match all paths.
+* children - array of route definitions objects representing the child routes of this route.
+
+Necesitamos algo más:
+
+*RouterModule.forRoot* toma el array de Routes, definido antes, y devuelve un modulo de rutas configurado. Este modulo router debe estar definido en la lista de *imports*.
+
+_app.module.ts_
+
+```typescript
+import { RouterModule, Routes } from '@angular/router';
+const routes: Routes = [
+    { path: 'component-one', component: ComponentOne },
+    { path: 'component-two', component: ComponentTwo }
+];
+export const routing = RouterModule.forRoot(routes);
+@NgModule({
+    imports: [
+        BrowserModule,
+        routing
+    ],
+    declarations: [
+        AppComponent,
+        ComponentOne,
+        ComponentTwo
+    ],
+    bootstrap: [ AppComponent ]
+})
+export class AppModule {
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule);
+```
+
+Podemos configurar redirecciones, esto puede ser muy intersante cuando entramos a la ruta por defecto pero queremos ir a una vista en concreto:
+
+```typescript
+export const routes: Routes = [
+    { path: '', redirectTo: 'component-one', pathMatch: 'full' },
+    { path: 'component-one', component: ComponentOne },
+    { path: 'component-two', component: ComponentTwo }
+];
+```
+
+Ahora vamos a definir un enlace a una ruta:
+
+```html 
+<a [routerLink]="['/component-one']">Component One</a>
+```
+
+Eso definiria un enlace a la ruta *component-one*.
+
+También podemos navegar de forma dinámica.
+
+```typescript
+this.router.navigate(['/component-one']);
+```
+
+Aún nos queda un detalle muy importante por definir; dónde se van a pintar el resultado de esa navegación, en realidad estamos siempre en la misma página, es una apliación Angular 2.
+
+Para eso necesitamos un elemento nuevo, ```<router-outlet></router-outlet>```: 
+
+```typescript
+import { Component } from '@angular/core';
+@Component({
+    selector: 'app',
+    template: `
+        <nav>
+        <a [routerLink]="['/component-one']">Component One</a>
+        <a [routerLink]="['/component-two']">Component Two</a>
+        </nav>
+        <router-outlet></router-outlet>
+        <!-- Route components are added by router here -->
+        `
+})
+export class AppComponent {}
+```
+
+Otro aspecto importante es que podemos pasar parámetros a nuestras rutas:
+
+```typescript
+export const routes: Routes = [
+    { path: '', redirectTo: 'product-list', pathMatch: 'full' },
+    { path: 'product-list', component: ProductList },
+    { path: 'product-details/:id', component: ProductDetails }
+];
+```
+
+En este caso, si queremos componer los enlaces haremos esto:
+
+```html
+<a *ngFor="let product of products"
+    [routerLink]="['/product-details', product.id]">
+    {{ product.name }}
+</a>
+```
+
+o esto otro:
+
+```typescript
+goToProductDetails(id) {
+    this.router.navigate(['/product-details', id]);
+}
+```
+
+O también podemos pasar paramétros opcionales o Query Parameters:
+
+> localhost:3000/product-list?page=2
+
+```html
+<a [routerLink]="['product-list']" [queryParams]="{ page: 99 }">Go to Page 99</a>
+```
+
+o 
+
+```typescript
+goToPage(pageNum) {
+    this.router.navigate(['/product-list'], { queryParams: { page: pageNum } });
+}
+```
+
+y, a su vez, podemos leer esos parámetros de esta forma:
+
+```typescript
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+@Component({
+    selector: 'product-list',
+    template: `<!-- Show product list -->`
+})
+export default class ProductList {
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router) {}
+
+    ngOnInit() {
+        this.sub = this.route
+            .queryParams
+            .subscribe(params => {
+                // Defaults to 0 if no query param provided.
+                this.page = +params['page'] || 0;
+            });
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+
+    nextPage() {
+        this.router.navigate(['product-list'], { queryParams: { page: this.page + 1 } });
+    }
+}
+```
+
+Como ya hemos mencionado también podemos tener rutas hijas. Esto permite definir rutas que solo son accesibles desde otras rutas:
+
+```typescript
+export const routes: Routes = [
+    { path: '', redirectTo: 'product-list', pathMatch: 'full' },
+    { path: 'product-list', component: ProductList },
+    { path: 'product-details/:id', component: ProductDetails,
+        children: [
+            { path: '', redirectTo: 'overview', pathMatch: 'full' },
+            { path: 'overview', component: Overview },
+            { path: 'specs', component: Specs }
+        ]
+    }
+];
+```
+
+En este caso, tenemos que especificar dentro del componente de la ruta padre el lugar donde vamos a pintar esa subruta. Como podeis ver en ```<router-outlet></router-outlet>```:
+
+```typescript
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+@Component({
+    selector: 'product-details',
+    template: `
+        <p>Product Details: {{id}}</p>
+        <!-- Product information -->
+        <nav>
+        <a [routerLink]="['overview']">Overview</a>
+        <a [routerLink]="['specs']">Technical Specs</a>
+        </nav>
+        <router-outlet></router-outlet>
+        <!-- Overview & Specs components get added here by the router -->
+        `
+})
+export default class ProductDetails implements OnInit, OnDestroy {
+    
+    id: number;
+    
+    constructor(private route: ActivatedRoute) {}
+    
+    ngOnInit() {
+        this.sub = this.route.params.subscribe(params => {
+            this.id = +params['id']; // (+) converts string 'id' to a number
+        });
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+}
+```
+
+Las rutas hijas también pueden acceder a las rutas padre:
+
+```typescript
+export default class Overview {
+    parentRouteId: number;
+    private sub: any;
+    
+    constructor(private router: Router,
+                private route: ActivatedRoute) {}
+    
+    ngOnInit() {
+        // Get parent ActivatedRoute of this route.
+        this.sub = this.router.routerState.parent(this.route)
+            .params.subscribe(params => {
+                this.parentRouteId = +params["id"];
+            });
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+}
+```
+
+Podemos usar los siguiente indicadores de ruta:
+
+* '/' =>  Root of the application
+* nada => Current component children routes
+* '../' => Current component parent routes
+
+```html
+<a [routerLink]="['route-one']">Route One</a>
+<a [routerLink]="['../route-two']">Route Two</a>
+<a [routerLink]="['/route-three']">Route Three</a>
+```
+
+También podemo controlar el acceso a las rutas, vamos a usar *Route Guards*:
+
+En este ejemplo vamos a indicar que solo se pueda acceder a la ruta 'account' si el usuario está logado.
+
+```typescript
+import { Routes, RouterModule } from '@angular/router';
+import { AccountPage } from './account-page';
+import { LoginRouteGuard } from './login-route-guard';
+import { SaveFormsGuard } from './save-forms-guard';
+const routes: Routes = [
+    { path: 'home', component: HomePage },
+    {
+        path: 'accounts',
+        component: AccountPage,
+        canActivate: [LoginRouteGuard],
+        canDeactivate: [SaveFormsGuard]
+    }
+];
+export const appRoutingProviders: any[] = [];
+export const routing = RouterModule.forRoot(routes);
+```
+
+Pero tenemos que crear LoginRouteGuard:
+
+```typescript
+import { CanActivate } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { LoginService } from './login-service';
+
+@Injectable()
+export class LoginRouteGuard implements CanActivate {
+    constructor(private loginService: LoginService) {}
+    canActivate() {
+        return this.loginService.isLoggedIn();
+    }
+}
+```
+
+When canActivate returns true, the user can activate the route. When canActivate returns false, the user cannot access the route. In the above example, we allow access when the user is logged in. 
+canActivate can also be used to notify the user that they can't access that part of the application, or redirect them to the login page.
+
+Bueno, parece que canActivate hace lo mismo pero a la inversa canDeactivate. Y es así. Pero con algunas diferencias. *canDeactivate* pasa el componente a ser desactivado como argumento de la función.
+
+```typescript
+export interface CanDeactivate<T> {
+    canDeactivate(component: T, route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
+        Observable<boolean>|Promise<boolean>|boolean;
+}
+```
+
+Podemos utilizar ese componente para determinar si el usuario puede desactivar:
+
+```typescript
+import { CanDeactivate } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { AccountPage } from './account-page';
+
+@Injectable()
+export class SaveFormsGuard implements CanDeactivate<AccountPage> {
+    canDeactivate(component: AccountPage) {
+        return component.areFormsSaved();
+    }
+}
+```
+
+Como hemos visto, canActivate y canDeactivate, pueden devolver valores booleanos, pero si devuelven un Observable, podemos utilizarlo para devolver valores que vengan del servidor o de la interfaz de usuario, en este caso una confirmación:
+
+```typescript
+canDeactivate() {
+    return dialogService.confirm('Discard unsaved changes?');
+}
+```
+
+Rutas auxiliares:
+
+Angular 2 también soporta el concepto de rutas auxiliares. Estas permiten navegar a multiples e independietnes rutas en una misma aplicación. Para ello cada componente dispone de cero o mas *outlets*:  
+
+```typescript
+import {Component} from '@angular/core';
+@Component({
+    selector: 'app',
+    template: `
+        <nav>
+        <a [routerLink]="['/component-one']">Component One</a>
+        <a [routerLink]="['/component-two']">Component Two</a>
+        <a [routerLink]="[{ outlets: { 'sidebar': ['component-aux'] } }]">Component Aux<
+        /a>
+        </nav>
+        <div style="color: green; margin-top: 1rem;">Outlet:</div>
+        <div style="border: 2px solid green; padding: 1rem;">
+        <router-outlet></router-outlet>
+        </div>
+        <div style="color: green; margin-top: 1rem;">Sidebar Outlet:</div>
+        <div style="border: 2px solid blue; padding: 1rem;">
+        <router-outlet name="sidebar"></router-outlet>
+        </div>
+    `
+})
+export class AppComponent {
+}
+```
