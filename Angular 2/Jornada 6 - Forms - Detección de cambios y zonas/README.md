@@ -11,7 +11,146 @@ Además de continuar con el proyecto práctico de Blogging iniciado en la jornad
 
 ## Forms
 
-TODO
+Vamos a ver alguna técnicas y herramientas que incluye Angular 2 para facilitar la creación y la validación de formularios de entrada de datos.
+
+Partiremos del siguiente formulario HTML:
+
+```html
+<div>
+    <h1>Hero Form</h1>
+    <form>
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" required>
+      </div>
+      <div>
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" id="alterEgo">
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+</div>
+```
+
+Solo un detalle, estamos usando ciertos atributos de validación de datos propios de HTML5. Cuidado porque, por ejemplo, IE9 que está soportado por Angular 2, no soporta ese atributo. Así si queremos dar soporte a ese navegador tendríamos que utilizar otro mecanismo de validación de datos.
+
+Vamos añadir algo de dinamismo con algo de template syntax de angular 2:
+
+ ```html
+ <!-- hero-form.component.html -->
+<div>
+    <h1>Hero Form</h1>
+    <form>
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" required>
+      </div>
+      <div>
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" id="alterEgo">
+      </div>
+
+	  <div>
+		<label for="power">Hero Power</label>
+		<select id="power" required>
+			<option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+		</select>
+	  </div>
+
+      <button type="submit">Submit</button>
+    </form>
+</div>
+```
+
+También vamos a definir un modelo de datos para nuestro formulario:
+
+```typescript
+//hero.ts
+export class Hero {
+  constructor(
+    public id: number,
+    public name: string,
+    public power: string,
+    public alterEgo?: string
+  ) {  }
+}
+```
+
+y también vamos a crear el componente que controle programáticamente ese formulario:
+
+```typescript
+import { Component } from '@angular/core';
+import { Hero }    from './hero';
+@Component({
+  moduleId: module.id,
+  selector: 'hero-form',
+  templateUrl: 'hero-form.component.html'
+})
+export class HeroFormComponent {
+  
+  powers = ['Really Smart', 'Super Flexible',
+            'Super Hot', 'Weather Changer'];
+  
+  model = new Hero(18, 'Dr IQ', this.powers[0], 'Chuck Overstreet');
+  
+  submitted = false;
+  
+  onSubmit() { 
+	this.submitted = true; 
+  }
+}
+```
+
+Vamos a agregar el databinding para permitir sincronizar nuestro modelo:
+
+ ```html
+ <!-- hero-form.component.html -->
+<div>
+    <h1>Hero Form</h1>
+    
+	{{diagnostic}}
+
+	<form>
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" required
+			[(ngModel)]="model.name" 
+			name="name">
+
+      </div>
+      <div>
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" id="alterEgo"
+			[(ngModel)]="model.alterEgo" 
+			name="alterEgo">
+
+      </div>
+
+	  <div>
+		<label for="power">Hero Power</label>
+		<select id="power" required 
+			[(ngModel)]="model.power" 
+			name="power">
+			
+			<option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+		</select>
+	  </div>
+
+      <button type="submit">Submit</button>
+    </form>
+</div>
+```
+
+Hemos añadido dos cosas importantes:
+
+1. *[(ngModel)]="model.name"* 
+2. *name="name"*. Es unr equisito usar el atributo *name* cuando se usa *[(ngModel)]* en un formulario. 
+
+Una explicación sobre esto:
+
+> Internally Angular creates FormControls and registers them with an NgForm directive that Angular attached to the <form> tag. Each FormControl is registered under the name we assigned to the name attribute.
+
+También hemos incluido por interpolación la variable {{diagnostic}}, solo para ver cómo se comporta el databinding de nuestro formulario.
 
 ## Estrategias de detección de cambios y zonas
 
@@ -21,6 +160,106 @@ La detección de cambios en Angular 2 supone un gran cambio con respecto a Angul
 Puesto que Angular 1.X aplicaba un binding unidireccional esto resultaba un tanto caótico.
 
 Angular 2 solo tiene un modelo unidirecial de flujo de cambios, incluso cuando usamos la directiva *ngModel* y eso resulta mas eficiente, pero también los fuerza a reflejar todos los cambios de elementos en nuestro código.
+
+Como hemos visto hasta un formulario no es fundamentalmente binding de datos. En concreto el binding bidireccional de *ngModel*. Pero se le pude sacar mas partido.
+
+Usando *ngModel* podemos saber si el usuario a tocado el control, si el valor ha sido cambiado o si el valor se a cambiado a un valor inválido. La directiva *ngModel* no solo controla el estado, también actualiza a clases CSS especiales para reflejar el estado. Podemo usar esas clases para reflejar visualmente la apriencia y los mensajes de alerta.
+
+State | Class if true | Class if false
+--- | --- | ---
+Control has been visited | ng-touched | ng-untouched
+Control's value has changed | ng-dirty | ng-pristine
+Control's value is valid | ng-valid | ng-invalid
+
+Podemos ver una prueba añadiendo las siguientes líneas:
+
+```html
+<input type="text" class="form-control" id="name"
+  required
+  [(ngModel)]="model.name" name="name"
+  #spy >
+<br>TODO: remove this: {{spy.className}}
+```
+
+![alt text](./assets/control-state-transitions-anim.gif "Logo Title Text 1")
+
+Esto abre la puerta a mejorar los estilos CSS para que se muestren mejor el estado del formulario:
+
+```css
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442; /* red */
+}
+```
+
+Otra de las cosas que podemos hacer es mostrar errores de validación al usuario:
+
+```html
+ <!-- hero-form.component.html -->
+<div>
+    <h1>Hero Form</h1>
+    
+	{{diagnostic}}
+
+	<form>
+      <label for="name">Name</label>
+        <input type="text" id="name"
+               required
+               [(ngModel)]="model.name" name="name"
+               #name="ngModel" >
+        
+		<div [hidden]="name.valid || name.pristine"
+             class="alert alert-danger">
+          Name is required
+      </div>
+		
+      <div>
+        <label for="alterEgo">Alter Ego</label>
+        <input type="text" id="alterEgo"
+			[(ngModel)]="model.alterEgo" 
+			name="alterEgo">
+
+      </div>
+
+	  <div>
+		<label for="power">Hero Power</label>
+		<select id="power" required 
+			[(ngModel)]="model.power" 
+			name="power">
+			
+			<option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+		</select>
+	  </div>
+
+      <button type="submit">Submit</button>
+    </form>
+</div>
+``` 
+
+Por ahora la verdad es que nuestro formulario no hace mucha cosa. Es un formulario y seguramente queremos que haga algo como enviar datos.
+
+Vamos a agregar el *submit* al ```<form>```:
+
+```html
+<form (ngSubmit)="onSubmit()" #heroForm="ngForm">
+```
+
+Fijaos que hemos creado una variable de template *#heroForm* y que la hemos inicializado al "ngForm" que es una directiva que controla el formulario como un todo. La directiva *ngForm* suplementa al elemento HTML *form* añadiendo funcionalidad extra, por ejemplo una propiedad *valid* que solo es *true* cuando todos los controles son válidos.
+
+Podemos usar esa propiedad para activar o desactivar el botón de envío de datos.
+
+```html
+<button type="submit" [disabled]="!heroForm.form.valid">Submit</button>
+```
+
+O resetear los errores de nuestro formulario:
+
+```
+<button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
+```
 
 ### ¿Cómo funciona la detección de cambios en Angular 2?
 
