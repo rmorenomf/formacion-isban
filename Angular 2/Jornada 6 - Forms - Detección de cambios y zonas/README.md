@@ -90,3 +90,4 @@ export	class	MovieComponent	{
 		@Input()	actor:	Actor;
 }
 ```
+
