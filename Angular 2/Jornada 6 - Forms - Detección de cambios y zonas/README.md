@@ -152,13 +152,6 @@ Una explicación sobre esto:
 
 También hemos incluido por interpolación la variable {{diagnostic}}, solo para ver cómo se comporta el databinding de nuestro formulario.
 
-## Estrategias de detección de cambios y zonas
-
-La detección de cambios es un proceso que permite la sincronización de nuestra vista con los modelos.
-
-La detección de cambios en Angular 2 supone un gran cambio con respecto a Angular 1.X. En la versión anterior se mantenia un gran numero de *watchers*, uno por cada propiedad. Eso requería una gran cantidad de trabajo.  
-Puesto que Angular 1.X aplicaba un binding unidireccional esto resultaba un tanto caótico.
-
 Angular 2 solo tiene un modelo unidirecial de flujo de cambios, incluso cuando usamos la directiva *ngModel* y eso resulta mas eficiente, pero también los fuerza a reflejar todos los cambios de elementos en nuestro código.
 
 Como hemos visto hasta un formulario no es fundamentalmente binding de datos. En concreto el binding bidireccional de *ngModel*. Pero se le pude sacar mas partido.
@@ -260,6 +253,13 @@ O resetear los errores de nuestro formulario:
 ```
 <button type="button" class="btn btn-default" (click)="newHero(); heroForm.reset()">New Hero</button>
 ```
+
+## Estrategias de detección de cambios y zonas
+
+La detección de cambios es un proceso que permite la sincronización de nuestra vista con los modelos.
+
+La detección de cambios en Angular 2 supone un gran cambio con respecto a Angular 1.X. En la versión anterior se mantenia un gran numero de *watchers*, uno por cada propiedad. Eso requería una gran cantidad de trabajo.  
+Puesto que Angular 1.X aplicaba un binding unidireccional esto resultaba un tanto caótico.
 
 ### ¿Cómo funciona la detección de cambios en Angular 2?
 
