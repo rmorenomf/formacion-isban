@@ -41,7 +41,6 @@ var appRouter = function(app) {
         res.send( {} );
     });
 
-
     app.get("/comment", function(req, res) {
         res.send( commentsMock );
     });
@@ -55,7 +54,7 @@ var appRouter = function(app) {
         res.send( commentNewMock );
     });
 
-     app.delete("/comment/:id", function(req, res) {
+    app.delete("/comment/:id", function(req, res) {
         res.send( {} );
     });
 }
