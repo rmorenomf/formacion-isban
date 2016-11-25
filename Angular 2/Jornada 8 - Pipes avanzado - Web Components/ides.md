@@ -146,4 +146,5 @@ WebStorm | ![alt text](./assets/stars_5.png "5 Stars") | ![alt text](./assets/st
 ## Conclusiones
 
 Ciertamente todas las herramientas consideradas son excelentes elecciones como herramientas de desarrollo y, más allá de las preferencias personales, los IDEs más completos desde cero, sin la necesidad de incluir plugins son; *WebStorm* y *Visual Studio Code*. Destacando el primero por funcionalidad.
+
 En otro orden están los editores que permiten mediante plugins obtener un grado de confor y productividad muy bueno. En este caso destacan *Brackets* (con entrada propia en el Blog de John Papa indicando su configuración personal) por su bueno soporte de intellisense y *ALM* por el bueno soporte que trae de fábrica y la posibilidad de instalarlo en Cloud. 
