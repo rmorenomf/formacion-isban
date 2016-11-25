@@ -330,3 +330,131 @@ export	class	MovieComponent	{
 }
 ```
 
+Vemos que tenemos dos componentes: 
+
+* MainComponent
+* MovieComponent
+
+Por detrás, Angular 2 va a crear unas clases especiales llamadas *change detectors*, una por cada componente; MainComponent_ChangeDetector y MovieComponent_ChangeDetector.
+
+El objetivo de los detectores de cambio es conocer las propiedades del modelo utilizadas en la plantilla de un componente que han cambiado desde la última vez que se ejecutó el proceso de detección de cambios.
+
+Para saberlo, Angular 2 crea una instancia de la clase de detector de cambio apropiada Y un enlace al componente que se supone que debe comprobar. 
+
+*Conceptualmente pasa esto:*
+
+```typescript
+class MainComponent_ChangeDetector {
+	constructor(
+		public previousSlogan: string,
+		public previousTitle: string,
+		public previousActor: Actor,
+		public movieComponent: MovieComponent
+	) {}
+
+	detectChanges(slogan: string, title: string, actor: Actor) {
+		if (slogan !== this.previousSlogan) {
+			this.previousSlogan = slogan;
+			this.movieComponent.slogan = slogan;
+		}
+		if (title !== this.previousTitle) {
+			this.previousTitle = title;
+			this.movieComponent.title = title;
+		}
+		if (actor !== this.previousActor) {
+			this.previousActor = actor;
+		this.movieComponent.actor = actor;
+		}
+	}
+}
+```
+
+Solo un detalle: Basicamente tres cosas pueden cambiar el estado de nuestra aplicación:
+
+* Events - click, submit, …
+* XHR - Fetching data from a remote server
+* Timers - setTimeout(), setInterval()
+
+Para controlar la propagación de los cambios Angular 2, pude hacer las cosas de dos formas:
+
+### Estrategia de cambio *Default*.
+
+De forma predeterminada, Angular define una estrategia de detección de cambios para cada componente de nuestro aplicación.
+
+```typescript
+// ...
+import {ChangeDetectionStrategy} from '@angular/core';
+@Component({
+	// ...
+	changeDetection: ChangeDetectionStrategy.Default
+})
+export class MovieComponent {
+	// ...
+}
+```
+
+Veamos qué sucede cuando un usuario hace clic en el botón "Cambiar propiedades de actor" al usar la estrategia predeterminada.
+Como se señaló anteriormente, los cambios son provocados por eventos y la propagación de cambios es hecho en dos fases: la fase de aplicación y la fase de detección de cambio.
+
+En este caso Angular 2, inspecciona todos los elementos, esto es costoso, aún que, tenemos que recordar que el modelo unidoreccional de Angular 2, ofrece un rendimiento muy muy bueno, especialmente comparado con Angular 1.X.
+
+Vamos a ver que tenemos otra estrategía que permite ser más optimos a la hora de detectar los cambios. 
+
+### Estrategia de cambio *OnPush*.
+
+Observemos el siguiente ejemplo:
+
+```typescript
+//app/movie.component.ts
+// ...
+@Component({
+	// ...
+	changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class MovieComponent {
+	// ...
+}
+```
+
+Cuando indicamos que queremos usar la estrategia de detección de cambios _OnPush_ lo que estamos haciendo es decirle que solo los objetos que queremos que se inspeccionen son los @Inputs y estos son inmutables. Eso significa que no basta con cambiar sus atributos, para que Angular 2 detecte que se ha producido un cambio es necesario que se cambie la "instancia" completa del objeto @Input.
+
+Examinemos este ejemplo:
+
+```typescript
+class DataCard {
+	public name: string;
+}
+var vData = new DataCard(name: 'Ruben Moreno');
+var vData2 = vData.name = 'Pepe';
+
+vData === vData2 // true
+```
+
+Hemos creado una instancia, vData, cambiamos alguno de sus atributos. Pero el objeto es el mismo, la instancia es la misma. No estamos inspeccionando todos los elementos, solo lo que es susceptible de cambio. 
+
+En el caso anterior, en *MovieComponent* no se va a realizar ningún cambio internamente, no tiene sentido inspeccionar mas elementos.
+
+En cierta forma, la estrategía onPush espera a que los cambios nos llegen, o nos los empujen desde fuera de nuestros componentes.
+
+_Comentar en clase el ejemplo del otro día con Arturo_
+
+Nota: En el caso que vimos con Arturo, se trataba de un servicio que realizaba un http.get y queriamos pintar el resultado con una directiva *ngFor.
+
+```typescript
+// Este código no funciona es solo para ejemplificar un tipo de solución
+@Component({
+  template: '<div *ng-for="let product of products">{{product.name}} - {{product.price}}</div>',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+class CartBadgeCmp {
+
+  @Input() addItemStream:Observable<Array<number>>;
+  products : Array<any>;
+
+  ngOnInit() {
+    this.addItemStream.subscribe(() => {
+      products => this.products.push(products),
+    })
+  }
+}
+```
