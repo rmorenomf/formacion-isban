@@ -458,3 +458,25 @@ class CartBadgeCmp {
   }
 }
 ```
+
+## Práctica.
+
+Vamos a realizar una aplicación con un formulario de registro, en el que tenemos que facilitar los siguientes datos:
+
+Primero:
+---
+
+* Nombre (obligatorio) 
+* Apellidos (obligatorio)
+* DNI (obligatorio)
+* Telefono (numérico) => Validar el tipo de dato. Solo que sea un número pero sin usar HTML5.
+* Pais => Como campo de texto
+* Provincia => Como campo de texto
+* Botón de envío, deshabilitado hasta que el formulario cumpla con las reglas indicadas.
+* Botón de limpiar que limpie todos los datos y los errores del formulario.
+
+Segundo:
+---
+
+Vamos a modificar los los campos Pais y Provincia para que sean combos y para que tomen los datos de dos listas de tal forma que al seleccionar un pais se precarge solo la lista de provincias de ese pais.
+
