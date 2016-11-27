@@ -22,14 +22,94 @@ Primeramente porque tenemos que crear nuestra aplicación para que funcione. Ade
 ## Webpack
 
 Webpack es empaquedor de módulos, una herramienta para agrupar el código fuente de la aplicación en trozos y para cargar ese código desde un servidor a un navegador.
+Esto es muy importante cuando queremos tener un buen rendimiento en la carga de nuestra aplicación. Pero además necesitamos automatizar algunas de las tareas completamente necesarias como la "transpilacion" del TypeScript, la compilación de los ficheros SASS y bueno, algunas cosas no realmente necesarias como el uglify, etc.
 
-TODO
+Así, Webpack hace dos cosas:
+
+* Crear nuestra aplicación para que se pueda servir.
+* Trocear nuestra aplicación para que su carga sea optima.
+
+Vamos a repasar algunos conceptos básicos de Webpack para poder empezar a sacarle el máximo partido:
+
+La principal idea es que Webpack va a inspeccionar nuestro código del proyecto en busca de las sentencias *import* para crear un gráfico de dependecias y con eso generar uno a mas *bundles* o paquetes. 
+Por otro lado, con los "plugins" *loaders* podemos procesar y mimificar diferentes ficheros no JavaScript como; TypeScript, SASS, LESS, etc.
+
+Para que el proceso de búsqueda de dependencias comience tenemos que indicarle uno o mas ficheros de entrada:
+
+_webpack.config.js_
+
+```json
+entry: {
+  app: 'src/app.ts'
+}
+```
+
+Webpack inspeccionar recursivamente ese ficherio en busca de *imports*. Pero nos interesa que ese fichero se resuelva en un fichero js de salida, por eso indicamos en otra sección el fichero de salida:
+
+_webpack.config.js_
+
+```json
+output: {
+  filename: 'app.js'
+} 
+```
+
+Imaginemos que queremos generar nuestra aplicación en varios trozos:
+
+_webpack.config.js_
+
+```json
+entry: {
+  app: 'src/app.ts',
+  vendor: 'src/vendor.ts'
+}, 
+```
+
+Si queremos sacarlo en varios ficheros, tendremos que indicarle a Webpack como queremos que los genere:
+
+_webpack.config.js_
+
+```json
+output: {
+  filename: '[name].js'
+}
+```
+
+En realidad nos faltan cosas (un plugin, COMMONSCHUNKPLUGIN, que resuelva esto) además ```[name]``` es un placeholder de Webpack.
+
+Hemos comentado que Webpack es capaz de hacer paquetes de cualquier tipo de fichero aún que no sea un JavaScript. Pero por si mismo Webpack no sabe que tiene que hacer con esos ficheros. Por eso es necesario indicar los loader para que Webpack pueda procesar esos ficheros, por ejemplo:
+
+_webpack.config.js_
+
+```json
+loaders: [
+  {
+    test: /\.ts$/
+    loaders: 'ts'
+  },
+  {
+    test: /\.css$/
+    loaders: 'style!css'
+  }
+]
+```
+
+así cuando Webpack se encuentre algo como esto:
+
+```typescript
+import { AppComponent } from './app.component.ts';
+import 'uiframework/dist/uiframework.css';
+```
+
+aplicará la expresión regular indicada en el atributo *test* de la configuración y así podrá saber el *loader* que tiene que aplicar.
+
+
 
 ## SystemJS
 
-http://david-barreto.com/how-to-use-typescript-with-systemjs/
+No vamos a revisar SystemJS
 
-TODO
+http://david-barreto.com/how-to-use-typescript-with-systemjs/
 
 ## Lazy loading
 
@@ -319,3 +399,7 @@ platformBrowserDynamic().bootstrapModule(AppModule);
 ```
 
 Es incompatible AoT con JIT. Para nada, de hecho lo mejor es usar Jit para desarrollo y AoT para producción.
+
+## Internacionalización
+
+TODO
