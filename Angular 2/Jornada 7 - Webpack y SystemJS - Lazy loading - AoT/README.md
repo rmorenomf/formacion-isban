@@ -34,83 +34,6 @@ Vamos a repasar algunos conceptos básicos de Webpack para poder empezar a sacar
 La principal idea es que Webpack va a inspeccionar nuestro código del proyecto en busca de las sentencias *import* para crear un gráfico de dependecias y con eso generar uno a mas *bundles* o paquetes. 
 Por otro lado, con los "plugins" *loaders* podemos procesar y mimificar diferentes ficheros no JavaScript como; TypeScript, SASS, LESS, etc.
 
-Para que el proceso de búsqueda de dependencias comience tenemos que indicarle uno o mas ficheros de entrada:
-
-_webpack.config.json_
-
-```json
-"entry": {
-  "app": "src/app.ts"
-}
-```
-
-Webpack inspeccionar recursivamente ese ficherio en busca de *imports*. Pero nos interesa que ese fichero se resuelva en un fichero js de salida, por eso indicamos en otra sección el fichero de salida:
-
-_webpack.config.json_
-
-```json
-"output": {
-  "filename": "app.js"
-} 
-```
-
-Imaginemos que queremos generar nuestra aplicación en varios trozos:
-
-_webpack.config.json_
-
-```json
-"entry": {
-  "app": "src/app.ts",
-  "vendor": "src/vendor.ts"
-}, 
-```
-
-Si queremos sacarlo en varios ficheros, tendremos que indicarle a Webpack como queremos que los genere:
-
-_webpack.config.json_
-
-```json
-"output": {
-  "filename": "[name].js"
-}
-```
-
-En realidad nos faltan cosas (un plugin, COMMONSCHUNKPLUGIN, que resuelva esto) además ```[name]``` es un placeholder de Webpack.
-
-Hemos comentado que Webpack es capaz de hacer paquetes de cualquier tipo de fichero aún que no sea un JavaScript. Pero por si mismo Webpack no sabe que tiene que hacer con esos ficheros. Por eso es necesario indicar los loader para que Webpack pueda procesar esos ficheros, por ejemplo:
-
-En concreto no tiene ni idea de TypeScript así que vamos a necesitar instalar *awesome-typescript-loader* con:
-
-En realidad vamos a instalar mas cosas: 
-
-> npm install -D webpack ts-loader html-webpack-plugin tslint-loader
-
-_webpack.config.json_
-
-```json
-"loaders": [
-  {
-    "test": /\.ts$/
-    "loaders": "ts"
-  },
-  {
-    "test": /\.css$/
-    "loaders": "style!css"
-  }
-]
-```
-
-así cuando Webpack se encuentre algo como esto:
-
-```typescript
-import { AppComponent } from './app.component.ts';
-import 'uiframework/dist/uiframework.css';
-```
-
-aplicará la expresión regular indicada en el atributo *test* de la configuración y así podrá saber el *loader* que tiene que aplicar.
-
-========================
-
 La forma mas sencilla de instalar webpack en nuestro proyecto angular 2 es:
 
 > npm install -D webpack ts-loader html-webpack-plugin tslint-loader
@@ -120,6 +43,265 @@ Lo ejecutaremos mediante línea de comandos ejecutando el fichero de configuraci
 > webpack.config.js
 
 que es el que contiene la configuración del webpack.
+
+### Bundle
+
+Uno de los conceptos pilares de Webpack es el de *Bundle*. Un bundle es simplemente una colección de módulos. Para ejemplificar esto, podemos dividir los elementos de nuestra apliación en dos:
+
+* *app* sería la lógica de nuestra apliación.
+* *vendor* serían las librerías de terceros que usamos en nuestra aplicación.
+
+En Webpacks los bundles se definen através de *entry points*. El genera el mapa de dependencias para cada referncias de los módulos. Todas las dependencias que se encuentre las empaquetará dentro del bundle correspondiente.
+
+Referencias tanto JavaScript:
+
+```javascript 
+const app = require('./src/index.ts');
+```
+
+como TypeScript
+
+```typescript
+import { Component } from '@angular/core';
+```
+
+En nuestro fichero de configuración de Webpack va a tener esta pinta los entry points:
+
+```javascript
+{
+  entry: {
+    app: './src/app/main.ts',
+    vendor: [
+        'es6-shim',
+        'angular2/bundles/angular2-polyfills',
+        'angular2/bootstrap',
+        'angular2/platform/browser',
+        'angular2/platform/common_dom',
+        '@angular/core',
+        'angular2/router',
+        'angular2/http',
+        'redux',
+        'redux-thunk',
+        'ng2-redux',
+        'redux-logger'
+      ]
+    }
+}
+```
+
+Opcionalmente podemos indicar la forma cómo queremos que se generen nuestros bundles. Por ejemplo:
+
+* Sacar los ficheros a un directorio en particular.
+* Transformar el código de alguna forma.
+* Las rutas del servidor se pueden configurar de muchas maneras diferentes. Probablemente queremos alguna forma de configurar webpack para tener en cuenta nuestra configuración de enrutamiento de servidor.
+
+Todas estas cosas se configuran en la sección *output* que podría tener una pinta parecida a esto:
+
+```javascript
+{
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash].js',
+    publicPath: "/",
+    sourceMapFilename: '[name].[hash].js.map'
+  }
+}
+```
+
+Algunas opciones tienen palabras entre corchetes. Webpack tiene la capacidad de analizar parámetros para estas propiedades, con cada propiedad que tiene un conjunto diferente de parámetros disponibles para la sustitución. Aquí, estamos usando el *name* (el nombre del paquete) y *hash* (un valor hash del contenido del paquete).
+
+También hemos incluido la configuración para que genere un SourceMap.
+
+TypeScript no es el núcleo de JavaScript, por lo que el webpack necesita un poco de ayuda adicional para analizar los archivos *.ts*.
+Lo hace mediante el uso de *loaders*. Los cargadores son una manera de configurar cómo webpack transforma las salidas de archivos específicos en nuestros paquetes. El paquete *ts-loader* está manejando esta transformación de archivos TypeScript.
+
+Los *loaders* tienen esta pinta en el fichero de configuración *webpack.config.js*:  
+
+```javascript
+{
+  test: /\.ts$/,
+  loader: 'ts-loader',
+  exclude: /node_modules/
+}
+```
+
+o algo mas complejo como:
+
+```javascript
+{
+  module: {
+    preLoaders: [{
+      test: /\.ts$/,
+      loader: 'tslint'
+    }],
+    loaders: [
+      { test: /\.ts$/, loader: 'ts', exclude: /node_modules/ },
+      { test: /\.html$/, loader: 'raw' },
+      { test: /\.css$/, loader: 'style!css?sourceMap' },
+      { test: /\.svg/, loader: 'url' },
+      { test: /\.eot/, loader: 'url' },
+      { test: /\.woff/, loader: 'url' },
+      { test: /\.woff2/, loader: 'url' },
+      { test: /\.ttf/, loader: 'url' },
+    ],
+    noParse: [ /zone\.js\/dist\/.+/, /angular2\/bundles\/.+/ ]
+  }
+}
+```
+
+Cada tarea tiene algunas opciones de configuración:
+
+* _test_ - La ruta del archivo debe coincidir con esta condición para ser manejada. Esto se utiliza comúnmente para probar extensiones de archivos, por ejemplo. / \ .ts$/.
+* _loader_ - Los loaders que se utilizarán para transformar la entrada. Podemos usar varios loaders encadenados con la siguiente sintaxis: ```ts!tslint```.
+* _exclude_ - La ruta del archivo no debe coincidir con esta condición para ser manejada. Esto se utiliza comúnmente para excluir carpetas de archivos, p. / node_modules /.
+* _include_ - La ruta del archivo debe coincidir con esta condición para ser manejada. Esto se utiliza comúnmente para incluir carpetas de archivos. p.ej. ```path.resolve (__ dirname, 'app / src')```.
+
+*preLoaders* funciona igual que la lista de *loaders* sólo es una lista de tareas independiente que se ejecuta antes de la lista de tareas de los loaders.
+
+#### Objetos no JavaScript
+
+Webpack también nos permite cargar recursos no JavaScript como: CSS, SVG, archivos de fuentes, etc. Para poder adjuntar estos activos a nuestro paquete, debemos importarlos dentro de nuestra aplicación:
+
+```javascript
+import './styles/style.css';
+// or
+const STYLES = require('./styles/style.css');
+```
+
+#### Otros loaders interesantes:
+
+* raw-loader - devuelve el contenido del archivo como una cadena de texto.
+* url-loader - devuelve una dirección URL de datos codificada en base64 si el tamaño del archivo está bajo un cierto umbral, de lo contrario simplemente devuelve el archivo.
+* css-loader - resuelve las referencias @import y url en archivos CSS como módulos.
+* style-loader - inyecta una etiqueta de estilo con el paquete de CSS en la etiqueta ```<head>```.
+
+### Plugins
+
+Podemos extender las funciones de Webpack mediante el uso de plugins. 
+
+Los plugins nos permiten inyectar pasos de compilación personalizados durante el proceso de cosntrucción.
+Un plugin de uso común es el *html-webpack-plugin*. Esto nos permite generar archivos HTML necesarios para producción. Por ejemplo, puede usarse para generar etiquetas de script para los paquetes de salida.
+
+Por ejemplo, podríamos cargar nuestro plugin de esta forma:
+
+```javascript
+new HtmlWebpackPlugin({
+  template: './src/index.html',
+  inject: 'body',
+  minify: false
+});
+```
+
+Solo por tener otra referencia, un fichero de configuración completo de Webpack podría tener esta pinta:
+
+```javascript
+'use strict';
+
+const path = require("path");
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const basePlugins = [
+  new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[hash].bundle.js'),
+
+  new HtmlWebpackPlugin({
+    template: './src/index.html',
+    inject: 'body',
+    minify: false
+  })
+];
+
+const envPlugins = {
+    production: [
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            }
+        })
+    ],
+    development: []
+};
+
+const plugins = basePlugins.concat(envPlugins[process.env.NODE_ENV] || []);
+
+module.exports = {
+  entry: {
+    app: './src/index.ts',
+    vendor: [
+      '@angular/core',
+      '@angular/compiler',
+      '@angular/common',
+      '@angular/http',
+      '@angular/platform-browser',
+      '@angular/platform-browser-dynamic',
+      '@angular/router',
+      'es6-shim',
+      'redux',
+      'redux-thunk',
+      'redux-logger',
+      'reflect-metadata',
+      'ng2-redux',
+      'zone.js',
+    ]
+  },
+
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[hash].js',
+    publicPath: "/",
+    sourceMapFilename: '[name].[hash].js.map'
+  },
+
+  devtool: 'source-map',
+
+  resolve: {
+    extensions: ['.webpack.js', '.web.js', '.ts', '.js']
+  },
+
+  plugins: plugins,
+
+  module: {
+    rules: [
+      { test: /\.ts$/, loader: 'tslint' },
+      { test: /\.ts$/, loader: 'ts', exclude: /node_modules/ },
+      { test: /\.html$/, loader: 'raw' },
+      { test: /\.css$/, loader: 'style!css?sourceMap' },
+      { test: /\.svg/, loader: 'url' },
+      { test: /\.eot/, loader: 'url' },
+      { test: /\.woff/, loader: 'url' },
+      { test: /\.woff2/, loader: 'url' },
+      { test: /\.ttf/, loader: 'url' },
+    ],
+    noParse: [ /zone\.js\/dist\/.+/, /angular2\/bundles\/.+/ ]
+  }
+}
+```
+
+Y cómo lanzamos el Webpacl para que se ejecute, pues podemos usar NPM: 
+
+```json
+scripts: {
+  "clean": "rimraf dist",
+  "prebuild": "npm run clean",
+  "build": "NODE_ENV=production webpack",
+}
+```
+
+Tenemos mas ejemplos en el Starter Kit. En este caso la orgnización es algo diferente:
+
+Tenemos lo siguiente:
+
+```
+webpack.config.js
+./config/webpack.common.js
+./config/webpack.dev.js
+./config/webpack.deprov.js
+./config/webpack.test.js
+```
+
+En este caso se a partido la configuración en varios entornos, es sin duda una forma mas sencilla de mantener y crear nuestra configuración con Webpack.
+
+_Vamos a prácticar esto_
 
 ## Lazy loading
 
