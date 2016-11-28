@@ -1,0 +1,13 @@
+{
+  "name": "mini-demo",
+  "version": "1.0.0",
+  "description": "Solo por probar. He metido npm por no recordar el comando de http-server",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -a localhost -p 8000 -c-1 ./"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {}
+}

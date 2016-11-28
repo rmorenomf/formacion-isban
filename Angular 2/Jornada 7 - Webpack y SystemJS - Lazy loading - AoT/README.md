@@ -36,42 +36,42 @@ Por otro lado, con los "plugins" *loaders* podemos procesar y mimificar diferent
 
 Para que el proceso de búsqueda de dependencias comience tenemos que indicarle uno o mas ficheros de entrada:
 
-_webpack.config.js_
+_webpack.config.json_
 
 ```json
-entry: {
-  app: 'src/app.ts'
+"entry": {
+  "app": "src/app.ts"
 }
 ```
 
 Webpack inspeccionar recursivamente ese ficherio en busca de *imports*. Pero nos interesa que ese fichero se resuelva en un fichero js de salida, por eso indicamos en otra sección el fichero de salida:
 
-_webpack.config.js_
+_webpack.config.json_
 
 ```json
-output: {
-  filename: 'app.js'
+"output": {
+  "filename": "app.js"
 } 
 ```
 
 Imaginemos que queremos generar nuestra aplicación en varios trozos:
 
-_webpack.config.js_
+_webpack.config.json_
 
 ```json
-entry: {
-  app: 'src/app.ts',
-  vendor: 'src/vendor.ts'
+"entry": {
+  "app": "src/app.ts",
+  "vendor": "src/vendor.ts"
 }, 
 ```
 
 Si queremos sacarlo en varios ficheros, tendremos que indicarle a Webpack como queremos que los genere:
 
-_webpack.config.js_
+_webpack.config.json_
 
 ```json
-output: {
-  filename: '[name].js'
+"output": {
+  "filename": "[name].js"
 }
 ```
 
@@ -79,17 +79,23 @@ En realidad nos faltan cosas (un plugin, COMMONSCHUNKPLUGIN, que resuelva esto) 
 
 Hemos comentado que Webpack es capaz de hacer paquetes de cualquier tipo de fichero aún que no sea un JavaScript. Pero por si mismo Webpack no sabe que tiene que hacer con esos ficheros. Por eso es necesario indicar los loader para que Webpack pueda procesar esos ficheros, por ejemplo:
 
-_webpack.config.js_
+En concreto no tiene ni idea de TypeScript así que vamos a necesitar instalar *awesome-typescript-loader* con:
+
+En realidad vamos a instalar mas cosas: 
+
+> npm install -D webpack ts-loader html-webpack-plugin tslint-loader
+
+_webpack.config.json_
 
 ```json
-loaders: [
+"loaders": [
   {
-    test: /\.ts$/
-    loaders: 'ts'
+    "test": /\.ts$/
+    "loaders": "ts"
   },
   {
-    test: /\.css$/
-    loaders: 'style!css'
+    "test": /\.css$/
+    "loaders": "style!css"
   }
 ]
 ```
@@ -103,13 +109,17 @@ import 'uiframework/dist/uiframework.css';
 
 aplicará la expresión regular indicada en el atributo *test* de la configuración y así podrá saber el *loader* que tiene que aplicar.
 
+========================
 
+La forma mas sencilla de instalar webpack en nuestro proyecto angular 2 es:
 
-## SystemJS
+> npm install -D webpack ts-loader html-webpack-plugin tslint-loader
 
-No vamos a revisar SystemJS
+Lo ejecutaremos mediante línea de comandos ejecutando el fichero de configuración:
 
-http://david-barreto.com/how-to-use-typescript-with-systemjs/
+> webpack.config.js
+
+que es el que contiene la configuración del webpack.
 
 ## Lazy loading
 
