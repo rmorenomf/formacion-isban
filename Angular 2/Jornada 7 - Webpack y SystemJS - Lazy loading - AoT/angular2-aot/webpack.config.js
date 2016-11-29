@@ -13,7 +13,7 @@ const basePlugins = [
 
 module.exports = {
   entry: {
-    app: './app/boot.ts',
+    app: './app/main.ts',
     vendor: [
       '@angular/core',
       '@angular/compiler',

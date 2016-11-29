@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
     "declaration": false,
@@ -15,19 +15,20 @@
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
     "noFallthroughCasesInSwitch": true,
-    "outDir": "./dist/unbundled",
-    "rootDir": "./app",
+    "outDir": "./ngfactory",
+    "rootDir": "./src/app",
+    "typeRoots": [ "./node_modules/@types" ],
     "types": [
+      "core-js",
       "node"
     ]
   },
   "angularCompilerOptions": {
-    "debug": true,
-    "trace": true
+    "debug": true
   },
   "compileOnSave": false,
   "files": [
-    "app/app.module.ts"
+    "src/app/modules/main.module.ts"
   ],
   "exclude": [
     "node_modules",

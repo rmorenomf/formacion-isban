@@ -595,3 +595,7 @@ Es incompatible AoT con JIT. Para nada, de hecho lo mejor es usar Jit para desar
 ## Internacionalización
 
 TODO
+
+https://github.com/blacksonic/angular2-aot-webpack
+
+> npm install @angular/compiler-cli typescript@next @angular/platform-server @angular/compiler
