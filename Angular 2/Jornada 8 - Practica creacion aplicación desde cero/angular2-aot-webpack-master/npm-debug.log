@@ -1,0 +1,48 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\ruben\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'run',
+1 verbose cli   'webpack-aot' ]
+2 info using npm@4.0.2
+3 info using node@v7.1.0
+4 verbose run-script [ 'prewebpack-aot', 'webpack-aot', 'postwebpack-aot' ]
+5 info lifecycle angular2-aot-webpack@1.0.0~prewebpack-aot: angular2-aot-webpack@1.0.0
+6 silly lifecycle angular2-aot-webpack@1.0.0~prewebpack-aot: no script for prewebpack-aot, continuing
+7 info lifecycle angular2-aot-webpack@1.0.0~webpack-aot: angular2-aot-webpack@1.0.0
+8 verbose lifecycle angular2-aot-webpack@1.0.0~webpack-aot: unsafe-perm in lifecycle true
+9 verbose lifecycle angular2-aot-webpack@1.0.0~webpack-aot: PATH: C:\Users\ruben\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;E:\workingfolder\formacion-isban\Angular 2\Jornada 8 - Pipes avanzado - Web Components\angular2-aot-webpack-master\node_modules\.bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\ManagementStudio\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files\OpenVPN\bin;C:\Program Files\nodejs\;;C:\Python27;C:\Python27\Scripts;C:\Program Files\Microsoft VS Code Insiders\bin;C:\Program Files\MongoDB\Server\3.2\bin;C:\Users\ruben\AppData\Local\Microsoft\WindowsApps;C:\Users\ruben\AppData\Roaming\npm
+10 verbose lifecycle angular2-aot-webpack@1.0.0~webpack-aot: CWD: E:\workingfolder\formacion-isban\Angular 2\Jornada 8 - Pipes avanzado - Web Components\angular2-aot-webpack-master
+11 silly lifecycle angular2-aot-webpack@1.0.0~webpack-aot: Args: [ '/d /s /c', 'webpack --config webpack.aot.config.js' ]
+12 silly lifecycle angular2-aot-webpack@1.0.0~webpack-aot: Returned: code: 1  signal: null
+13 info lifecycle angular2-aot-webpack@1.0.0~webpack-aot: Failed to exec webpack-aot script
+14 verbose stack Error: angular2-aot-webpack@1.0.0 webpack-aot: `webpack --config webpack.aot.config.js`
+14 verbose stack Exit status 1
+14 verbose stack     at EventEmitter.<anonymous> (C:\Users\ruben\AppData\Roaming\npm\node_modules\npm\lib\utils\lifecycle.js:279:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:191:7)
+14 verbose stack     at ChildProcess.<anonymous> (C:\Users\ruben\AppData\Roaming\npm\node_modules\npm\lib\utils\spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:191:7)
+14 verbose stack     at maybeClose (internal/child_process.js:885:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+15 verbose pkgid angular2-aot-webpack@1.0.0
+16 verbose cwd E:\workingfolder\formacion-isban\Angular 2\Jornada 8 - Pipes avanzado - Web Components\angular2-aot-webpack-master
+17 error Windows_NT 10.0.14393
+18 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Users\\ruben\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "run" "webpack-aot"
+19 error node v7.1.0
+20 error npm  v4.0.2
+21 error code ELIFECYCLE
+22 error angular2-aot-webpack@1.0.0 webpack-aot: `webpack --config webpack.aot.config.js`
+22 error Exit status 1
+23 error Failed at the angular2-aot-webpack@1.0.0 webpack-aot script 'webpack --config webpack.aot.config.js'.
+23 error Make sure you have the latest version of node.js and npm installed.
+23 error If you do, this is most likely a problem with the angular2-aot-webpack package,
+23 error not with npm itself.
+23 error Tell the author that this fails on your system:
+23 error     webpack --config webpack.aot.config.js
+23 error You can get information on how to open an issue for this project with:
+23 error     npm bugs angular2-aot-webpack
+23 error Or if that isn't available, you can get their info via:
+23 error     npm owner ls angular2-aot-webpack
+23 error There is likely additional logging output above.
+24 verbose exit [ 1, true ]
