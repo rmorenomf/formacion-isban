@@ -61,7 +61,7 @@ Podemos extender un elemento existente:
 
 var XMyButtonPrototype = Object.create(HTMLButtonElement.prototype);
 XMyButtonPrototype.createdCallback = function() {
-  this.textContent = "I'm an cool button!";
+  this.textContent = "I'm a cool button!";
 };
 
 var XMyButton = document.registerElement('x-my-button', {

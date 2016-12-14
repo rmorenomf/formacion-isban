@@ -30,6 +30,8 @@ limitan las posibilidades de exploración de los robots.
 
 3. *Mantenibilidad*. En especial con lógica que tiene que estar tanto en cliente como en servidor, que hace lo mismo pero que tenemos que codificarla dos veces; validaciones de formulario, etc.
 
+4. *Social media*. No es trivial hacer una previsualización de contenido para ser integrado en una red social ya que el contendido se genera dentro de un contexto de aplicación que no siempre puede ser instanciado en/desde otro entorno.
+
 Isomorfismo es quedarse con lo mejor de ambos mundos.
 
 ## Isomorfismo con Angular 2.
