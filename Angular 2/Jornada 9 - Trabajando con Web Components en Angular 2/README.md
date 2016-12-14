@@ -210,6 +210,16 @@ Como podemos ver se trata de puro HTML y puro JavaScript, así que vamos a utili
 (Propiedades) Angular 2 => Polymer web component
 Polymer web component => Angular 2 (Eventos JavaScript)
 
+Por eso vamos a echar un vistazo a las propiedades y a los eventos del DOM:
+
+#### Eventos con Vanilla JavaScript
+
+> Tip: The event model was standardized by the W3C in DOM Level 2.
+
+Podemos distinguir entre eventos del DOM o eventos que incorporan los objetos DOM simplemente por sert HTMLElement y los custom events, o eventos que podemos definir, asignar y lanzar a nuestro antojo.
+
+Vamos a centrarnos en los segundos, en los eventos que podemos crear "custmizados" y que nos van a permitir enriquecer el funcionamiento de nueestros componentes.
+
 Vamos a hacer primero un ejemplo en el que vamos a cambiar el saludo desde un componente Angular 2.
 
 ### Vaadin y sus complementos para facilitar la integración con Angular 2.
