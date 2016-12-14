@@ -214,11 +214,105 @@ Por eso vamos a echar un vistazo a las propiedades y a los eventos del DOM:
 
 #### Eventos con Vanilla JavaScript
 
-> Tip: The event model was standardized by the W3C in DOM Level 2.
+> Tip: The event model was standardized by the W3C in DOM Level 2 (Actualmente vamos por la DOM Level 4).
 
-Podemos distinguir entre eventos del DOM o eventos que incorporan los objetos DOM simplemente por sert HTMLElement y los custom events, o eventos que podemos definir, asignar y lanzar a nuestro antojo.
+Podemos distinguir entre eventos del DOM o eventos que incorporan los objetos DOM simplemente por ser HTMLElement y los custom events, o eventos que podemos definir, asignar y lanzar a nuestro antojo.
 
-Vamos a centrarnos en los segundos, en los eventos que podemos crear "custmizados" y que nos van a permitir enriquecer el funcionamiento de nueestros componentes.
+Un repaso rápido a los eventos Nativos del DOM:
+
+```javascript
+<h1 id="elementId" onclick="alert('Ooops!');">Click on this text!</h1>
+document.getElementById('elementId').onclick = function(evt){ console.log('Clicked'); };
+document.getElementById('elementId').click(); //This trigger a click event.
+```
+
+Vamos a centrarnos en los segundos, en los eventos que podemos crear "customizados" y que nos van a permitir enriquecer el funcionamiento de nuestros componentes.
+
+Muy recomendable este artículo: http://blog.garstasio.com/you-dont-need-jquery/events/
+
+No tenemos que inventar nada ni usar pollyfills ni implantar ningún patrón, solo usar las herramientas nativas.
+
+Creación de un custom event:
+
+```javascript
+var event = document.createEvent('Event');
+event.initEvent('my-custom-event', true, true); //can bubble, and is cancellable
+someElement.dispatchEvent(event);
+
+// O una forma un poco mas moderna, cuando esta soportado.
+
+var event = new CustomEvent('my-custom-event', {bubbles: true, cancelable: true});
+someElement.dispatchEvent(event);
+```
+
+Escuchando un determinado evento:
+
+```javascript
+someElement.addEventListener('my-custom-event', function(evt) {
+    // TODO event handler logic
+});
+```
+
+Desligado de un evento:
+
+```javascript
+someElement.removeEventListener('my-custom-event', myEventHandler);
+```
+
+También podemos modificar el comportamiento de los eventos:
+
+```javascript
+someEl.addEventListener('my-custom-event', function(event) {
+    event.stopPropagation(); //Evita que este evento se dispare en otros ancestros.
+});
+
+someEl.addEventListener('my-custom-event', function(event) {
+    event.stopImmediatePropagation(); //Evita que otros listeners que están escuchando este evento se disparen.
+});
+
+someAnchor.addEventListener('my-custom-event', function(event) {
+    event.preventDefault(); //No ejecutes la acción nativa. Ejemplo: click de un link. 
+});
+```
+
+Pero vamos a hacer las cosas al estilo de Polymer, así que almenos en el lado del componente Polymer vamos a tener que incluir algo del "azucar" de Polymer.
+
+Ejemplo de custom events en Polymer:
+
+https://www.polymer-project.org/1.0/docs/devguide/events
+
+```javascript
+<dom-module id="x-custom">
+  <template>
+    <button on-click="handleClick">Kick Me</button>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'x-custom',
+
+      handleClick: function(e, detail) {
+        this.fire('kick', {kicked: true});
+      }
+
+    });
+
+  </script>
+
+</dom-module>
+<x-custom></x-custom>
+
+<script>
+    document.querySelector('x-custom').addEventListener('kick', function (e) {
+        console.log(e.detail.kicked); // true
+    })
+</script>
+```
+
+Como vemos podemos crear nuestros custom events y usarlos desde cualquier sitio, porque se tratan de eventos del DOM. 
+
+#### Propiedades con Angular 2 y Polymer.
 
 Vamos a hacer primero un ejemplo en el que vamos a cambiar el saludo desde un componente Angular 2.
 
