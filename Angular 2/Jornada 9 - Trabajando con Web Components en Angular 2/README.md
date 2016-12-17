@@ -98,12 +98,6 @@ http://blog.teamtreehouse.com/introduction-html-imports
 
 http://w3c.github.io/webcomponents/spec/shadow/
 
-Los navegadores ya lo usan:
-
-1. Activar "Show user agent shadow DOM" de las herramientas de desarrollo de Chrome (Si no lo tenemos ya). 
-
-Buscar una etiqueta de vídeo 
-
 #### ¿Qué es Shadow DOM?
 
 Shadow DOM se refiere a la habilidad del navegador de incluir un subárbol de elementos (DOM) en un documento (DOM), pero a la vez sin incluirlo en el árbol DOM del documento.
@@ -111,8 +105,6 @@ Shadow DOM se refiere a la habilidad del navegador de incluir un subárbol de el
 En otras palabras: el Shadow DOM es un DOM encapsulado que vive dentro del DOM principal. 
 
 https://developers.google.com/web/fundamentals/getting-started/primers/shadowdom
-
-_Tiempo de práctica_
 
 No olvidar comentar los selectores propios de Shadow DOM: 
 
@@ -206,6 +198,8 @@ Vamos a añadirle algo de comportamiento. Recordad la naturaleza última de los 
 5. Estamos usando Polymer que lo "único" que hace es endulzar muchas de las cosas que haríamos a mano. Bueno, también hace que esto funcione en cualquier navegador no solo en Chrome y en Opera. Pero que todo se traduce en HTML y JavaScript. 
 
 Como podemos ver se trata de puro HTML y puro JavaScript, así que vamos a utilizar las herramientas nativas para interactuar con los web components. 
+
+Este es nuestro patrón de interacción:
 
 (Propiedades) Angular 2 => Polymer web component
 Polymer web component => Angular 2 (Eventos JavaScript)

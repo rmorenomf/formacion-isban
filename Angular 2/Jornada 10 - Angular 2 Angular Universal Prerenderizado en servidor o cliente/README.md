@@ -21,6 +21,14 @@ Un poco de historia:
 
 _Discutir ventajas e inconvenientes de cada una_
 
+### ¿Qué **** es?
+
+Angular Universal has several other features other than giving a solution for rendering HTML on the server. Based on the term "server side rendering", we could think that what Angular Universal does is similar to for example a server side template language like Jade. But there is a lot more functionality to it.
+
+With Angular Universal you get that initial HTML payload rendered on the server, but you also boot a trimmed down version of Angular on the client and from there Angular takes over the page as a single page app, generating from there all the HTML on the client instead of the server.
+
+So the end result that you get is the same, its a running single page application, but now because you got the initial HTML payload from the server you get a much better startup time and also a fully SEO indexable app.
+
 Resuelve dos problemas de SPA:
 
 1. *Performance*. Los clientes no tienen porqué ser rápidoso disponer de los suficientes recursos como para realizar una carga y ejecución fluida. Teléfonos, Tabletas, etc.
@@ -34,7 +42,15 @@ limitan las posibilidades de exploración de los robots.
 
 Isomorfismo es quedarse con lo mejor de ambos mundos.
 
-## Isomorfismo con Angular 2.
+Pero también tiene sus cosillas:
+
+En primer lugar hay un "lag" desde el momento que se pinta el HTML plano y se renderiza hasta que la apliación se arranca, se convierte en un SPA y el usuario puede comenzar a interactuar con ella.
+
+En esta franja de tiempo el usuario puede empezar a teclear en una caja de texto, pulsar en botones y enlaces, etc.
+
+Una forma de solucionar este problema es registrar todos los eventos que a disparado el usuario para ejecutarlos una vez que Angular se ha inciado.
+
+## Isomorfismo con Angular 2
 
 ### Fuentes de información
 
@@ -47,6 +63,13 @@ Excelente tutorial:
 
 http://blog.angular-university.io/angular-2-universal-meet-the-internet-of-the-future-seo-friendly-single-page-web-apps/
 
+Cosas importantes:
+
+1. Nunca toques el DOM
+2. 
+
 ### Starter Kit
 
 https://github.com/angular/universal-starter
+
+### Por donde empezar

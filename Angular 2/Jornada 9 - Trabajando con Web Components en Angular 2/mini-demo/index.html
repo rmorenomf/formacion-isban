@@ -1,13 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>usando componentes</title>
-  <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
-  <link rel="import" href="elements/saludo-polymer/saludo-polymer.html">
-</head>
-<body>
-  <h1>Probando</h1>
-  <saludo-polymer>Rubén</saludo-polymer>
-</body>
+<html>
+  <head>
+    <title>Angular 2 Demo</title>
+    
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="saludo-polymer.html" />
+
+    <!-- Load common libraries -->
+    <!-- Ojo con typescript.min.js https://github.com/niutech/typescript-compile -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/2.0.3/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zone.js/0.6.25/zone.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.38/system.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.min.js"></script>
+
+    <!-- Load Bundle from Asset Host / componentes material -->
+    <script src="https://plnkr-test.firebaseapp.com/components.bundle.js?sha=bf44c16"></script>
+    
+    <!-- Configure SystemJS -->
+    <script src="systemjs.config.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <script>
+      System
+        .import('main.ts')
+        .catch(console.error.bind(console));
+    </script>    
+  </head>
+
+  <body>
+    <default-app>Loading the Angular 2 Material App...</default-app>
+  </body>
+
 </html>
