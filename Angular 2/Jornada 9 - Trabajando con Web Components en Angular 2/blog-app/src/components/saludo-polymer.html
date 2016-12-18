@@ -1,0 +1,29 @@
+<link rel="import" href="../vendor/polymer/polymer.html">
+
+<dom-module id="saludo-polymer">
+  <template>
+    <style>
+    h1{
+      color: blue;
+    }
+    </style>
+    
+    <hr>
+
+    <h1>Bienvenido</h1>
+    <button on-tap="handleTap">Say hello</button>
+
+    <hr>
+  
+  </template>
+  <script>
+    Polymer({
+      is: "saludo-polymer",
+      
+      handleTap: function() {
+        
+        alert('Ok!');
+      }
+    });
+  </script>
+</dom-module>
