@@ -196,3 +196,25 @@ app.get('/*', (req, res) => {
 OJO. Según la documentación oficial: "This API will be improved in the near future.".
 
 ![alt text](./resources/confused_vincent_vega.gif "¿Pero qué es esto?")
+
+#### 4 - DI Swapping
+
+El concepto de DI Swapping es absolutamente crítico para el desarrollo universal. Básicamente, esto es cuando se utiliza Angular DI para abstraer el código que debe ser específico para el navegador o en el servidor. Así, por ejemplo, si el código necesita acceder a un valor en la cookie del usuario, haría algo como esto:
+
+* Crear una interfaz de clase abstracta Cookie que tiene una función vacía get().
+* Crear una versión específica del navegador llamada CookieBrowser en la que la función get() donde hace referencia a window.document.cookie
+* Crear una versión específica de node llamada CookieNode en la que la función get() hace referencia a Zone.current.get('req').
+* En el NgModule del Browser, segurarnos de configurar CookieBrowser como un provider para Cookie.
+* En el NgModule del servidor, asegurarnos de establecer CookieNode como un provider para Cookie.
+
+Esto es a grandes rasgos, lo que implica DI Swapping.
+
+### *preboot*
+
+El propósito de esta biblioteca es ayudar a administrar la transición de estado (es decir, eventos, enfoque, datos) desde una vista web generada por el servidor a una vista web generada por el cliente. Los casos de uso más comunes incluyen:
+
+* Aplicaciones universales re-render (por ejemplo, Angular 2): la aplicación cliente genera una vista nueva que reemplaza la vista del servidor
+* Aplicaciones universales que se hidratan (por ejemplo, React): la aplicación cliente se agrega a la vista del servidor existente
+* Static server-side - Se usa una plantilla estática para la carga inicial de la página
+
+https://universal.angular.io/quickstart/
