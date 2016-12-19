@@ -19,9 +19,9 @@ import { XLarge } from './x-large';
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
-  // Set our default values
+  // Set our default valuesº
   localState = { value: '' };
-  userName: string = 'Ruben';
+  userName: string = 'Ruben 2';
 
   // TypeScript public modifiers
   constructor(public appState: AppState, public title: Title) {
@@ -38,4 +38,9 @@ export class HomeComponent {
     this.appState.set('value', value);
     this.localState.value = '';
   }
+
+  sayHelloToEveryOne(event: any){
+    console.log("[*] Elemento pulsado.");
+    this.userName = "Luis, Oscar, Max";
+}
 }

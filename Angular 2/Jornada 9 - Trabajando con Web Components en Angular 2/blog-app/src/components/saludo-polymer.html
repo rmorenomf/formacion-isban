@@ -10,7 +10,7 @@
     
     <hr>
 
-    <h1>Bienvenido</h1>
+    <h1>Bienvenido {{ userName }} </h1>
     <button on-tap="handleTap">Say hello</button>
 
     <hr>
@@ -20,9 +20,15 @@
     Polymer({
       is: "saludo-polymer",
       
+      properties: {
+        userName : String
+      },
+
       handleTap: function() {
         
         alert('Ok!');
+
+        this.fire('helloforeveryone', {hello: true});
       }
     });
   </script>

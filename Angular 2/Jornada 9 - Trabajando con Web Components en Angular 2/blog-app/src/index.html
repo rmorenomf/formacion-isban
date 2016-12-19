@@ -5,9 +5,15 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Vamos a agregar las dependencias de Polymer -->
+  <script src="./vendor/webcomponentsjs/webcomponents-lite.min.js"></script>
+  <link rel="import" href="components/saludo-polymer.html">
+
+
   <title><%= htmlWebpackPlugin.options.title %></title>
 
   <meta name="description" content="<%= htmlWebpackPlugin.options.title %>">
+  
 
   <% if (webpackConfig.htmlElements.headTags) { %>
   <!-- Configured Head Tags  -->

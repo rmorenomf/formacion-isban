@@ -1,4 +1,4 @@
-import { NgModule, ApplicationRef } from '@angular/core';
+import { NgModule, ApplicationRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -52,7 +52,10 @@ type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS
-  ]
+  ],
+
+
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {
   constructor(public appRef: ApplicationRef, public appState: AppState) {}
