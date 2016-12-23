@@ -7,8 +7,8 @@ We show some good practices to optimize visual resources.
 1. Remove all unnecessary images.
 2. Do not use images, not always are the best solution. Some elements can be surrigate for an image like:
 
-    * CCS3 effects whenever possible.
-    * Uses web fonts instead of images.
+    * CCS3 effects whenever possible.
+    * Uses web fonts instead of images.
 
     Thats two options are also resolution independent, clearly visible in any resolution, included with zoom. In the case of web fonts we will also have the possibility to select and search as text. Improving usability.
 
@@ -20,7 +20,7 @@ SVG is an XML-based format and we can use GZIP compression to reduce the size of
 
 5. Optimizes binary images.
 
-    * Choose the appropriate format:
+    * Choose the appropriate format:
 
 
     | Format | Transparency | Animation | Browser
