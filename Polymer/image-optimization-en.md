@@ -33,13 +33,13 @@ SVG is an XML-based format and we can use GZIP compression to reduce the size of
 
 
     * Use Image Progressive Rendering. This will allow the image to be displayed even when it is not completely downloaded. This is a must do from any image editor.
+        
+        1. Create the JPG as progressive.
+        2. Create PNG as interlaced.
 
-        1. Create the JPG as progressive.
-        2. Create PNG as interlaced.
+    * Simple decision tree for format:
 
-    * Simple decision tree for format:
-
-    ![alt text](./resources/format-tree.png "Graphic format decision tree")
+    ![alt text](./resources/format-tree.png "Graphic format decision tree")
     
     1. In the case of lost quality compression formats such JPG, it will be necessary to specify a compression rate. In this case there is no "good" value, it will depend on the image and the permissible degradation.
     2. In the case of PNG format we can limit the size of the color palette and generate much smaller files when this is possible.
