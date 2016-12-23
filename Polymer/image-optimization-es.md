@@ -22,6 +22,7 @@ Puesto que SVG es un formato basado en XML podemos usar la compresión GZIP para
 
     * Elige el formato adecuado:
 
+
     | Formato | Transparencia | Animación | Navegador 
     | --- | --- | --- | --- 
     | GIF | Sí | Sí | Todos 
@@ -29,6 +30,7 @@ Puesto que SVG es un formato basado en XML podemos usar la compresión GZIP para
     | JPEG | No | No | Todos 
     | JPEG XR | Sí | Sí | IE 
     | WebP | Sí | Sí | Chrome, Opera, Android  
+
 
     * Renderizado progresivo de imágenes. Eso permitirá visualizar la imagen aún no estando completamente descargada. Esto es secillo de hacer desde cualquier editor de imágenes.
 
@@ -39,8 +41,8 @@ Puesto que SVG es un formato basado en XML podemos usar la compresión GZIP para
 
     ![alt text](./resources/format-tree.png "Árbol de decisión de formato gráfico")
     
-        1. En el caso de los formatos con compresión con pérdida como JPG, será necesario especificar un factor de compresión. En este caso no hay un valor "bueno", dependerá de la imágen y el degradado permisible.
-        2. En el caso del formato PNG podemos limitar el tamaño de la paleta de colores y generar ficheros mucho mas pequeños cuando esto sea posible.
+    1. En el caso de los formatos con compresión con pérdida como JPG, será necesario especificar un factor de compresión. En este caso no hay un valor "bueno", dependerá de la imágen y el degradado permisible.
+    2. En el caso del formato PNG podemos limitar el tamaño de la paleta de colores y generar ficheros mucho mas pequeños cuando esto sea posible.
 
 6. Si se van a cargar muchas imágenes o están son muy pesadas, podemos mostrar un bloque sólido con el tamaño ocupado por la imágen y del color sólido mayoritario de fondo. Esta es la estrategia usada por google en su buscador de imágenes.
 
