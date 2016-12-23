@@ -50,7 +50,7 @@ SVG is an XML-based format and we can use GZIP compression to reduce the size of
 
 ### Automation for image optimization on Angular 2:
 
-For webpack we can use *image-webpack-loader* (https://github.com/tcoopman/image-webpack-loader) o *imagemin-webpack-pluginº* (https://github.com/Klathmon/imagemin-webpack-plugin). Both optimize PNG, JPEG, GIF and SVG files.
+For webpack we can use *image-webpack-loader* (https://github.com/tcoopman/image-webpack-loader) o *imagemin-webpack-plugin* (https://github.com/Klathmon/imagemin-webpack-plugin). Both optimize PNG, JPEG, GIF and SVG files.
 
 ## Static Analysis
 
