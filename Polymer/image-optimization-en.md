@@ -39,10 +39,10 @@ SVG is an XML-based format and we can use GZIP compression to reduce the size of
 
     * Simple decision tree for format:
 
-    ![alt text](./resources/format-tree.png "Graphic format decision tree")
+        ![alt text](./resources/format-tree.png "Graphic format decision tree")
     
-    1. In the case of lost quality compression formats such JPG, it will be necessary to specify a compression rate. In this case there is no "good" value, it will depend on the image and the permissible degradation.
-    2. In the case of PNG format we can limit the size of the color palette and generate much smaller files when this is possible.
+        1. In the case of lost quality compression formats such JPG, it will be necessary to specify a compression rate. In this case there is no "good" value, it will depend on the image and the permissible degradation.
+        2. In the case of PNG format we can limit the size of the color palette and generate much smaller files when this is possible.
 
 6. If many images must be downloaded or are very heavy, we can display a solid block with the size occupied by the image and the majority solid color background. This is the strategy used by google in your image finder.
 
