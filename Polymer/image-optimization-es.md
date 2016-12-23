@@ -7,20 +7,20 @@ Exponemos algunas buenas prácticas para optimizar los recursos visuales.
 1. Elimina todas las imágenes innecesarias.
 2. No uses imágenes, estas no son siempre la única solución. Algunos elementos que pueden sustituir a una imágen son:
 
-    * Efectos CCS3 siempre que sea posible.
-    * Utiliza fuentes web en vez de imágenes.
+* Efectos CCS3 siempre que sea posible.
+* Utiliza fuentes web en vez de imágenes.
 
-    Las dos opciones indicadas además son independientes de la resolución, viéndose nítidamente en cualquier resolución, incluido con zoom. En el caso de las fuentes web también obtendremos la posibilidad de seleccionar y buscar como texto. Mejorando la usabilidad.
+Las dos opciones indicadas además son independientes de la resolución, viéndose nítidamente en cualquier resolución, incluido con zoom. En el caso de las fuentes web también obtendremos la posibilidad de seleccionar y buscar como texto. Mejorando la usabilidad.
 
 3. Usa imágenes vectoriales cuando sea posible (SVG). Tienen menor peso, son escalables e independientes de la resolución.
-    También será necesario optimizar las imágenes vectoriales. Los editores de imágenes vectoriales suelen incluir muchos metadatos y comentarios que no son necesarios para el renderizado de la imágen. Herramientas como *svgo* nos permiten eliminar dicha carga extra.
-    Puesto que SVG es un formato basado en XML podemos usar la compresión GZIP para reducir el tamaño de la transferencia. En ese caso, debemos tener configurado correctemente nuestro servidor Web. 
+También será necesario optimizar las imágenes vectoriales. Los editores de imágenes vectoriales suelen incluir muchos metadatos y comentarios que no son necesarios para el renderizado de la imágen. Herramientas como *svgo* nos permiten eliminar dicha carga extra.
+Puesto que SVG es un formato basado en XML podemos usar la compresión GZIP para reducir el tamaño de la transferencia. En ese caso, debemos tener configurado correctemente nuestro servidor Web. 
 
 4. Utilizar tamaños de imágenes diferentes según el dispositivo (Tailored image sizes). Un dispositivo móvil es muy posible que tenga una resolución que no justifique el servir imágenes en altas resoluciones. Procura que estas tengan el tamaño justo, no tiene sentido enviar una imágen que después se va a escalar a un tamaño menor. 
 
 5. Optimiza las imágenes binarias.
 
-    * Elige el formato adecuado:
+* Elige el formato adecuado:
 
 | Formato | Transparencia | Animación | Navegador 
 | --- | --- | --- | --- 
@@ -30,17 +30,17 @@ Exponemos algunas buenas prácticas para optimizar los recursos visuales.
 | JPEG XR | Sí | Sí | IE 
 | WebP | Sí | Sí | Chrome, Opera, Android  
 
-    * Renderizado progresivo de imágenes. Eso permitirá visualizar la imagen aún no estando completamente descargada. Esto es secillo de hacer desde cualquier editor de imágenes.
+* Renderizado progresivo de imágenes. Eso permitirá visualizar la imagen aún no estando completamente descargada. Esto es secillo de hacer desde cualquier editor de imágenes.
 
-        * Crear el JPG como progressive. 
-        * Crear el PNG como interlaced.
+    1. Crear el JPG como progressive. 
+    2. Crear el PNG como interlaced.
 
-    * Árbol sencillo para decisión de formato:
+* Árbol sencillo para decisión de formato:
 
-    ![alt text](./resources/format-tree.png "Árbol de decisión de formato gráfico")
+![alt text](./resources/format-tree.png "Árbol de decisión de formato gráfico")
     
-    * En el caso de los formatos con compresión con pérdida como JPG, será necesario especificar un factor de compresión. En este caso no hay un valor "bueno", dependerá de la imágen y el degradado permisible.
-    * En el caso del formato PNG podemos limitar el tamaño de la paleta de colores y generar ficheros mucho mas pequeños cuando esto sea posible.
+* En el caso de los formatos con compresión con pérdida como JPG, será necesario especificar un factor de compresión. En este caso no hay un valor "bueno", dependerá de la imágen y el degradado permisible.
+* En el caso del formato PNG podemos limitar el tamaño de la paleta de colores y generar ficheros mucho mas pequeños cuando esto sea posible.
 
 6. Si se van a cargar muchas imágenes o están son muy pesadas, podemos mostrar un bloque sólido con el tamaño ocupado por la imágen y del color sólido mayoritario de fondo. Esta es la estrategia usada por google en su buscador de imágenes.
 
