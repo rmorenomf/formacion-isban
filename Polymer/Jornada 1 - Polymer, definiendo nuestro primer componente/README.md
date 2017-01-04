@@ -401,10 +401,11 @@ Callback | Descripción
 --- | ---
 created | Se llama cuando se ha creado el elemento, pero antes de que se establezcan los valores de propiedad y se inicialice DOM local. Se utiliza para una configuración única antes de que se establezcan los valores de propiedad. Utilizar en lugar de createCallback.
 ready | Se llama después de que se establecen valores de propiedad y se inicializa DOM local. Utilizar para la configuración única de su componente después de que el DOM local se inicialice. (Para la configuración basada en valores de propiedad, puede ser preferible usar un observador.)
+attached | Se llama después de que el elemento se adjunta al documento. Puede ser llamado varias veces durante la vida de un elemento. La primera devolución de llamada *attached* está garantizada para no disparar hasta después de *ready*. Los usos incluyen el acceso a la información de estilo computado y la adición de oyentes de evento a nivel de documento. (Si utiliza el manejo de eventos declarativos, como los oyentes de eventos anotados o el objeto de los oyentes, Polymer agrega automáticamente los oyentes al adjuntar y los elimina al separarlos). Utilizar en lugar de attachedCallback.
+detached | Se llama después de retirar el elemento del documento. Puede ser llamado varias veces durante la vida de un elemento. Los usos incluyen la eliminación de los listeners de eventos agregados en adjunto. Usar en lugar de singleCallback.
+attributeChanged | Se llama cuando se cambia uno de los atributos del elemento. Se utiliza para manejar cambios de atributos que no corresponden a las propiedades declaradas. (Para las propiedades declaradas, Polymer manipula los cambios de atributo automáticamente como se describe en la deserialización de atributo.). Utilizar en lugar de attributeChangedCallback.
 
-
-
-Ejemplo de intercepción de los hooks de los eventos del ciclo de vida de un componente:
+Aquí tenemos un ejemplo de intercepción de los hooks de los eventos del ciclo de vida de un componente:
 
 ```javascript
 MyElement = Polymer({
@@ -434,8 +435,6 @@ MyElement = Polymer({
 
 });
 ``` 
-
-
 
 ### Definir atributos o propiedades de un componente.
 
