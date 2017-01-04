@@ -488,15 +488,20 @@ Tipo de atributo, utilizado para deserializar desde un atributo. El tipo de la p
 *value*: Tipo: booleano, número, cadena o función.
 Valor predeterminado de la propiedad. Si valor es una función, se invoca la función y se utiliza el valor de retorno como valor predeterminado de la propiedad. Si el valor predeterminado debe ser una matriz o un objeto exclusivo de la instancia, cree la matriz o el objeto dentro de una función. 
 
-*readOnly*: 
+*readOnly*: Tipo: boolean
+Si es true, la propiedad no se puede establecer directamente mediante asignación o vinculación de datos.
 
-*notify*:
+*notify*: Tipo: boolean
+Si es true, la propiedad está disponible para binding de datos bidireccional. Además, un evento, nombre-propiedad-cambiado se dispara cada vez que la propiedad cambia.
 
-*computed*:
+*computed*: Tipo: string
+El valor se interpreta como un nombre de método y una lista de argumentos. El método se invoca para calcular el valor cuando cambia cualquiera de los valores de los argumentos. Las propiedades calculadas son siempre de sólo lectura.
 
-*observer*:
+*observer*: Tipo: stringº
+El valor se interpreta como un nombre de método que se invocará cuando cambie el valor de la propiedad. El método *propertyNameChanged* no se invocará automáticamente.
 
-*reflectToAttribute*:
+*reflectToAttribute*: Tipo: boolean
+Establezca en true para que el atributo correspondiente se establezca en el nodo host cuando cambie el valor de la propiedad. Si el valor de la propiedad es booleano, el atributo se crea como un atributo booleano HTML estándar (si es true, no se establece si es falso). Para otros tipos de propiedad, el valor del atributo es una representación de cadena del valor de la propiedad.
 
 ### Crear piezas de código reutilizables.
 
