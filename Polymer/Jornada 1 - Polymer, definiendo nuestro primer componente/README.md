@@ -605,7 +605,7 @@ Puesto que los componentes heredan de *Polymer.Base* podemos acceder a algunas f
 
 Algunos destacados en la documentación:
 
-* AAA
+* TODO
 
 
 ### Crear piezas de código reutilizables.
