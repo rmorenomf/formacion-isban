@@ -459,7 +459,7 @@ La más conservadora (y la más recomendable) es *polymer.html* que incluye la l
 
 1. Polymer micro features
 
-The Polymer micro layer provides bare-minimum Custom Element sugaring.
+  The Polymer micro layer provides bare-minimum Custom Element sugaring.
 
   * Custom element constructor =>	Polymer.Class({ … });
   * Custom element registration => Polymer({ is: ‘...’, … }};
@@ -473,7 +473,7 @@ The Polymer micro layer provides bare-minimum Custom Element sugaring.
 
 2. Polymer mini features
 
-The Polymer mini layer provides features related to local DOM: Template contents cloned into the custom element's local DOM, DOM APIs and tree lifecycle.
+  The Polymer mini layer provides features related to local DOM: Template contents cloned into the custom element's local DOM, DOM APIs and tree lifecycle.
 
   * Template stamping into local DOM => ```<dom-module><template>...</template></dom-module>```
   * DOM distribution => ```<content>```
@@ -483,7 +483,7 @@ The Polymer mini layer provides features related to local DOM: Template contents
 
 3. Polymer standard features
 
-The Polymer standard layer adds declarative data binding, events, property notifications and utility methods.
+  The Polymer standard layer adds declarative data binding, events, property notifications and utility methods.
 
   * Automatic node finding => ```this.$.<id>```
   * Event listener setup => listeners:
