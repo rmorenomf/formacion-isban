@@ -344,8 +344,6 @@ MyElement = Polymer({
 var el = new MyElement(42, 'octopus');
 ```
 
-TODO => Revisar esta traducción.
-
 Two notes about the custom constructor:
 
 * The factoryImpl method is only invoked when you create an element using the constructor. The factoryImpl method is not called if the element is created from markup by the HTML parser, or if the element is created using document.createElement.
@@ -393,9 +391,63 @@ Por último vamos a crear esto dentro del documento principal, index.html
     </html>
   ```
 
-### Dendencias
+### Personalizar las acciones del ciclo de vida.
 
-#### Creación de un componente
+El prototipo de Base de Polymer implementa callbacks del ciclo de vida del custom element para realizar tareas necesarias para las funciones integradas de Polymer. Polymer, a su vez, llama a métodos de ciclo de vida en su prototipo.
+
+Polymer agrega una callbacks adicional, que se invoca cuando Polymer ha terminado de crear e inicializar el DOM local del elemento.
+
+Callback | Descripción
+--- | ---
+created | Se llama cuando se ha creado el elemento, pero antes de que se establezcan los valores de propiedad y se inicialice DOM local. Se utiliza para una configuración única antes de que se establezcan los valores de propiedad. Utilizar en lugar de createCallback.
+ready | Se llama después de que se establecen valores de propiedad y se inicializa DOM local. Utilizar para la configuración única de su componente después de que el DOM local se inicialice. (Para la configuración basada en valores de propiedad, puede ser preferible usar un observador.)
+
+
+
+Ejemplo de intercepción de los hooks de los eventos del ciclo de vida de un componente:
+
+```javascript
+MyElement = Polymer({
+
+  is: 'my-element',
+
+  created: function() {
+    console.log(this.localName + '#' + this.id + ' was created');
+  },
+
+  ready: function() {
+    console.log(this.localName + '#' + this.id + ' has local DOM initialized');
+  },
+
+  attached: function() {
+    console.log(this.localName + '#' + this.id + ' was attached');
+  },
+
+  detached: function() {
+    console.log(this.localName + '#' + this.id + ' was detached');
+  },
+
+  attributeChanged: function(name, type) {
+    console.log(this.localName + '#' + this.id + ' attribute ' + name +
+      ' was changed to ' + this.getAttribute(name));
+  }
+
+});
+``` 
+
+
+
+### Definir atributos o propiedades de un componente.
+
+TODO
+
+### Crear piezas de código reutilizables.
+
+TODO
+
+## Dendencias
+
+### Creación de un componente
 
 Para poder crear y utilizar un componente en Polymer es necesario importar la librería de Polymer. No obstante tenemos 3 sabores de dicha librería según el grado de complejidad que vayamos a tener:
 
@@ -450,13 +502,22 @@ Utility functions => toggleClass, toggleAttribute, fire, async, …
 Scoped styling => ```<style> in <dom-module>, Shadow-DOM styling rules (:host, ...)```
 General polymer settings => ```<script> Polymer = { ... }; </script>```
 
-#### Ejecución de los componentes
+### Ejecución de los componentes
 
 Las tecnologias que soportan los webcomponents no está disponibles en todos los nevegadores ni en todas las versiones. Por eso, para que nuestros webcomponts se ejecuten en cualquier nevegador y versión. necesitemos unos polyfills que permitan la ejecución de Polymer en navegadores donde forma nativa no esté soportado Polymer.
 
-Por eso tenemos que incluir:
+Por eso tenemos que incluir alguno de estos dos ficheros:
 
-* webcomponents-lite.js
+*webcomponents.js*:
+
+  * Custom Elements: allows authors to define their own custom tags (spec).
+  * HTML Imports: a way to include and reuse HTML documents via other HTML documents (spec).
+  * Shadow DOM: provides encapsulation by hiding DOM subtrees under shadow roots (spec).
+  *This also folds in polyfills for MutationObserver and WeakMap.
+
+*webcomponents-lite.js*:
+
+Note: A lighter webcomponents-lite.js build is included with the default download package including support for just *Custom Elements* and *HTML Imports*. This is useful if you don't require Shadow DOM in your application. You can generate custom builds supporting any combination of Web Component features too.
 
 # Lo nuevo en Polymer 2
 
@@ -745,5 +806,6 @@ En que estado de soporte está esto:
 
 http://caniuse.com/#feat=custom-elementsv1
 
+# Creación de un componente complejo.
 
-
+Vamos a crear un componente que 
