@@ -1,0 +1,25 @@
+<template id="template">
+    <styles>
+        :host {
+            color: blue;
+        }
+    </styles>
+    <h1>Hola mundo!</h1>
+</template>
+<script>
+    // Use custom elements API v1 to register a new HTML tag and define its JS behavior
+    // using an ES6 class. Every instance of <fancy-tab> will have this same prototype.
+    customElements.define('slot-demo', class extends HTMLElement {
+    constructor() {
+        super(); // always call super() first in the ctor.
+
+        // Attach a shadow root to <fancy-tabs>.
+        const shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.innerHTML = `
+            <style>#tabs {  }</style> <!-- styles are scoped to fancy-tabs! -->
+            <div id="tabs">...</div>
+            <div id="panels">...</div>
+        `;
+    }  
+    });
+</script>

@@ -46,7 +46,7 @@ Puesto que SVG es un formato basado en XML podemos usar la compresión GZIP para
 
 6. Si se van a cargar muchas imágenes o están son muy pesadas, podemos mostrar un bloque sólido con el tamaño ocupado por la imágen y del color sólido mayoritario de fondo. Esta es la estrategia usada por google en su buscador de imágenes.
 
-![alt text](./resources/google-search.jpg "Google example")
+    ![alt text](./resources/google-search.jpg "Google example")
 
 ### Automatización para Angular 2 de la optimización de imágenes:
 
