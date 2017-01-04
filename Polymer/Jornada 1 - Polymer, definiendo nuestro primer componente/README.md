@@ -461,46 +461,46 @@ La más conservadora (y la más recomendable) es *polymer.html* que incluye la l
 
 The Polymer micro layer provides bare-minimum Custom Element sugaring.
 
-Custom element constructor =>	Polymer.Class({ … });
-Custom element registration => Polymer({ is: ‘...’, … }};
-Custom constructor support => constructor: function()
-Basic lifecycle callbacks	=> created, attached, detached, attributeChanged
-Native HTML element extension	=> extends: ‘…’
-Declared properties	=> properties:
-Attribute deserialization to property	=> properties:
-Static attributes on host	=> hostAttributes:
-Behaviors	behaviors: => [ … ]
+  * Custom element constructor =>	Polymer.Class({ … });
+  * Custom element registration => Polymer({ is: ‘...’, … }};
+  * Custom constructor support => constructor: function()
+  * Basic lifecycle callbacks	=> created, attached, detached, attributeChanged
+  * Native HTML element extension	=> extends: ‘…’
+  * Declared properties	=> properties:
+  * Attribute deserialization to property	=> properties:
+  * Static attributes on host	=> hostAttributes:
+  * Behaviors	behaviors: => [ … ]
 
 2. Polymer mini features
 
 The Polymer mini layer provides features related to local DOM: Template contents cloned into the custom element's local DOM, DOM APIs and tree lifecycle.
 
-Template stamping into local DOM => ```<dom-module><template>...</template></dom-module>```
-DOM distribution => ```<content>```
-DOM API	=> Polymer.dom
-Configuring default values => properties: ```<prop>```:
-Bottom-up callback after configuration	=> ready: function()
+  * Template stamping into local DOM => ```<dom-module><template>...</template></dom-module>```
+  * DOM distribution => ```<content>```
+  * DOM API	=> Polymer.dom
+  * Configuring default values => properties: ```<prop>```:
+  * Bottom-up callback after configuration	=> ready: function()
 
 3. Polymer standard features
 
 The Polymer standard layer adds declarative data binding, events, property notifications and utility methods.
 
-Automatic node finding => ```this.$.<id>```
-Event listener setup => listeners:
-Annotated event listener setup => ```<element on-[event]=”function”>```
-Property change callbacks	=> properties: ```<prop>```:
-Annotated property binding => ```<element prop=”{{property|path}}”>```
-Property change notification => ```properties: { <prop>:```
-Binding to structured data => ```<element prop=”{{obj.sub.path}}”>```
-Path change notification => ```set(<path>, <value>)```
-Declarative attribute binding => ```<element attr$=”{{property|path}}”>```
-Reflecting properties to attributes	properties: => ```{ <prop>:```
-Computed properties => computed:
-Computed bindings => ```<span>{{computeFn(dep1, dep2)}}</span>```
-Read-only properties => ```properties: { <prop>:```
-Utility functions => toggleClass, toggleAttribute, fire, async, …
-Scoped styling => ```<style> in <dom-module>, Shadow-DOM styling rules (:host, ...)```
-General polymer settings => ```<script> Polymer = { ... }; </script>```
+  * Automatic node finding => ```this.$.<id>```
+  * Event listener setup => listeners:
+  * Annotated event listener setup => ```<element on-[event]=”function”>```
+  * Property change callbacks	=> properties: ```<prop>```:
+  * Annotated property binding => ```<element prop=”{{property|path}}”>```
+  * Property change notification => ```properties: { <prop>:```
+  * Binding to structured data => ```<element prop=”{{obj.sub.path}}”>```
+  * Path change notification => ```set(<path>, <value>)```
+  * Declarative attribute binding => ```<element attr$=”{{property|path}}”>```
+  * Reflecting properties to attributes	properties: => ```{ <prop>:```
+  * Computed properties => computed:
+  * Computed bindings => ```<span>{{computeFn(dep1, dep2)}}</span>```
+  * Read-only properties => ```properties: { <prop>:```
+  * Utility functions => toggleClass, toggleAttribute, fire, async, …
+  * Scoped styling => ```<style> in <dom-module>, Shadow-DOM styling rules (:host, ...)```
+  * General polymer settings => ```<script> Polymer = { ... }; </script>```
 
 ### Ejecución de los componentes
 
