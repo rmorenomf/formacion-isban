@@ -319,7 +319,7 @@ Esto sirve de poco por eso vamos a agregar mas cosas a nuestro componente:
 1. Un constructor a medida.
 2. Personalizar las acciones del ciclo de vida.
 3. Definir atributos o propiedades de un componente.
-4. Crear piezas de código reutilizables.
+4. Crear piezas de código reutilizables (Behaviors).
 
 ### Constructor a medida
 
@@ -436,11 +436,71 @@ MyElement = Polymer({
 });
 ``` 
 
+TODO - Definir el orden de activación de cada uno de los elementos por el tipo de elemento.
+
 ### Definir atributos o propiedades de un componente.
 
-TODO
+Podemos crear propiedades a los componentes de forma que podamos especificar diferentes comportamientos y visualizaciones para un mismo componente. Además dichas propiedades nos permiten comunicarnos con el componente desde elementos ajenos al mismo.
+
+Veamos un ejemplo:
+
+```javascript
+Polymer({
+
+  is: 'x-custom',
+
+  properties: {
+    user: String,
+    isHappy: Boolean,
+    count: {
+      type: Number,
+      readOnly: true,
+      notify: true
+    }
+  },
+
+  ready: function() {
+    this.textContent = 'Hello World, I am a Custom Element!';
+  }
+
+});
+```
+
+Como vemos podemos sobre escribir el atributo *properties*, con las propiedades que deseemos:
+
+1. Tipo de propiedad.
+2. Valor por defecto.
+3. Observer de cambio de propiedad. Llama a un método cuando cambia el valor de la propiedad.
+4. Estado de sólo lectura. Evita cambios accidentales en el valor de la propiedad.
+5. Binding bidireccional. Inicia un evento cada vez que cambia el valor de la propiedad.
+6. Propiedad calculada. Calcula dinámicamente un valor basado en otras propiedades.
+7. Propiedad de reflexión para atribuir. Actualiza el valor del atributo correspondiente cuando cambia el valor de la propiedad.
+
+Esas características se integran con el *data system*. (Que veremos en la Jornada 2).
+
+Propiedades:
+
+##### type
+
+*type*: constructor (uno de Boolean, Date, Number, String, Array u Object)
+Tipo de atributo, utilizado para deserializar desde un atributo. El tipo de la propiedad es explícito, especificado utilizando el constructor del tipo. 
+
+*value*: Tipo: booleano, número, cadena o función.
+Valor predeterminado de la propiedad. Si valor es una función, se invoca la función y se utiliza el valor de retorno como valor predeterminado de la propiedad. Si el valor predeterminado debe ser una matriz o un objeto exclusivo de la instancia, cree la matriz o el objeto dentro de una función. 
+
+*readOnly*: 
+
+*notify*:
+
+*computed*:
+
+*observer*:
+
+*reflectToAttribute*:
 
 ### Crear piezas de código reutilizables.
+
+Behaviors
 
 TODO
 
