@@ -480,8 +480,6 @@ Esas características se integran con el *data system*. (Que veremos en la Jorna
 
 Propiedades:
 
-##### type
-
 *type*: constructor (uno de Boolean, Date, Number, String, Array u Object)
 Tipo de atributo, utilizado para deserializar desde un atributo. El tipo de la propiedad es explícito, especificado utilizando el constructor del tipo. 
 
@@ -502,6 +500,17 @@ El valor se interpreta como un nombre de método que se invocará cuando cambie 
 
 *reflectToAttribute*: Tipo: boolean
 Establezca en true para que el atributo correspondiente se establezca en el nodo host cuando cambie el valor de la propiedad. Si el valor de la propiedad es booleano, el atributo se crea como un atributo booleano HTML estándar (si es true, no se establece si es falso). Para otros tipos de propiedad, el valor del atributo es una representación de cadena del valor de la propiedad.
+
+#### Property name to attribute name mapping
+
+Para asociar datos, deserializar propiedades de atributos y reflejar propiedades de nuevo a atributos, Polymer asigna nombres de atributo a nombres de propiedad y al revés.
+
+Al asignar nombres de atributo a nombres de propiedad:
+
+* Los nombres de atributo se convierten en nombres de propiedad en minúsculas. Por ejemplo, el atributo _firstName_ se asigna a _firstname_.
+* Los nombres de atributo con guiones se convierten en nombres de propiedad *camelCase* capitalizando el carácter después de cada guión y, a continuación, eliminando los guiones. Por ejemplo, el atributo _first-name_ se asigna a _firstName_.
+
+Las mismas asignaciones ocurren a la inversa cuando se convierten nombres de propiedades en nombres de atributos (por ejemplo, si una propiedad se define mediante reflectToAttribute: true.)
 
 ### Crear piezas de código reutilizables.
 
