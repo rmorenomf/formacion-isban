@@ -512,6 +512,102 @@ Al asignar nombres de atributo a nombres de propiedad:
 
 Las mismas asignaciones ocurren a la inversa cuando se convierten nombres de propiedades en nombres de atributos (por ejemplo, si una propiedad se define mediante reflectToAttribute: true.)
 
+#### Attribute deserialization
+
+Si una propiedad está configurada en el objeto _properties_, un atributo en la instancia que coincide con el nombre de la propiedad será deserializado de acuerdo con el tipo especificado y asignado a una propiedad del mismo nombre en la instancia del elemento.
+
+Si no se especifica ninguna otra opción de propiedades para una propiedad, el tipo (especificado mediante el constructor de tipo, por ejemplo, Object, String, etc.) se puede establecer directamente como el valor de la propiedad en el objeto properties; De lo contrario se debe proporcionar como el valor de la clave de tipo en el objeto de configuración de propiedades.
+
+El sistema de tipos incluye soporte para valores Boolean y de Number, valores de Object y Array expresados como JSON o objetos Date expresados como cualquier representación de cadena de fecha parseable.
+
+Las propiedades Boolean se establecen en función de la presencia del atributo: si el atributo existe, la propiedad se establece en true, independientemente del valor del atributo. Si el atributo está ausente, la propiedad obtiene su valor predeterminado.
+
+```html
+<script>
+
+  Polymer({
+
+    is: 'x-custom',
+
+    properties: {
+      user: String,
+      manager: {
+        type: Boolean,
+        notify: true
+      }
+    },
+
+    attached: function() {
+      // render
+      this.textContent = 'Hello World, my user is ' + (this.user || 'nobody') + '.\n' +
+        'This user is ' + (this.manager ? '' : 'not') + ' a manager.';
+    }
+
+  });
+
+</script>
+
+<x-custom user="Scott" manager></x-custom>
+<!--
+<x-custom>'s text content becomes:
+Hello World, my user is Scott.
+This user is a manager.
+-->
+```
+
+Con el fin de configurar las propiedades de camel-case de los elementos mediante atributos, dash-case debería utilizarse en el nombre del atributo.
+
+```html
+<script>
+
+  Polymer({
+
+    is: 'x-custom',
+
+    properties: {
+      userName: String
+    }
+
+  });
+
+</script>
+
+<x-custom user-name="Scott"></x-custom>
+<!-- Sets <x-custom>.userName = 'Scott';  -->
+```
+
+TODO - Aquí quedan muchas mas cosas por contar, que pueden pasarse a la jornada 2. https://www.polymer-project.org/1.0/docs/devguide/properties
+
+### Definir métodos de un componente.
+
+Para agregar un método de instancia a su elemento, simplemente agregue un método en el prototipo del elemento.
+
+```javascript
+Polymer({
+    is: 'cat-element',
+    _says: 'meow',
+    speak: function() {
+      console.log(this._says);
+    }
+});
+```
+
+Y ahora ya se puede invocar tranquilamente:
+
+```javascript
+var cat1 = document.querySelector('cat-element');
+cat1.speak();
+var cat2 = document.createElement('cat-element');
+cat2.speak();
+```
+
+Puesto que los componentes heredan de *Polymer.Base* podemos acceder a algunas fuciones que están diponibles para el uso. Podemos ver el listado completo en la documentación (https://www.polymer-project.org/1.0/docs/api/Polymer.Base): 
+
+Algunos destacados en la documentación:
+
+* AAA
+
+
 ### Crear piezas de código reutilizables.
 
 Behaviors
