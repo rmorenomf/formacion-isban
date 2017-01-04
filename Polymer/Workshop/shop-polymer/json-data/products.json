@@ -1,0 +1,5 @@
+[
+    { "id": 1, "name": "Pasta de Curry Kashmiri", "description": "Patak Kashmiri Curry Paste", "price": 3.70 },
+    { "id": 2, "name": "Dawat Basmati Rice", "description": "Arroz Basmati", "price": 2.99 },
+    { "id": 3, "name": "Pan", "description": "Traditional Naan", "price": 3.50 }
+]

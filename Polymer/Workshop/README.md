@@ -4,3 +4,9 @@
 
 Vamos a instalar las herramientas necesarias para poder empezar a trabajar con Polymer.
 
+> npm install -g polymer-cli
+> polymer init starter-kit
+
+Probamos el generado por el starter kit.
+
+> polymer serve --open
