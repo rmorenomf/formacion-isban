@@ -1,0 +1,31 @@
+
+<dom-module id="shop-cart">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <div>
+            Cart: {{ basket.length }}
+            <template is="dom-repeat" items="{{basket}}" id="basketList">
+            {{ basket.name }}
+            </template>
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'shop-cart',
+            properties: {
+                basket: {
+                    type: Array,
+                    value: [],
+                    reflectToAttribute: true,
+                    notify: true
+                }
+            }
+        });
+    </script>
+</dom-module>

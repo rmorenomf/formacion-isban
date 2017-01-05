@@ -9,34 +9,63 @@
 
         padding: 10px;
       }
+
+      paper-card {
+        --paper-card-header-image: {
+          width: 300px;
+          height: 300px;
+        };
+      }
+
     </style>
 
     <h1>Shop product list</h1>
     
-    <a href="https://www.desigourmet.es/products/pasta-kashmiri" class="href">Data from https://www.desigourmet.es/</a>
+    Data from: <a href="https://www.desigourmet.es/products/pasta-kashmiri" class="href">Desi gourmet</a>
+    <hr>
 
     <iron-ajax
         auto
         url="../json-data/products.json"
         params=''
         handle-as="json"
-        on-response="handleResponse"
+        on-response="handleProductsResponse"
         debounce-duration="300"></iron-ajax>
     
-    <!-- 
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
-    -->
+    <template is="dom-repeat" items="{{products}}" id="productsList">
+        <paper-card image="../shop-img/{{item.id}}.jpg" alt="{{item.name}}">
+            <div class="card-content">
+                <div class="cafe-header">{{item.name}}
+                    <div>
+                      {{item.description}}                      
+                    </div>
+                    <div>
+                      <h2>{{item.price}}€</h2>                      
+                    </div>
+                </div>
+            </div>
+            <paper-button class="indigo" raised on-click="addProductToChart">Add to cart</paper-button>   
+            <a href="shop-products-details/{{item.id}}" tabindex="-1">
+              <paper-button class="" raised>Details</paper-button>
+            </a>
+        </paper-card>
+        
+    </template>
     
   </template>
 
   <script>
     Polymer({
       is: 'shop-products-list',
+
+      handleProductsResponse: function(data){
+          this.products = data.detail.response;
+      },
+
+      addProductToChart: function(e){
+        var item = this.$.productsList.itemForElement(e.target);
+        this.fire('added-product-to-cart', item);
+      }
     });
   </script>
 </dom-module>

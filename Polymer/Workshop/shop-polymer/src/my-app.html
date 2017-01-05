@@ -21,7 +21,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="shop-cart.html">
 
 <dom-module id="my-app">
   <template>
@@ -68,18 +73,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
+      <!-- 
       <app-drawer id="drawer">
         <app-toolbar>Menu</app-toolbar>
+        
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="/shop-products-list">Main</a>
-          <!--
-          <a name="view1" href="/view1">View One</a>
-          <a name="view2" href="/view2">View Two</a>
-          <a name="view3" href="/view3">View Three</a>
-          -->
+          <a name="view1" href="/shop-products-list">Main</a>          
         </iron-selector>
       </app-drawer>
-
+      -->
       <!-- Main content -->
       <app-header-layout has-scrolling-region>
 
@@ -87,6 +89,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
             <div main-title>Ruben's Shop</div>
+            <shop-cart basket="{{productsInBasket}}" ></shop-cart>
           </app-toolbar>
         </app-header>
 
@@ -114,8 +117,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
-        },
+        }
       },
+
+      listeners: {
+          'added-product-to-cart': 'handleAddedProductToCart',
+        },
 
       observers: [
         '_routePageChanged(routeData.page)',
@@ -123,10 +130,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _routePageChanged: function(page) {
         this.page = page || 'shop-products-list';
-
+        /*
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
+        */
       },
 
       _pageChanged: function(page) {
@@ -138,6 +146,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _showPage404: function() {
         this.page = 'view404';
       },
+
+      handleAddedProductToCart: function(e){
+        this.productsInBasket = this.productsInBasket || [];
+        this.productsInBasket.push( e.detail );
+      }
     });
   </script>
 </dom-module>
