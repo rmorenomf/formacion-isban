@@ -1,0 +1,89 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="shop-products-details">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      /*
+      paper-card {
+        --paper-card-header-image: {
+          width: 300px;
+          height: 300px;
+        };
+      }
+      */
+    </style>
+
+    <h1>Shop product detail for {{currentProduct.name}}</h1>
+    
+    Data from: <a href="https://www.desigourmet.es/products/pasta-kashmiri" class="href">Desi gourmet</a>
+    <hr>
+
+    <iron-ajax
+        auto
+        url="../json-data/products.json"
+        params=''
+        handle-as="json"
+        on-response="handleProductsResponse"
+        debounce-duration="300"></iron-ajax>
+    
+        <paper-card image="../shop-img/{{currentProduct.id}}.jpg" 
+            src="shop-products-details/{{itcurrentProductem.id}}" alt="{{currentProduct.name}}">
+            <div class="card-content">
+                <div class="cafe-header"><a href="shop-products-details/{{currentProduct.id}}" tabindex="-1">{{currentProduct.name}}</a>
+                    <div>
+                      {{currentProduct.description}}                      
+                    </div>
+                    <div>
+                      <h2>{{currentProduct.price}}€</h2>                      
+                    </div>
+                </div>
+            </div>
+            <paper-button class="indigo" raised on-click="addProductToChart">Add to cart</paper-button>   
+        </paper-card>
+
+
+  </template>
+
+  <script>
+    Polymer({
+        is: 'shop-products-details',
+
+        properties: {
+            productId: {
+                type: Number
+            }
+        },
+        
+        handleProductsResponse: function(data){
+            this.currentProduct = null;
+
+            //Registramos los valores devueltos.
+            this.products = data.detail.response;
+            //Obtenemos el id del producto para el que queremos ver su detalle.
+            this.productId = parseInt(this.productId);
+
+            //Filtramos el producto. Esto no es muy eficiente, en verdad nos vendría 
+            //muy bien tener un back de verdad con sus servicios REST y todo.
+            for( var i = 0; i < this.products.length; i++){
+                if ( this.productId === this.products[i].id ){
+                    this.currentProduct = this.products[i];
+                    break;
+                }
+            }
+
+            //Si el producto buscado no existe mostramos la página de error.
+            if( this.currentProduct === null ){
+                window.location.href = "../view404";
+            }
+        },
+
+    });
+  </script>
+</dom-module>

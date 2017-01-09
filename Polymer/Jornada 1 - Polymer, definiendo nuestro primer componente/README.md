@@ -11,7 +11,7 @@ El objetivo de esta jornada es dar una visión global de Polymer.
 5. Jornada 5: Documentación y Testing en Polymer.
 6. Jornada 6: Vulcanizado y construcción con Gulp.
 
-Tenemos mucho tiempo y el contenido no creo que dé para tanto así que lo vamos a tomar como un workshop. En el que vamos a empezar una aplicación y vamos a estructurar la formación como un Workshop.
+Vamos a empezar una aplicación y vamos a estructurar la formación como un Workshop.
 
 Vamos a montar una tienda online super sencilla. Pero vamos a partir del Starter Kit y vamos a crear y modificar las secciones que mas nos interesen.
 
@@ -35,7 +35,7 @@ Para poder crear webcomponents necesitamos cuatro elementos:
 
 http://w3c.github.io/webcomponents/spec/custom/
 
-Nos permiten crear nuestros propios elementos HTML y después usarlos como si de un TAG estándar se tratase. 
+Nos permiten crear nuestros propios elementos HTML y después usarlos como si de un TAG estándar se tratase.
 
 ```html
 <super-button></super-button>

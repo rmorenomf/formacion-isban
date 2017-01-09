@@ -33,9 +33,9 @@
         debounce-duration="300"></iron-ajax>
     
     <template is="dom-repeat" items="{{products}}" id="productsList">
-        <paper-card image="../shop-img/{{item.id}}.jpg" alt="{{item.name}}">
+        <paper-card image="../shop-img/{{item.id}}.jpg" src="shop-products-details/{{item.id}}" alt="{{item.name}}">
             <div class="card-content">
-                <div class="cafe-header">{{item.name}}
+                <div class="cafe-header"><a href="shop-products-details/{{item.id}}" tabindex="-1">{{item.name}}</a>
                     <div>
                       {{item.description}}                      
                     </div>
