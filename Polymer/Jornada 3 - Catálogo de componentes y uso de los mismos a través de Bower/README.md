@@ -25,6 +25,14 @@ El catálogo está organizado por funcionalidad en 8 elementos:
 
 _Echamos un vistazo por la documentación_
 
+Vamos a revisar en funcionamiento algunas importantes:
+
+* app-drawer-layout
+* iron-pages
+* app-route
+* paper-button
+* iron-ajax
+
 ¿Cuál es la mejor forma de mostrar el uso del catálogo?. No tiene sentido repasar entrada por entrada. Creo que lo mejor es echar un vistazo detallado a las diferentes partes del catálogo y luego usar poner en práctica los aprendido metiendo caña a nuestra aplicación de ejemplo.
 
 > Recordad que Github es tu amigo, que muchos de los componentes no son complejos y que la mejor guía de uso es el código fuente.
