@@ -578,6 +578,11 @@ Con el fin de configurar las propiedades de camel-case de los elementos mediante
 
 TODO - Aquí quedan muchas mas cosas por contar, que pueden pasarse a la jornada 2. https://www.polymer-project.org/1.0/docs/devguide/properties
 
+
+
+
+
+
 ### Definir métodos de un componente.
 
 Para agregar un método de instancia a su elemento, simplemente agregue un método en el prototipo del elemento.
