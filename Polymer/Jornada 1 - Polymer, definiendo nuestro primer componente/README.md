@@ -615,19 +615,144 @@ Algunos destacados en la documentación:
 #### Async/debounce
 
 * *async(method, [wait])*. Calls method asynchronously. If no wait time is specified, runs tasks with microtask timing (after the current method finishes, but before the next event from the event queue is processed). Returns a handle that can be used to cancel the task.
+
 * *cancelAsync(handle)*. Cancels the identified async task.
+
 * *debounce(jobName, callback, [wait])*. Call debounce to collapse multiple requests for a named task into one invocation, which is made after the wait time has elapsed with no new request. If no wait time is given, the callback is called at microtask timing (guaranteed to be before paint).
+
 * *cancelDebouncer(jobName)*. Cancels an active debouncer without calling the callback.
+
 * *flushDebouncer(jobName)*. Calls the debounced callback immediately and cancels the debouncer.
+
 * *isDebouncerActive(jobName)*. Returns true if the named debounce task is waiting to run.
+
+#### Manipulación de Clases y atributos
+
+* *toggleClass(name, bool, [node])*. Toggles the named boolean class on the host element, adding the class if bool is truthy and removing it if bool is falsey. If node is specified, sets the class on node instead of the host element.
+
+* *toggleAttribute(name, bool, [node])*. Like toggleClass, but toggles the named boolean attribute.
+
+* *attributeFollows(name, newNode, oldNode)*. Moves a boolean attribute from oldNode to newNode, unsetting the attribute (if set) on oldNode and setting it on newNode.
+
+* *classFollows(name, newNode, oldNode)*. Moves a class from oldNode to newNode, removing the class (if present) on oldNode and adding it to newNode
+
+#### CSS transforms
+
+* *transform(transform, [node])*. Applies a CSS transform to the specified node, or host element if no node is specified. transform is specified as a string. For example:
+
+  * ```this.transform('rotateX(90deg)', this.$.myDiv);```
+
+* *translate3d(x, y, z, [node])*. Transforms the specified node, or host element if no node is specified. For example:
+
+  * ```this.translate3d('100px', '100px', '100px');```
+
+#### Imports and URLs
+
+* *importHref(href, onload, onerror, optAsync)*. Dynamically imports an HTML document.
+```
+this.importHref('path/to/page.html', function(e) {
+    // e.target.import is the import document.
+}, function(e) {
+    // loading error
+});
+```
+
+> Note: To call importHref from outside a Polymer element, use Polymer.Base.importHref.
+
+* *resolveUrl(url)*. Takes a URL relative to the ```<dom-module>``` of an imported Polymer element, and returns a path relative to the current document. This method can be used, for example, to refer to an asset delivered alongside an HTML import.
 
 ### Crear piezas de código reutilizables.
 
 Behaviors
 
-TODO
+Es la forma de reutilzar piezas de código no visuales con Polymer. Son muy similares a un wecomponente Polymer, de hecho podemos definir; lifecycle callbacks, declared properties, default attributes, observers, and event listeners.
 
-## Dendencias
+Veamos un ejemplo de un behavior:
+
+```javascript
+<script>
+    HighlightBehavior = {
+
+      properties: {
+        isHighlighted: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          observer: '_highlightChanged'
+        }
+      },
+
+      listeners: {
+        click: '_toggleHighlight'
+      },
+
+      created: function() {
+        console.log('Highlighting for ', this, 'enabled!');
+      },
+
+      _toggleHighlight: function() {
+        this.isHighlighted = !this.isHighlighted;
+      },
+
+      _highlightChanged: function(value) {
+        this.toggleClass('highlighted', value);
+      }
+
+    };
+</script>
+```
+
+#### Uso de Behaviors
+
+Se utiliza mediante inyección de dependencias. Incluyendo el nombre de Clase en la propiedad _behaviors_ del componente.
+
+```javascript
+<link rel="import" href="highlight-behavior.html">
+
+<script>
+  Polymer({
+    is: 'my-element',
+    behaviors: [HighlightBehavior]
+  });
+</script>
+```
+
+Desde el componente podemos invocar a la funcionalidad resuelta por el Behaviors:
+
+Nota: Polymer doesn't specify any particular method for referencing your behaviors. Behaviors created by the Polymer team are added to the Polymer object. When creating your own behaviors, you should use some other namespace to avoid collisions with future Polymer behaviors. For example:
+
+```javascript 
+window.MyBehaviors = window.MyBehaviors || {};
+MyBehaviors.HighlightBehavior = { ... }
+```
+
+En el ejemplo anterior se ha añadido explicitamente al objeto global *window* de forma que desde cualquier parte con ```MyBehaviors.HighlightBehavior```.
+
+#### Extensión de Behaviors
+
+Para ampliar un Behavior o crear un Behavior que incluya un Behavior existente, puede definir un Behavior como una matriz de Behaviors:
+
+```javascript
+<!-- import an existing behavior -->
+<link rel="import" href="oldbehavior.html">
+
+<script>
+  // Implement the extended behavior
+  NewBehaviorImpl = {
+    // new stuff here
+  }
+
+  // Define the behavior
+  NewBehavior = [ OldBehavior, NewBehaviorImpl ]
+</script>
+```
+
+Al igual que con la matriz de behaviors del elemento, el behavior más a la derecha tiene prioridad sobre los behaviors anteriores en la matriz. En este caso, cualquier cosa definida en NewBehaviorImpl tiene prioridad sobre cualquier cosa definida en OldBehavior.
+
+Nombrar cada elemento en la matriz de behavior es una buena práctica, ya que permite a los behaviors hacer referencia explícitamente a los métodos sobre los behaviors que se extienden (por ejemplo, NewBehaviorImpl puede llamar a métodos en OldBehavior).
+
+
+## Dendencias de Polymer
 
 ### Creación de un componente
 
