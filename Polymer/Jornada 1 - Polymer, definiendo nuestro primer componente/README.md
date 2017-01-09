@@ -749,8 +749,29 @@ Para ampliar un Behavior o crear un Behavior que incluya un Behavior existente, 
 
 Al igual que con la matriz de behaviors del elemento, el behavior más a la derecha tiene prioridad sobre los behaviors anteriores en la matriz. En este caso, cualquier cosa definida en NewBehaviorImpl tiene prioridad sobre cualquier cosa definida en OldBehavior.
 
-Nombrar cada elemento en la matriz de behavior es una buena práctica, ya que permite a los behaviors hacer referencia explícitamente a los métodos sobre los behaviors que se extienden (por ejemplo, NewBehaviorImpl puede llamar a métodos en OldBehavior).
+#### Acciones en tiempo de Registro
 
+En algunos casos, un behavior puede necesitar realizar alguna acción una sola vez cuando un elemento se registra. Por ejemplo, para asignar un objeto compartido accedido por todas las instancias de elemento, o para modificar el prototipo del elemento.
+
+Por ejemplo, *iron-a11y-keys-behavior* permite que los elementos y otros comportamientos agreguen enlaces especificando un objeto *keyBindings* en el prototipo. Un solo elemento podría potencialmente tener varios objetos *keyBindings*, uno de su propio prototipo y varios heredados del behavior. El comportamiento *iron-a11y-keys* utiliza la devolución de llamada registrada para agrupar estos objetos *keyBindings* en un solo objeto en el prototipo del elemento.
+
+El ejemplo simplificado siguiente demuestra cómo el behavior *iron-a11y-keys-behavior* agrupa objetos de comportamientos múltiples.
+
+```javascript
+registered: function() {
+  // collate keyBindings objects from behaviors & element prototype
+  var keyBindings = this.behaviors.map(function(behavior) {
+    return behavior.keyBindings;
+  });
+  if (keyBindings.indexOf(this.keyBindings) === -1) {
+    keyBindings.push(this.keyBindings);
+  }
+  // process key bindings in order
+  keyBindings.forEach(function() {
+    ...
+  });
+}
+```
 
 ## Dendencias de Polymer
 
