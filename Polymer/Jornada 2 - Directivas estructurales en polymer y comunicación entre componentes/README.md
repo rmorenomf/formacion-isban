@@ -6,6 +6,10 @@ En esta jornada vamos a profundizar en conceptos que están relacionados con la 
 Después repasaremos las diferentes directivas estructurales que se corresponde con el apartado "API Reference" de la documentación oficial.
 Y para finalizar veremos las opciones de comunicación entre componentes y la comunicación de componentes con otros elementos.
 
+## Data System
+
+https://www.polymer-project.org/1.0/docs/devguide/data-system
+
 ## Propiedades
 
 https://www.polymer-project.org/1.0/docs/devguide/properties
@@ -13,10 +17,6 @@ https://www.polymer-project.org/1.0/docs/devguide/properties
 ## Observers
 
 https://www.polymer-project.org/1.0/docs/devguide/observers
-
-## Data System
-
-https://www.polymer-project.org/1.0/docs/devguide/data-system
 
 ## Data binding
 
@@ -143,8 +143,6 @@ Como vemos podemos crear nuestros custom events y usarlos desde cualquier sitio,
 
 ## Eventos en Polymer
 
-https://www.polymer-project.org/1.0/docs/devguide/events
-
 Vamos a ver la primera de las formas de escuchar eventos. En este caso vamos a incluir la lista de elementos del local DOM y sus listeners correspondientes: 
 
 ```javascript
@@ -250,6 +248,50 @@ También podemos crear nuestros propios eventos y disparalos cuando lo necesitem
 
 Shadow DOM tiene una característica llamada "retargeting de evento" o "redirección de eventos" que cambia el objetivo de un evento a medida que se propaga, de tal manera que el objetivo está siempre en el mismo ámbito que el elemento receptor. (Por ejemplo, para un oyente en el documento principal, el destino es un elemento en el documento principal, no en un Shadow DOM).
 
+```javascript
+<!-- event-retargeting.html -->
+ ...
+<dom-module id="event-retargeting">
+  <template>
+    <button id="myButton">Click Me</button>
+  </template>
+
+  <script>
+    Polymer({
+
+        is: 'event-retargeting',
+
+        listeners: {
+          'click': 'handleClick',
+        },
+
+        handleClick: function(e) {
+          console.info(e.target.id + ' was clicked.');
+        }
+      });
+  </script>
+</dom-module>
+
+
+<!-- index.html  -->
+  ...
+<event-retargeting></event-retargeting>
+
+<script>
+  var el = document.querySelector('event-retargeting');
+  el.addEventListener('click', function(){
+    var normalizedEvent = Polymer.dom(event);
+    // logs #myButton
+    console.info('rootTarget is:', normalizedEvent.rootTarget);
+    // logs the instance of event-targeting that hosts #myButton
+    console.info('localTarget is:', normalizedEvent.localTarget);
+    // logs [#myButton, document-fragment, event-retargeting,
+    //       body, html, document, Window]
+    console.info('path is:', normalizedEvent.path);
+  });
+</script>
+```
+
 Shady DOM no hace reencaminamiento de eventos para los eventos propagados, porque el costo de rendimiento sería prohibitivo. En su lugar, Polymer proporciona un mecanismo para simular eventos redirigidos cuando sea necesario.
 
 Utilice Polymer.dom(event) para obtener un objeto de evento normalizado que proporciona datos de destino equivalentes tanto en el Shadow DOM  como en el Shady DOM. Específicamente, el evento normalizado tiene las siguientes propiedades:
@@ -259,3 +301,7 @@ Utilice Polymer.dom(event) para obtener un objeto de evento normalizado que prop
 * *localTarget*: Retargeted event target (equivalent to event.target under shadow DOM). This node is always in the same scope as the node where the listener was added.
 
 * *path*: Array of nodes through which event will pass (equivalent to event.path under shadow DOM).
+
+En el ejemplo anterior, el evento original se dispara en un ```<button>``` dentro del árbol del DOM local del ```<event-retargeting>```. El listener se agrega en el elemento ```<event-retargeting>``` en sí, que está en el documento principal. Para ocultar la implementación del elemento, el evento debe ser redirigido por lo que parece que proviene de ```<event-retargeting>``` en lugar de la etiqueta ```<button>```.
+
+El fragmento de documento que aparece en la ruta de eventos es la raíz del árbol DOM local. En el shady DOM es una instancia de *DocumentFragment*. En el Shadow DOM nativo, esto aparecería como una instancia de ShadowRoot en su lugar.
