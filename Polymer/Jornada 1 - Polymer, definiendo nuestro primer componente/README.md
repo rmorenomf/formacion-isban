@@ -605,8 +605,21 @@ Puesto que los componentes heredan de *Polymer.Base* podemos acceder a algunas f
 
 Algunos destacados en la documentación:
 
-* TODO
+* ```$$(selector)``` - Devuelve el primer nodo en el DOM local de este elemento que coincide con el selector.
+* ```fire(type, [detail], [options])``` - Dispara un evento personalizado. El objeto _options_ puede contener las siguientes propiedades:
 
+  1. *node*. Nodo para activar el evento (por defecto _this_).
+  2. *bubbles*. Si el evento debería propagarse. Por defecto es true.
+  3. *cancelable*. Si el evento se puede cancelar con preventDefault. El valor predeterminado es false.
+
+#### Async/debounce
+
+* *async(method, [wait])*. Calls method asynchronously. If no wait time is specified, runs tasks with microtask timing (after the current method finishes, but before the next event from the event queue is processed). Returns a handle that can be used to cancel the task.
+* *cancelAsync(handle)*. Cancels the identified async task.
+* *debounce(jobName, callback, [wait])*. Call debounce to collapse multiple requests for a named task into one invocation, which is made after the wait time has elapsed with no new request. If no wait time is given, the callback is called at microtask timing (guaranteed to be before paint).
+* *cancelDebouncer(jobName)*. Cancels an active debouncer without calling the callback.
+* *flushDebouncer(jobName)*. Calls the debounced callback immediately and cancels the debouncer.
+* *isDebouncerActive(jobName)*. Returns true if the named debounce task is waiting to run.
 
 ### Crear piezas de código reutilizables.
 
@@ -974,7 +987,3 @@ The third most relevant change is that methods are named differently so that att
 En que estado de soporte está esto:
 
 http://caniuse.com/#feat=custom-elementsv1
-
-# Creación de un componente complejo.
-
-Vamos a crear un componente que 
