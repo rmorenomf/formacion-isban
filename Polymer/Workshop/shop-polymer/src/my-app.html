@@ -153,7 +153,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       handleAddedProductToCart: function(e){
         this.productsInBasket = this.productsInBasket || [];
-        this.productsInBasket.push( e.detail );
+        //this.productsInBasket.push( e.detail ); //Esto no es observable
+        this.push('productsInBasket', e.detail); //Para un array o un objeto tenemos que cambiarlo de forma especial. 
       }
     });
   </script>

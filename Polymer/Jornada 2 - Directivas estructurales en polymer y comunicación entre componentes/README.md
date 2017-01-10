@@ -10,7 +10,7 @@ Y para finalizar veremos las opciones de comunicación entre componentes y la co
 
 https://www.polymer-project.org/1.0/docs/devguide/data-system
 
-## Propiedades
+## Propiedades (Computed)
 
 https://www.polymer-project.org/1.0/docs/devguide/properties
 
