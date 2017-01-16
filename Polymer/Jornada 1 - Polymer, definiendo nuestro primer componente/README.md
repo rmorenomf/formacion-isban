@@ -130,19 +130,101 @@ customElements.define('fancy-tabs', class extends HTMLElement {
 
 ### Plantillas / Templates:
 
-Permiten 
+Permiten incluir código HTML sin renderizar por el navegador. Estos templates pueden ser usados como piezas de construcción desde JavaScript.
+En este ejemplo vamos a ver cómo se puede clonar y usar un template.
 
-https://html.spec.whatwg.org/multipage/scripting.html#the-template-element
+```html
+<!doctype html>
+<html lang="en">
+ <head>
+  <title>Homework</title>
+ <body>
+  <template id="template"><p>Smile!</p></template>
+  <script>
+   let num = 3;
+   const fragment = document.getElementById('template').content.cloneNode(true);
+   while (num-- > 1) {
+     fragment.firstChild.before(fragment.firstChild.cloneNode(true));
+     fragment.firstChild.textContent += fragment.lastChild.textContent;
+   }
+   document.body.appendChild(fragment);
+  </script>
+</html>
+```
+
+The p element in the template is not a child of the template in the DOM; it is a child of the DocumentFragment returned by the template element's content IDL attribute.
+
+If the script were to call appendChild() on the template element, that would add a child to the template element (as for any other element); however, doing so is a violation of the template element's content model.
+
+Mas información en: https://html.spec.whatwg.org/multipage/scripting.html#the-template-element
 
 #### HTML Imports:
 
-http://w3c.github.io/webcomponents/spec/imports/
+Permiten importar elementos empaquetados. 
 
+> Ver ejemplo en el proyecto *mini-polymer*.
+
+Uso de un elemento importado *index.html*:
+
+```html
+<!DOCTYPE html> 
+<html lang="es">
+        
+    <head>
+        <title>Ejemplo uso de ES6</title>        
+        <link rel="import" href="./components/superlabel.html">
+    </head>
+    <body>
+        <h1>Ejemplo de componente</h1>
+        <x-hello></x-hello>       
+    </body>
+</html>
+```
+
+Ejemplo de un elemento a importar *superlabel.html*:
+
+```html
+<template id="template">
+    <styles>
+        :host {
+            color: blue;
+        }
+    </styles>
+    <h1>Hola mundo!</h1>
+</template>
+<script>
+    var XHelloPrototype = Object.create(HTMLElement.prototype);    
+    debugger;
+    XHelloPrototype.attachedCallback = function() {
+        var root = this.createShadowRoot();
+        var template = document.querySelector('#template');
+        var clone = document.importNode(template.content, true);
+        root.appendChild(clone);
+    };
+
+    var XHello = document.registerElement('x-hello', {
+            prototype: XHelloPrototype
+    });
+
+</script>
+```
+
+Es importante conocer que NO se trata de una importación del estilo de PHP, en el que automáticamente se incorpora el HTML en la página en un punto indicado. Con un ```<import>``` estamos haciendo disponible un recurso encapsulado en otro fichero para ser usado dentro de la página que importa el recurso.
+
+Hay que tener en cuenta además que:
+
+1. Si contiene Scripts de JavaScript estos se ejecutarán cuando se importe el recurso. 
+2. No se aplica ningún tipo de capa de aislamiento (ejemplo: Shadow DOM), estos elementos son globales y pueden tener efectos colatorales debídos a la fragilidad de la Web.
+3. Tampoco se ejecutan en una hebra de ejecución distinta. Eso significa que no es una herramienta de ejecución concurrente y no es un mecanismo de paralelismo.
+
+Mas información en:
+
+http://w3c.github.io/webcomponents/spec/imports/
 http://blog.teamtreehouse.com/introduction-html-imports
 
 ### Shadow DOM:
 
-http://w3c.github.io/webcomponents/spec/shadow/
+Más información: http://w3c.github.io/webcomponents/spec/shadow/
 
 Los navegadores ya lo usan:
 
@@ -160,7 +242,7 @@ https://developers.google.com/web/fundamentals/getting-started/primers/shadowdom
 
 _Tiempo de práctica_
 
-No olvidar comentar los selectores propios de Shadow DOM: 
+No olvidar comentar los selectores propios de Shadow DOM (ver0): 
 
 * :host
 * :host-context
@@ -210,6 +292,8 @@ http://www.w3schools.com/jsref/dom_obj_document.asp
 Accedemos al DOM desde el Nodo "document", este es el nodo Root de todo el documento.
 
 Contar que también tenemos el BOM para acceder a los objetos proporcionados por el navegador.
+
+IMPORTANTE - Actualmente hay dos versiones de Shadow DOM, v0 y v1. Mas adelante veremos como afectan las diferentes versiones a los componentes de Polymer.
 
 ## ¿Qué es Polymer?
 
