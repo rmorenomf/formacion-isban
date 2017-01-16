@@ -267,7 +267,19 @@ No olvidar comentar los selectores propios de Shadow DOM (ver0):
     color: var(--header-color, green);
   }
   ```
-* ::content (renamed to ::slotted)
+* *::content* (renamed to *::slotted*). Selecciona los nodos distribuidos dentro de un elemento. *::content* ha sido renombrado a *::slotted*. Es importante tener en cuenta que *::slotted* sólo puede seleccionar a los hijos de nivel superior, no puede hacer selectores de descendientes.
+
+  ```css
+  /* Current implementation in Chrome */
+  ::content h1 {
+    color: red;
+  }
+
+  /* Upcoming implementation in Chrome and Safari */
+  ::slotted(h1) {
+    color: red;
+  }
+  ```
 
 * */deep/* (deprecated)
 
@@ -486,11 +498,11 @@ MyElement = Polymer({
 var el = new MyElement(42, 'octopus');
 ```
 
-Two notes about the custom constructor:
+Dos cosas sobre los cosntrucotres personalizados:
 
-* The factoryImpl method is only invoked when you create an element using the constructor. The factoryImpl method is not called if the element is created from markup by the HTML parser, or if the element is created using document.createElement.
+* El método factoryImpl sólo se invoca cuando se crea un elemento utilizando el constructor. El método factoryImpl no se llama si el elemento se crea a partir del marcado por el parser de HTML o si se crea el elemento usando document.createElement.
 
-* The factoryImpl method is called after the element is initialized (local DOM created, default values set, and so on). See Ready callback and element initialization for more information.
+* El método factoryImpl se llama después de inicializar el elemento (DOM local creado, valores predeterminados establecidos, etc.).
 
 Por último vamos a crear esto dentro del documento principal, index.html
 
@@ -535,7 +547,7 @@ Por último vamos a crear esto dentro del documento principal, index.html
 
 ### Personalizar las acciones del ciclo de vida.
 
-El prototipo de Base de Polymer implementa callbacks del ciclo de vida del custom element para realizar tareas necesarias para las funciones integradas de Polymer. Polymer, a su vez, llama a métodos de ciclo de vida en su prototipo.
+El prototipo de Base de Polymer implementa callbacks de ciclo de vida del custom element para realizar tareas necesarias para las funciones integradas de Polymer. Polymer, a su vez, llama a métodos de ciclo de vida en su prototipo.
 
 Polymer agrega una callbacks adicional, que se invoca cuando Polymer ha terminado de crear e inicializar el DOM local del elemento.
 
@@ -577,8 +589,6 @@ MyElement = Polymer({
 
 });
 ``` 
-
-TODO - Definir el orden de activación de cada uno de los elementos por el tipo de elemento.
 
 ### Definir atributos o propiedades de un componente.
 
@@ -622,25 +632,25 @@ Esas características se integran con el *data system*. (Que veremos en la Jorna
 
 Propiedades:
 
-*type*: constructor (uno de Boolean, Date, Number, String, Array u Object)
+* *type*: Tipo: constructor (uno de Boolean, Date, Number, String, Array u Object)
 Tipo de atributo, utilizado para deserializar desde un atributo. El tipo de la propiedad es explícito, especificado utilizando el constructor del tipo. 
 
-*value*: Tipo: booleano, número, cadena o función.
+* *value*: Tipo: boolean, number, string o function.
 Valor predeterminado de la propiedad. Si valor es una función, se invoca la función y se utiliza el valor de retorno como valor predeterminado de la propiedad. Si el valor predeterminado debe ser una matriz o un objeto exclusivo de la instancia, cree la matriz o el objeto dentro de una función. 
 
-*readOnly*: Tipo: boolean
+* *readOnly*: Tipo: boolean
 Si es true, la propiedad no se puede establecer directamente mediante asignación o vinculación de datos.
 
-*notify*: Tipo: boolean
+* *notify*: Tipo: boolean
 Si es true, la propiedad está disponible para binding de datos bidireccional. Además, un evento, nombre-propiedad-cambiado se dispara cada vez que la propiedad cambia.
 
-*computed*: Tipo: string
+* *computed*: Tipo: string
 El valor se interpreta como un nombre de método y una lista de argumentos. El método se invoca para calcular el valor cuando cambia cualquiera de los valores de los argumentos. Las propiedades calculadas son siempre de sólo lectura.
 
-*observer*: Tipo: stringº
+* *observer*: Tipo: stringº
 El valor se interpreta como un nombre de método que se invocará cuando cambie el valor de la propiedad. El método *propertyNameChanged* no se invocará automáticamente.
 
-*reflectToAttribute*: Tipo: boolean
+* *reflectToAttribute*: Tipo: boolean
 Establezca en true para que el atributo correspondiente se establezca en el nodo host cuando cambie el valor de la propiedad. Si el valor de la propiedad es booleano, el atributo se crea como un atributo booleano HTML estándar (si es true, no se establece si es falso). Para otros tipos de propiedad, el valor del atributo es una representación de cadena del valor de la propiedad.
 
 #### Property name to attribute name mapping
