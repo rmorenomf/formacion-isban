@@ -314,6 +314,37 @@ console.log(el2 instanceof HTMLInputElement); // true
 <input is="my-input">
 ```
 
+NOTA: En la preview de la versióin 2 se prescinde de este formula:
+
+Polymer 2.0 doesn't support type-extension elements (for example, ```<input is="iron-input">```). Type-extension support is still included in the custom elements v1 spec (as "customized build-in elements"), and scheduled for implementation in Chrome. However, since Apple has said it will not implement is, we will not be encouraging its use to avoid indefinite reliance on the custom elements polyfill. Instead, a wrapper custom element can surround a native element. For example:
+
+```html
+<a is="my-anchor">...</a>
+```
+
+Could become:
+
+```html
+<my-anchor>
+  <a>...</a>
+</my-anchor>
+```
+Users will need to change existing type-extension elements where necessary.
+
+All template type extensions provided by Polymer have now been changed to standard custom elements that take a <template> in their light DOM. For example:
+
+```html
+<template is="dom-repeat" items="{{items}}">...</template>
+```
+
+Becomes:
+
+```html
+<dom-repeat items="{{items}}">
+  <template>...</template>
+</dom-repeat>
+```
+
 Esto sirve de poco por eso vamos a agregar mas cosas a nuestro componente:
 
 1. Un constructor a medida.

@@ -8,6 +8,8 @@ Y para finalizar veremos las opciones de comunicación entre componentes y la co
 
 ## Data System
 
+Polymer permite observar cambios en las propiedades de un elemento y tomar varias acciones basadas en cambios de datos. Estas acciones, o efectos de propiedad, incluyen:
+
 https://www.polymer-project.org/1.0/docs/devguide/data-system
 
 ## Propiedades (Computed)
