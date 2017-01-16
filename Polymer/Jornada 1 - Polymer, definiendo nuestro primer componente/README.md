@@ -338,6 +338,8 @@ La guía oficial divide las características:
 * Tools. Línea de comandos y herramientas para todo el ciclo de vida de un componente o aplicación Polymer. 
 * Catálogo de elementos.
 
+NOTA: Desde la semana del 9 de Noviembre de 2017 hay una nueva versión del catálogo de componentes y de la aplicación para acceder a ellos. Personalmente me parece menos intuitiva. Los componentes no son los mismos. 
+
 ## Estructura de un componente Polymer (v0)
 
 Esto va a cambiar con la versión v1 de Shadow Dom y Custom elements y ES6.
