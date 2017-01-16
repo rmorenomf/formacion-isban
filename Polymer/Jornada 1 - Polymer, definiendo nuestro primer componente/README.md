@@ -7,13 +7,13 @@ El objetivo de esta jornada es dar una visión global de Polymer.
 1. Jornada 1: Polymer, definiendo nuestro primer componente.
 2. Jornada 2: Directivas estructurales en polymer y comunicación entre componentes.
 3. Jornada 3: Catálogo de componentes y uso de los mismos a través de Bower.
-4. Jornada 4: Creando una aplicación con el patrón PRPL.
-5. Jornada 5: Documentación y Testing en Polymer.
-6. Jornada 6: Vulcanizado y construcción con Gulp.
+4. Jornada 4: Documentación y Testing en Polymer.
+5. Jornada 5: Vulcanizado y construcción con Gulp.
+6. Jornada 6: Creando una aplicación con el patrón PRPL.
 
 Vamos a empezar una aplicación y vamos a estructurar la formación como un Workshop.
 
-Vamos a montar una tienda online super sencilla. Pero vamos a partir del Starter Kit y vamos a crear y modificar las secciones que mas nos interesen.
+Vamos a montar una tienda online super sencilla. Vamos a partir del Starter Kit y vamos a crear y modificar las secciones que mas nos interesen.
 
 ## ¿Qué es Polymer?
 
@@ -214,10 +214,10 @@ Es importante conocer que NO se trata de una importación del estilo de PHP, en 
 Hay que tener en cuenta además que:
 
 1. Si contiene Scripts de JavaScript estos se ejecutarán cuando se importe el recurso. 
-2. No se aplica ningún tipo de capa de aislamiento (ejemplo: Shadow DOM), estos elementos son globales y pueden tener efectos colatorales debídos a la fragilidad de la Web.
+2. No se aplica ningún tipo de capa de aislamiento (ejemplo: Shadow DOM), estos elementos son globales y pueden tener efectos colaterales debídos a la fragilidad de la Web (Salvo que contengan Web components).
 3. Tampoco se ejecutan en una hebra de ejecución distinta. Eso significa que no es una herramienta de ejecución concurrente y no es un mecanismo de paralelismo.
 
-Mas información en:
+Más información en:
 
 http://w3c.github.io/webcomponents/spec/imports/
 http://blog.teamtreehouse.com/introduction-html-imports
@@ -240,13 +240,38 @@ En otras palabras: el Shadow DOM es un DOM encapsulado que vive dentro del DOM p
 
 https://developers.google.com/web/fundamentals/getting-started/primers/shadowdom
 
-_Tiempo de práctica_
-
 No olvidar comentar los selectores propios de Shadow DOM (ver0): 
 
-* :host
-* :host-context
-* CSS custom properties. 
+* *:host*. Selecciona un elemento del host del Shadow. Puede contener identificadores adicionales entre paréntesis.
+
+  ```css
+  :host(.fancy) {
+    display: inline-block;
+    background: purple;
+  }
+  ```
+
+* *:host-context*. Selecciona un elemento del host del Shadow basado en un elemento padre coincidente.
+
+  ```css
+  :host-context(.blocky) {
+    display: block
+    background: red;
+  }
+  ```
+
+* CSS custom properties. Los nombres de propiedades con prefijo --, como --example-name, representan propiedades personalizadas que contienen un valor que puede ser reutilizado en todo el documento mediante la función (var ()). Las propiedades personalizadas participan en la css: cada una de ellas puede aparecer varias veces y el valor de la variable coincidirá con el valor definido en la custom properties computada por el algoritmo CSS.
+
+  ```css
+  h1 {  
+    color: var(--header-color, green);
+  }
+  ```
+* ::content (renamed to ::slotted)
+
+* */deep/* (deprecated)
+
+* ::shadow (deprecated)
 
 #### Un poco de teoría sobre el DOM
 
@@ -694,11 +719,6 @@ Con el fin de configurar las propiedades de camel-case de los elementos mediante
 ```
 
 TODO - Aquí quedan muchas mas cosas por contar, que pueden pasarse a la jornada 2. https://www.polymer-project.org/1.0/docs/devguide/properties
-
-
-
-
-
 
 ### Definir métodos de un componente.
 
