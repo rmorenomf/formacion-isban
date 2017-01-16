@@ -377,6 +377,37 @@ La guía oficial divide las características:
 
 NOTA: Desde la semana del 9 de Noviembre de 2017 hay una nueva versión del catálogo de componentes y de la aplicación para acceder a ellos. Personalmente me parece menos intuitiva. Los componentes no son los mismos. 
 
+## Tutorial rápido de Polymer
+
+1. Anatomía de un componente.
+2. Propiedades.
+3. Eventos.
+4. Templates.
+5. Dependencias.
+6. Toolkit.
+
+### 1. Anatomía de un componente.
+  TODO
+
+### 2. Propiedades.
+  TODO
+
+### 3. Eventos.
+  TODO
+
+### 4. Templates.
+  TODO
+
+### 5. Dependencias.
+  TODO
+
+### 6. Toolkit.
+  TODO
+
+## Tiempo de práctica
+
+_Vamos a crear un proyecto Polymer_
+
 ## Estructura de un componente Polymer (v0)
 
 Esto va a cambiar con la versión v1 de Shadow Dom y Custom elements y ES6.
@@ -498,7 +529,7 @@ MyElement = Polymer({
 var el = new MyElement(42, 'octopus');
 ```
 
-Dos cosas sobre los cosntrucotres personalizados:
+Dos cosas sobre los constructores personalizados:
 
 * El método factoryImpl sólo se invoca cuando se crea un elemento utilizando el constructor. El método factoryImpl no se llama si el elemento se crea a partir del marcado por el parser de HTML o si se crea el elemento usando document.createElement.
 
@@ -925,7 +956,7 @@ registered: function() {
 }
 ```
 
-## Dendencias de Polymer
+## Dependencias de Polymer
 
 ### Creación de un componente
 

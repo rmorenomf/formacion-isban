@@ -307,3 +307,25 @@ Utilice Polymer.dom(event) para obtener un objeto de evento normalizado que prop
 En el ejemplo anterior, el evento original se dispara en un ```<button>``` dentro del árbol del DOM local del ```<event-retargeting>```. El listener se agrega en el elemento ```<event-retargeting>``` en sí, que está en el documento principal. Para ocultar la implementación del elemento, el evento debe ser redirigido por lo que parece que proviene de ```<event-retargeting>``` en lugar de la etiqueta ```<button>```.
 
 El fragmento de documento que aparece en la ruta de eventos es la raíz del árbol DOM local. En el shady DOM es una instancia de *DocumentFragment*. En el Shadow DOM nativo, esto aparecería como una instancia de ShadowRoot en su lugar.
+
+## Directivas estructurales
+
+### Template repeater (dom-repeat)
+
+TODO
+
+### Data bind an array selection (array-selector)
+
+TODO
+
+### Conditional templates
+
+TODO
+
+### Auto-binding templates
+
+TODO 
+
+### dom-change event
+
+TODO
