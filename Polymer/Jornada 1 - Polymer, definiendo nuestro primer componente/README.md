@@ -604,37 +604,85 @@ NOTA: Desde la semana del 9 de Noviembre de 2017 hay una nueva versión del cat�
 
   Si juntamos propiedades y data binding tenemos una importante y potente herramienta de sincronización de datos:
 
-  
+  Fichero *editable-name-tag.html*:  
+
+  ```html
+  <link rel="import"  href="https://polygit2.appspot.com/components/polymer/polymer.html">
+  <!-- import the iron-input custom element -->
+  <link rel="import" href="https://polygit2.appspot.com/components/iron-input/iron-input.html">
+
+  <dom-module id="editable-name-tag">
+
+    <template>
+      <p>
+      This is a <strong>{{owner}}</strong>'s editable-name-tag.
+      </p>
+      <!-- iron-input exposes a two-way bindable input value -->
+      <input is="iron-input" bind-value="{{owner}}"
+        placeholder="Your name here...">
+    </template>
+
+    <script>
+      Polymer({
+        is: "editable-name-tag",
+        properties: {
+          owner: {
+            type: String,
+            value: "Daniel"
+          }
+        }
+      });
+    </script>
+
+  </dom-module>
+  ```
+
+  Su uso en el *index.html*:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://polygit2.appspot.com/components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="editable-name-tag.html">
+    </head>
+    <body>
+      <editable-name-tag></editable-name-tag>
+    </body>
+  </html>
+  ```
+
+  _Vamos a trastear un poco con el tipo de binding_
+
+6. Toolkit.
+
+  Tenemos que instalar el polymer y polymer-cli de forma global:
+
+  > npm install -g polymer-cli
+
+  Si tenemos un proyecto desde cero, podemos incluir la librería y los polyfills (las dependencias) con bower:
+
+  > bower install polymer
+
+  Lo mejor es crear una carpeta nueva y ejecutar:
+
+  > polymer init 
+
+  este comando arranca el asistente para crear un proyecto nuevo. Nos preguntará cosas como:
+
+  ```
+  Which starter template would you like to use? (Use arrow keys)
+    
+  element - A blank element template
+  application - A blank application template
+  shop - The "Shop" Progressive Web App demo
+  starter-kit - A starter application template, with navigation and "PRPL pattern" loading
+  ```
+
+  Vamos a elegir ```application - A blank application template``` después pasará a instalar todas las dependencias necesarias y tendremos un proyecto *en blanco" funcionando. 
 
 Usando un componente Polymer. Necesitamos importar el componente allá donde vayamos a usarlo y incorporarlo mediante marcado o de forma declarativa una vez que lo tengamos importado.
 Aquí tenemos que tener en cuenta que no todos los navegadores soportan Webcomponents, por eso será necesario incluir las dependencias a los Polyfills que nos permiten ejecutar los webcomponents incluso sin tener soporte por parte del navegador.
-
-### 6. Toolkit.
-
-Tenemos que instalar el polymer y polymer-cli de forma global:
-
-> npm install -g polymer-cli
-
-Si tenemos un proyecto desde cero, podemos incluir la librería y los polyfills (las dependencias) con bower:
-
-> bower install polymer
-
-Lo mejor es crear una carpeta nueva y ejecutar:
-
-> polymer init 
-
-este comando arranca el asistente para crear un proyecto nuevo. Nos preguntará cosas como:
-
-```
-Which starter template would you like to use? (Use arrow keys)
-  
-element - A blank element template
-application - A blank application template
-shop - The "Shop" Progressive Web App demo
-starter-kit - A starter application template, with navigation and "PRPL pattern" loading
-```
-
-Vamos a elegir ```application - A blank application template``` después pasará a instalar todas las dependencias necesarias y tendremos un proyecto *en blanco" funcionando. 
 
 ## Tiempo de práctica
 
@@ -642,7 +690,6 @@ _Vamos a crear un proyecto Polymer_
 
 ## Estructura de un componente Polymer (v0)
 
-Esto va a cambiar con la versión v1 de Shadow Dom y Custom elements y ES6.
 
 ```javascript
 // register an element
@@ -663,6 +710,8 @@ Esto va a cambiar con la versión v1 de Shadow Dom y Custom elements y ES6.
     // ... or with the constructor:
     var el2 = new MyElement();
 ```
+
+NOTA: Esto va a cambiar con la versión v2 de Polymer.
 
 Si comparamos este ejemplo con la forma de crear y registrar un web component con los ejemplos "a pelo" o "vanilla" que hemos visto antes podemos ver cosas similares y otras diferentes. 
 
@@ -849,6 +898,48 @@ MyElement = Polymer({
 });
 ``` 
 
+### Orden de inicialización
+
+El orden básico de inicialización del elemento para un elemento dado es:
+
+  1. *created* callback.
+  2. El DOM local se inicializa (Esto significa que se crean los hijos DOM locales, sus valores de propiedad se establecen como se especifica en la plantilla, y se les ha llamado a ellos, suponiendo que estén registrados).
+  3. *ready* callback.
+  4. *factoryImpl* callback.
+  5. *attached* callback.
+
+
+NOTA: No hay garantías sobre el tiempo de inicialización de los hijos del light DOM. En general los elementos se inicializan en orden de creación, por lo que los elementos child suelen ser inicializados después de sus padres.
+
+
+Polymer también proporciona dos devoluciones de llamada de en tiempo de registro, *beforeRegister* y *registered*.
+
+Podemos utilizar el callback *beforeRegister* para transformar el prototipo de un elemento antes del registro. Esto es útil cuando se registra un elemento usando el estilo de clase de ES6.
+
+### Crear de un componente, pero no registrarlo hasta mas adelante:
+
+```javascript
+// Creamos pero no registramos
+var MyElement = Polymer.Class({
+
+  is: 'my-element',
+
+  // See below for lifecycle callbacks
+  created: function() {
+    this.textContent = 'My element!';
+  }
+
+});
+
+document.registerElement('my-element', MyElement);
+
+// Equivalent:
+var el1 = new MyElement();
+var el2 = document.createElement('my-element');
+```
+
+*Según la documentación:* "Polymer.Class takes the same prototype argument as the Polymer function, and sets up the prototype chain, but does not register the element. Instead it returns a constructor that can be passed to document.registerElement to register your element with the browser, and after which can be used to instantiate new instances of your element via code."
+
 ### Definir atributos o propiedades de un componente.
 
 Podemos crear propiedades a los componentes de forma que podamos especificar diferentes comportamientos y visualizaciones para un mismo componente. Además dichas propiedades nos permiten comunicarnos con el componente desde elementos ajenos al mismo.
@@ -906,28 +997,15 @@ Si es true, la propiedad está disponible para binding de datos bidireccional. A
 * *computed*: Tipo: string
 El valor se interpreta como un nombre de método y una lista de argumentos. El método se invoca para calcular el valor cuando cambia cualquiera de los valores de los argumentos. Las propiedades calculadas son siempre de solo lectura.
 
-* *observer*: Tipo: stringº
+* *observer*: Tipo: string
 El valor se interpreta como un nombre de método que se invocará cuando cambie el valor de la propiedad. El método *propertyNameChanged* no se invocará automáticamente.
 
 * *reflectToAttribute*: Tipo: boolean
 Establezca en true para que el atributo correspondiente se establezca en el nodo host cuando cambie el valor de la propiedad. Si el valor de la propiedad es booleano, el atributo se crea como un atributo booleano HTML estándar (si es true, no se establece si es falso). Para otros tipos de propiedad, el valor del atributo es una representación de cadena del valor de la propiedad.
 
-#### Property name to attribute name mapping
-
-Para asociar datos, deserializar propiedades de atributos y reflejar propiedades de nuevo a atributos, Polymer asigna nombres de atributo a nombres de propiedad y al revés.
-
-Al asignar nombres de atributo a nombres de propiedad:
-
-* Los nombres de atributo se convierten en nombres de propiedad en minúsculas. Por ejemplo, el atributo _firstName_ se asigna a _firstname_.
-* Los nombres de atributo con guiones se convierten en nombres de propiedad *camelCase* capitalizando el carácter después de cada guión y, a continuación, eliminando los guiones. Por ejemplo, el atributo _first-name_ se asigna a _firstName_.
-
-Las mismas asignaciones ocurren a la inversa cuando se convierten nombres de propiedades en nombres de atributos (por ejemplo, si una propiedad se define mediante reflectToAttribute: true.)
-
 #### Attribute deserialization
 
 Si una propiedad está configurada en el objeto _properties_, un atributo en la instancia que coincide con el nombre de la propiedad será deserializado de acuerdo con el tipo especificado y asignado a una propiedad del mismo nombre en la instancia del elemento.
-
-Si no se especifica ninguna otra opción de propiedades para una propiedad, el tipo (especificado mediante el constructor de tipo, por ejemplo, Object, String, etc.) se puede establecer directamente como el valor de la propiedad en el objeto properties; De lo contrario se debe proporcionar como el valor de la clave de tipo en el objeto de configuración de propiedades.
 
 El sistema de tipos incluye soporte para valores Boolean y de Number, valores de Object y Array expresados como JSON o objetos Date expresados como cualquier representación de cadena de fecha parseable.
 
@@ -987,7 +1065,25 @@ Con el fin de configurar las propiedades de camel-case de los elementos mediante
 <!-- Sets <x-custom>.userName = 'Scott';  -->
 ```
 
-TODO - Aquí quedan muchas mas cosas por contar, que pueden pasarse a la jornada 2. https://www.polymer-project.org/1.0/docs/devguide/properties
+*Nota*: La deserialización ocurre tanto en el tiempo de creación como en el tiempo de ejecución (por ejemplo, cuando se cambia el atributo mediante setAttribute). Sin embargo, se recomienda que los atributos sólo se utilicen para configurar propiedades en el marcado estático y, en cambio, las propiedades se establezcan directamente para los cambios en tiempo de ejecución.
+
+#### Problemas con las propiedades Booleanas:
+
+Para que una propiedad Booleana sea configurable desde el marcado, debe predeterminarse a false. Si el valor por defecto es true, no puede establecerlo en false desde el marcado, ya que la presencia del atributo, con o sin valor, equivale a true. Este es el comportamiento estándar de los atributos en la plataforma web.
+
+Si este comportamiento no se ajusta a su caso de uso, puede utilizar un atributo de valor de cadena o valor de número en su lugar.
+
+#### ¿Cómo pasamos un objeto o un array mediante marcado?
+
+```html
+<my-element book='{ "title": "Persuasion", "author": "Austen" }'></my-element>
+```
+
+Lo indicamos con formato JSON. 
+
+
+
+Aquí quedan muchas mas cosas por contar, que pueden pasarse a la jornada 2. https://www.polymer-project.org/1.0/docs/devguide/properties
 
 ### Definir métodos de un componente.
 
@@ -1418,14 +1514,6 @@ Se ha deprecado la etiqueta ```<content>``` en favor de la etiqueta ```<slot>```
 </div>
 ```
 
-## Re-distribution: Directly (v0) vs Indirectly by flattening (v1)
-
-TODO
-
-## Fallback contents 
-
-TODO
-
 ## Eventos en reacción a cambios en el contenido
 
 ### Antes (v0)
@@ -1513,10 +1601,6 @@ v0 | v1 |
 insertionPoint.getDistributedNodes() | slot.assignedNodes({flatten: true}) |
 No equivalence | slot.assignedNodes() |
 Element.getDestinationInsertionPoints() | Element.assignedSlot (The meaning is slightly different. It returns only the directly assigned slot.) |
-
-## Una nueva utilidad para el nodo
-
-TODO
 
 ## La MEGA pregunta.
 

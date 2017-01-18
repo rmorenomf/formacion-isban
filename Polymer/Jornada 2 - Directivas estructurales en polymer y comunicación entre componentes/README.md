@@ -14,6 +14,17 @@ https://www.polymer-project.org/1.0/docs/devguide/data-system
 
 ## Propiedades (Computed)
 
+#### Property name to attribute name mapping
+
+Para asociar datos, deserializar propiedades de atributos y reflejar propiedades de nuevo a atributos, Polymer asigna nombres de atributo a nombres de propiedad y al revés.
+
+Al asignar nombres de atributo a nombres de propiedad:
+
+* Los nombres de atributo se convierten en nombres de propiedad en minúsculas. Por ejemplo, el atributo _firstName_ se asigna a _firstname_.
+* Los nombres de atributo con guiones se convierten en nombres de propiedad *camelCase* capitalizando el carácter después de cada guión y, a continuación, eliminando los guiones. Por ejemplo, el atributo _first-name_ se asigna a _firstName_.
+
+Las mismas asignaciones ocurren a la inversa cuando se convierten nombres de propiedades en nombres de atributos (por ejemplo, si una propiedad se define mediante reflectToAttribute: true.)
+
 https://www.polymer-project.org/1.0/docs/devguide/properties
 
 ## Observers
