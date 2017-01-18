@@ -1339,7 +1339,7 @@ La más conservadora (y la más recomendable) es *polymer.html* que incluye la l
 
 ### Ejecución de los componentes
 
-Las tecnologias que soportan los webcomponents no está disponibles en todos los nevegadores ni en todas las versiones. Por eso, para que nuestros webcomponts se ejecuten en cualquier nevegador y versión. necesitemos unos polyfills que permitan la ejecución de Polymer en navegadores donde forma nativa no esté soportado Polymer.
+Las tecnologias que soportan los webcomponents no está disponibles en todos los navegadores ni en todas las versiones. Por eso, para que nuestros webcomponents se ejecuten en cualquier nevegador y versión necesitemos unos polyfills que permitan la ejecución de Polymer en navegadores donde forma nativa no esté soportado Polymer.
 
 Por eso tenemos que incluir alguno de estos dos ficheros:
 
@@ -1350,7 +1350,7 @@ Por eso tenemos que incluir alguno de estos dos ficheros:
   * Shadow DOM: provides encapsulation by hiding DOM subtrees under shadow roots (spec).
   *This also folds in polyfills for MutationObserver and WeakMap.
 
-*webcomponents-lite.js*:
+*webcomponents-lite.js* (Mejor rendimiento):
 
 Note: A lighter webcomponents-lite.js build is included with the default download package including support for just *Custom Elements* and *HTML Imports*. This is useful if you don't require Shadow DOM in your application. You can generate custom builds supporting any combination of Web Component features too.
 
@@ -1619,9 +1619,9 @@ Ya no tenemos como punto de entrada *document*. Se han creado 3 métodos para es
 * customElements.whenDefined(name)
 * customElements.get(name)
 
-The second change is that components are defined by classes, skipping completely the previously proposed, verbose, and convoluted, ES5 style prototype definition.
+El segundo cambio es que los componentes se definen por clases, omitiendo completamente la definición del prototipo de estilo ES5 propuesto previamente, detallado y enrevesado.
 
-The third most relevant change is that methods are named differently so that attachedCallback is now called connectedCallback, detachedCallback is now disconnectedCallback, the createdCallback is now the constructor, and finally the attributeChangedCallback triggers only if an attribute has been defined through a public static observedAttributes array of attributes to watch, as opposite of any attribute, like it was previously for v0.
+El tercer cambio más relevante es que los métodos se nombran de manera diferente *attachedCallback* es ahora *connectedCallback*, detachedCallback es ahora disconnectedCallback,el *createCallback* es ahora el constructor.
 
 ## La MEGA pregunta.
 
