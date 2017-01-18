@@ -1,6 +1,8 @@
 # Jornada 1: Polymer, definiendo nuestro primer componente.
 
-El objetivo de esta jornada es dar una visión global de Polymer.
+## Plan de trabajo
+
+El objetivo de esta jornada es dar una visión global de Polymer. Comenzar un proyecto de desarrollo con Polymer de una pequeña tienda.
 
 ## Revisión a los objetivos de la formación.
 
@@ -267,7 +269,8 @@ No olvidar comentar los selectores propios de Shadow DOM (ver0):
     color: var(--header-color, green);
   }
   ```
-* *::content* (renamed to *::slotted*). Selecciona los nodos distribuidos dentro de un elemento. *::content* ha sido renombrado a *::slotted*. Es importante tener en cuenta que *::slotted* sólo puede seleccionar a los hijos de nivel superior, no puede hacer selectores de descendientes.
+
+* *::content* (renamed to *::slotted*). Selecciona los nodos distribuidos dentro de un elemento. *::content* ha sido renombrado a *::slotted*. Es importante tener en cuenta que *::slotted* solo puede seleccionar a los hijos de nivel superior, no puede hacer selectores de descendientes.
 
   ```css
   /* Current implementation in Chrome */
@@ -379,83 +382,248 @@ NOTA: Desde la semana del 9 de Noviembre de 2017 hay una nueva versión del cat�
 
 ## Tutorial rápido de Polymer
 
-1. Anatomía de un componente.
-2. Propiedades.
-3. Eventos.
-4. Templates.
-5. Dependencias.
-6. Toolkit.
+1. Un componente Polymer básico:
 
-### 1. Anatomía de un componente.
+  Fichero *proto-element.html*:
 
-```html
-<!-- Dependencia con la librería de Polymer --> 
-<link rel="import" href="../bower_components/polymer/polymer.html">
+  ```html
+  <link rel="import"  href="https://polygit2.appspot.com/components/polymer/polymer.html">
 
-<dom-module id="shop-cart">
-    <!-- Template del componente -->
+  <script>
+    // register a new element called proto-element
+    Polymer({
+      is: "proto-element",
+
+      // add a callback to the element's prototype
+      ready: function() {
+        this.textContent = "I'm a proto-element. Check out my prototype!"
+      }
+    });
+  </script>
+  ```
+
+  En este ejemplo hemos incluido capturado uno de los hooks del ciclo de vida.
+
+  Su uso en el *index.html*:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://polygit2.appspot.com/components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="proto-element.html">
+    </head>
+    <body>
+      <proto-element></proto-element>
+    </body>
+  </html>
+  ```
+
+2. Manipulación del DOM (local):
+
+  Fichero *proto-element.html*:
+
+  ```html
+  <link rel="import"  href="https://polygit2.appspot.com/components/polymer/polymer.html">
+  <dom-module id="dom-element">
+
     <template>
-        <style>
-            :host {
-                display: block;
-            }
-        </style>
-
-        <div>
-            Cart: {{ basket.length }}
-            <template is="dom-repeat" items="{{basket}}" id="basketList">
-            {{ item.name }}
-            </template>
-            <button on-click="">Checkout</button>
-        </div>
-
+      <p>I'm a DOM element. This is my local DOM!</p>
     </template>
+
     <script>
-        //Llamada a Polymer para la creación del custom element.
-        Polymer({
-            is: 'shop-cart',
-            properties: {
-                basket: {
-                    type: Array,
-                    value: [],
-                    reflectToAttribute: true,
-                    notify: true
-                }
-            }
-        });
+      Polymer({
+        is: "dom-element"
+      });
     </script>
-</dom-module>
-```
+
+  </dom-module>
+  ```
+
+  *index.html*:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://polygit2.appspot.com/components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="dom-element.html">
+    </head>
+    <body>
+      <dom-element></dom-element>
+    </body>
+  </html>
+  ```
+
+3. Composición:
+
+  DOM local permite controlar la composición. Los hijos del elemento se pueden distribuir de modo que se representen como si estuvieran insertados en el árbol DOM local.
+  Este ejemplo crea una etiqueta sencilla que decora una imagen al envolverla con una etiqueta denominada ```<div>```.
+  En este ejemplo estamos encapsulando el DOM Local dentro del elemento. Este DOM es propio del componente, es su Shadow DOM.
+
+  Fichero *picture-frame.html*:
+
+  ```html
+  <link rel="import"  href="https://polygit2.appspot.com/components/polymer/polymer.html">
+  <dom-module id="picture-frame">
+
+    <template>
+      <!-- scoped CSS for this element -->
+      <style>
+        div {
+          display: inline-block;
+          background-color: #ccc;
+          border-radius: 8px;
+          padding: 4px;
+        }
+      </style>
+      <div>
+        <!-- any children are rendered here -->
+        <content></content>
+      </div>
+    </template>
+
+    <script>
+      Polymer({
+        is: "picture-frame",
+      });
+    </script>
+
+  </dom-module>
+  ```
+
+  Aquí un ejemplo de su uso, *index.html*:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://polygit2.appspot.com/components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="picture-frame.html">
+    </head>
+    <body>
+      <picture-frame>
+        <img src="https://www.polymer-project.org/images/logos/p-logo-32.png">
+      </picture-frame>
+    </body>
+  </html>
+  ```
+
+4. Data binding:
+
+  Esto nos permite modificar el Local DOM de forma dinámica. Así como propagar cambios en nuestros elementos. Este puedes unidireccional o bidireccional.
+
+  Fichero *name-tag.html*:
+
+  ```html 
+  <link rel="import"  href="https://polygit2.appspot.com/components/polymer/polymer.html">
+  <!-- import the iron-input custom element -->
+  <link rel="import" href="https://polygit2.appspot.com/components/iron-input/iron-input.html">
+
+  <dom-module id="name-tag">
+
+    <template>
+      <!-- bind to the "owner" property -->
+      This is <b>{{owner}}</b>'s name-tag element.
+    </template>
+
+    <script>
+    Polymer({
+      is: "name-tag",
+      ready: function() {
+        // set this element's owner property
+        this.owner = "Daniel";
+      }
+    });
+    </script>
+
+  </dom-module>
+  ```
+
+  Su uso en el *index.html*:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://polygit2.appspot.com/components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="name-tag.html">
+    </head>
+    <body>
+      <name-tag></name-tag>
+    </body>
+  </html>
+  ```
+
+5. Polymer nos ofrece un mecanismo para comunicarnos con nuestros componentes, (en realidad también podemos hacerlo mediante eventos, aquí la dirección es importante), nos referimos a las propiedades:
+
+  Fichero *configurable-name-tag.html*:
+
+  ```html
+  <link rel="import"  href="https://polygit2.appspot.com/components/polymer/polymer.html">
+
+  <dom-module id="configurable-name-tag">
+
+    <template>
+      <!-- bind to the "owner" property -->
+      This is <b>{{owner}}</b>'s configurable-name-tag element.
+    </template>
+
+    <script>
+      Polymer({
+        is: "configurable-name-tag",
+        properties: {
+          // declare the owner property
+          owner: {
+            type: String,
+            value: "Daniel"
+          }
+        }
+      });
+    </script>
+
+  </dom-module>
+  ```
+
+  Su uso en el *index.html*:
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://polygit2.appspot.com/components/webcomponentsjs/webcomponents-lite.js"></script>
+      <link rel="import" href="configurable-name-tag.html">
+    </head>
+    <body>
+      <!-- configure a property from markup by setting
+          the corresponding attribute                 -->
+      <configurable-name-tag owner="Scott"></configurable-name-tag>
+    </body>
+  </html>
+  ```
+
+  Si juntamos propiedades y data binding tenemos una importante y potente herramienta de sincronización de datos:
+
+  
 
 Usando un componente Polymer. Necesitamos importar el componente allá donde vayamos a usarlo y incorporarlo mediante marcado o de forma declarativa una vez que lo tengamos importado.
 Aquí tenemos que tener en cuenta que no todos los navegadores soportan Webcomponents, por eso será necesario incluir las dependencias a los Polyfills que nos permiten ejecutar los webcomponents incluso sin tener soporte por parte del navegador.
-
-### 2. Propiedades.
-  TODO
-
-### 3. Eventos.
-  TODO
-
-### 4. Data binding.
-  TODO
-
-### 5. Dependencias.
-  TODO
 
 ### 6. Toolkit.
 
 Tenemos que instalar el polymer y polymer-cli de forma global:
 
-> npm install polymer -g
-> npm install polymer-cli -g 
+> npm install -g polymer-cli
 
-> Creamos unas carpeta nueva _mkdir simple-app && cd simple-app_ 
+Si tenemos un proyecto desde cero, podemos incluir la librería y los polyfills (las dependencias) con bower:
 
-Ahora podemos ejecutar el wizard de creación de un proyecto con el comando:
+> bower install polymer
 
-> polymer init
+Lo mejor es crear una carpeta nueva y ejecutar:
 
-Nos preguntará cosas como:
+> polymer init 
+
+este comando arranca el asistente para crear un proyecto nuevo. Nos preguntará cosas como:
 
 ```
 Which starter template would you like to use? (Use arrow keys)
@@ -504,7 +672,7 @@ Otra de las cosas que nos "endulza" Polymer es extender de un elemento HTML nati
 
 ### Extendiendo elementos nativos HTML
 
-De hecho, en la versión de Polymer 1.x, sólo podemos extender componentes nativos; *input*, *button*, etc. Pero no de otros Custom elements.
+De hecho, en la versión de Polymer 1.x, solo podemos extender componentes nativos; *input*, *button*, etc. Pero no de otros Custom elements.
 
 ```javascript
 MyInput = Polymer({
@@ -591,7 +759,7 @@ var el = new MyElement(42, 'octopus');
 
 Dos cosas sobre los constructores personalizados:
 
-* El método factoryImpl sólo se invoca cuando se crea un elemento utilizando el constructor. El método factoryImpl no se llama si el elemento se crea a partir del marcado por el parser de HTML o si se crea el elemento usando document.createElement.
+* El método factoryImpl solo se invoca cuando se crea un elemento utilizando el constructor. El método factoryImpl no se llama si el elemento se crea a partir del marcado por el parser de HTML o si se crea el elemento usando document.createElement.
 
 * El método factoryImpl se llama después de inicializar el elemento (DOM local creado, valores predeterminados establecidos, etc.).
 
@@ -714,7 +882,7 @@ Como vemos podemos sobre escribir el atributo *properties*, con las propiedades 
 1. Tipo de propiedad.
 2. Valor por defecto.
 3. Observer de cambio de propiedad. Llama a un método cuando cambia el valor de la propiedad.
-4. Estado de sólo lectura. Evita cambios accidentales en el valor de la propiedad.
+4. Estado de solo lectura. Evita cambios accidentales en el valor de la propiedad.
 5. Binding bidireccional. Inicia un evento cada vez que cambia el valor de la propiedad.
 6. Propiedad calculada. Calcula dinámicamente un valor basado en otras propiedades.
 7. Propiedad de reflexión para atribuir. Actualiza el valor del atributo correspondiente cuando cambia el valor de la propiedad.
@@ -736,7 +904,7 @@ Si es true, la propiedad no se puede establecer directamente mediante asignació
 Si es true, la propiedad está disponible para binding de datos bidireccional. Además, un evento, nombre-propiedad-cambiado se dispara cada vez que la propiedad cambia.
 
 * *computed*: Tipo: string
-El valor se interpreta como un nombre de método y una lista de argumentos. El método se invoca para calcular el valor cuando cambia cualquiera de los valores de los argumentos. Las propiedades calculadas son siempre de sólo lectura.
+El valor se interpreta como un nombre de método y una lista de argumentos. El método se invoca para calcular el valor cuando cambia cualquiera de los valores de los argumentos. Las propiedades calculadas son siempre de solo lectura.
 
 * *observer*: Tipo: stringº
 El valor se interpreta como un nombre de método que se invocará cuando cambie el valor de la propiedad. El método *propertyNameChanged* no se invocará automáticamente.
