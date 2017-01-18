@@ -51,7 +51,7 @@ Realmente son Elements en el sentido del DOM (ver apartado sobre el DOM).
 <super-button>
   ```
 
-2. Antes de usarlo tenemos que reguistarlo:
+2. Antes de usarlo tenemos que registrarlo:
 
 ```
 document.registerElement()
@@ -387,7 +387,48 @@ NOTA: Desde la semana del 9 de Noviembre de 2017 hay una nueva versión del cat�
 6. Toolkit.
 
 ### 1. Anatomía de un componente.
-  TODO
+
+```html
+<!-- Dependencia con la librería de Polymer --> 
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="shop-cart">
+    <!-- Template del componente -->
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+
+        <div>
+            Cart: {{ basket.length }}
+            <template is="dom-repeat" items="{{basket}}" id="basketList">
+            {{ item.name }}
+            </template>
+            <button on-click="">Checkout</button>
+        </div>
+
+    </template>
+    <script>
+        //Llamada a Polymer para la creación del custom element.
+        Polymer({
+            is: 'shop-cart',
+            properties: {
+                basket: {
+                    type: Array,
+                    value: [],
+                    reflectToAttribute: true,
+                    notify: true
+                }
+            }
+        });
+    </script>
+</dom-module>
+```
+
+Usando un componente Polymer. Necesitamos importar el componente allá donde vayamos a usarlo y incorporarlo mediante marcado o de forma declarativa una vez que lo tengamos importado.
+Aquí tenemos que tener en cuenta que no todos los navegadores soportan Webcomponents, por eso será necesario incluir las dependencias a los Polyfills que nos permiten ejecutar los webcomponents incluso sin tener soporte por parte del navegador.
 
 ### 2. Propiedades.
   TODO
@@ -395,14 +436,37 @@ NOTA: Desde la semana del 9 de Noviembre de 2017 hay una nueva versión del cat�
 ### 3. Eventos.
   TODO
 
-### 4. Templates.
+### 4. Data binding.
   TODO
 
 ### 5. Dependencias.
   TODO
 
 ### 6. Toolkit.
-  TODO
+
+Tenemos que instalar el polymer y polymer-cli de forma global:
+
+> npm install polymer -g
+> npm install polymer-cli -g 
+
+> Creamos unas carpeta nueva _mkdir simple-app && cd simple-app_ 
+
+Ahora podemos ejecutar el wizard de creación de un proyecto con el comando:
+
+> polymer init
+
+Nos preguntará cosas como:
+
+```
+Which starter template would you like to use? (Use arrow keys)
+  
+element - A blank element template
+application - A blank application template
+shop - The "Shop" Progressive Web App demo
+starter-kit - A starter application template, with navigation and "PRPL pattern" loading
+```
+
+Vamos a elegir ```application - A blank application template``` después pasará a instalar todas las dependencias necesarias y tendremos un proyecto *en blanco" funcionando. 
 
 ## Tiempo de práctica
 
@@ -444,15 +508,11 @@ De hecho, en la versión de Polymer 1.x, sólo podemos extender componentes nati
 
 ```javascript
 MyInput = Polymer({
-
   is: 'my-input',
-
   extends: 'input',
-
   created: function() {
     this.style.border = '1px solid red';
   }
-
 });
 
 var el1 = new MyInput();

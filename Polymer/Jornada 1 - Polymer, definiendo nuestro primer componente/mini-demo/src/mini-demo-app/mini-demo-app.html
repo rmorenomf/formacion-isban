@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="mini-demo-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'mini-demo-app',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'mini-demo-app',
+        },
+      },
+
+    });
+  </script>
+</dom-module>

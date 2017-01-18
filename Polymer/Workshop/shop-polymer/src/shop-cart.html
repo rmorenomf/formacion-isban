@@ -1,3 +1,4 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
 <dom-module id="shop-cart">
     <template>
@@ -9,9 +10,25 @@
 
         <div>
             Cart: {{ basket.length }}
-            <template is="dom-repeat" items="{{basket}}" id="basketList">
-            {{ basket.name }}
-            </template>
+            <!--
+            <paper-dropdown-menu>
+                <paper-listbox class="dropdown-content">
+                    <paper-item>Croissant</paper-item>
+                    <paper-item>Donut</paper-item>
+                    <paper-item>Financier</paper-item>
+                    <paper-item>Madeleine</paper-item>
+                </paper-listbox>
+            </paper-dropdown-menu>
+            -->
+            <paper-button raised onclick="dialogCart.open()">Checkout</paper-button>
+
+            <paper-dialog id="dialogCart">
+                <h2>Cart resume.</h2>
+                <template is="dom-repeat" items="{{basket}}" id="basketList">
+                {{ item.name }}
+                </template>
+            </paper-dialog>
+            
         </div>
 
     </template>
