@@ -940,6 +940,8 @@ var el2 = document.createElement('my-element');
 
 *Según la documentación:* "Polymer.Class takes the same prototype argument as the Polymer function, and sets up the prototype chain, but does not register the element. Instead it returns a constructor that can be passed to document.registerElement to register your element with the browser, and after which can be used to instantiate new instances of your element via code."
 
+## Propiedades
+
 ### Definir atributos o propiedades de un componente.
 
 Podemos crear propiedades a los componentes de forma que podamos especificar diferentes comportamientos y visualizaciones para un mismo componente. Además dichas propiedades nos permiten comunicarnos con el componente desde elementos ajenos al mismo.
@@ -1081,9 +1083,7 @@ Si este comportamiento no se ajusta a su caso de uso, puede utilizar un atributo
 
 Lo indicamos con formato JSON. 
 
-
-
-Aquí quedan muchas mas cosas por contar, que pueden pasarse a la jornada 2. https://www.polymer-project.org/1.0/docs/devguide/properties
+## Métodos
 
 ### Definir métodos de un componente.
 
@@ -1121,11 +1121,11 @@ Algunos destacados en la documentación:
 
 #### Async/debounce
 
-* *async(method, [wait])*. Calls method asynchronously. If no wait time is specified, runs tasks with microtask timing (after the current method finishes, but before the next event from the event queue is processed). Returns a handle that can be used to cancel the task.
+* *async(method, [wait])*. Llama el método asincrónicamente. Si no se especifica ningún tiempo de espera, se ejecutan tareas con temporización de microtask (después de finalizar el método actual, pero antes de procesar el siguiente evento de la cola de sucesos). Devuelve un identificador que se puede utilizar para cancelar la tarea..
 
-* *cancelAsync(handle)*. Cancels the identified async task.
+* *cancelAsync(handle)*. Cancela la tarea asíncrona indicada.
 
-* *debounce(jobName, callback, [wait])*. Call debounce to collapse multiple requests for a named task into one invocation, which is made after the wait time has elapsed with no new request. If no wait time is given, the callback is called at microtask timing (guaranteed to be before paint).
+* *debounce(jobName, callback, [wait])*. Llamar a *debounce* para colapsar varias solicitudes de una tarea con nombre en una invocación, que se realiza después de que ha transcurrido el tiempo de espera sin ninguna nueva solicitud. Si no se da tiempo de espera, la devolución de llamada se llama en el momento de la microtask (garantizado antes del pintado).
 
 * *cancelDebouncer(jobName)*. Cancels an active debouncer without calling the callback.
 
@@ -1135,7 +1135,7 @@ Algunos destacados en la documentación:
 
 #### Manipulación de Clases y atributos
 
-* *toggleClass(name, bool, [node])*. Toggles the named boolean class on the host element, adding the class if bool is truthy and removing it if bool is falsey. If node is specified, sets the class on node instead of the host element.
+* *toggleClass(name, bool, [node])*. Alterna la clase booleana indicada en el elemento host, agregando la clase si bool es true y la elimina si bool es false. Si se especifica nodo, establece la clase en el nodo en lugar del elemento host.
 
 * *toggleAttribute(name, bool, [node])*. Like toggleClass, but toggles the named boolean attribute.
 
