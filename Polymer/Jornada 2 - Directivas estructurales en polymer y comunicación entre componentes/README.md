@@ -3,37 +3,258 @@
 ## Plan de trabajo
 
 En esta jornada vamos a profundizar en conceptos que están relacionados con la creación de componentes y que no en la jornada anterior no se pudieron ver en profundidad.
-Después repasaremos las diferentes directivas estructurales que se corresponde con el apartado "API Reference" de la documentación oficial.
-Y para finalizar veremos las opciones de comunicación entre componentes y la comunicación de componentes con otros elementos.
-
-## Data System
-
-Polymer permite observar cambios en las propiedades de un elemento y tomar varias acciones basadas en cambios de datos. Estas acciones, o efectos de propiedad, incluyen:
-
-https://www.polymer-project.org/1.0/docs/devguide/data-system
-
-## Propiedades (Computed)
-
-#### Property name to attribute name mapping
-
-Para asociar datos, deserializar propiedades de atributos y reflejar propiedades de nuevo a atributos, Polymer asigna nombres de atributo a nombres de propiedad y al revés.
-
-Al asignar nombres de atributo a nombres de propiedad:
-
-* Los nombres de atributo se convierten en nombres de propiedad en minúsculas. Por ejemplo, el atributo _firstName_ se asigna a _firstname_.
-* Los nombres de atributo con guiones se convierten en nombres de propiedad *camelCase* capitalizando el carácter después de cada guión y, a continuación, eliminando los guiones. Por ejemplo, el atributo _first-name_ se asigna a _firstName_.
-
-Las mismas asignaciones ocurren a la inversa cuando se convierten nombres de propiedades en nombres de atributos (por ejemplo, si una propiedad se define mediante reflectToAttribute: true.)
-
-https://www.polymer-project.org/1.0/docs/devguide/properties
-
-## Observers
-
-https://www.polymer-project.org/1.0/docs/devguide/observers
+Veremos las opciones de comunicación entre componentes y la comunicación de componentes con otros elementos.
+Echaremos un vistazo al catálogo de componentes para empezar en serio con nuestra tienda.
 
 ## Data binding
 
-https://www.polymer-project.org/1.0/docs/devguide/data-binding
+Data binding conecta los datos de un custom element (el elemento host) a una propiedad o atributo de un elemento en su DOM local (el elemento secundario o elemento objetivo). Los datos del elemento host pueden ser una propiedad o sub-propiedad representada por una ruta de datos, o datos generados basados ​​en una o más rutas.
+
+> property-name=annotation-or-compound-binding
+> attribute-name$=annotation-or-compound-binding
+
+
+El lado izquierdo del enlace identifica la propiedad o atributo de destino.
+
+  * Para enlazar a una propiedad, utilice el nombre de la propiedad en forma de atributo (dash-case not camelCase):
+      
+      ```html 
+      <my-element my-property="{{hostProperty}}">
+      ```
+
+    Este ejemplo une a la propiedad de destino, myProperty en ```<my-property>```.
+    
+  * Para enlazar con un atributo, usaremos el nombre del atributo seguido de $:
+  
+    ```html
+    <a href$="{{hostProperty}}">
+    ```
+
+El lado derecho consiste en una anotación de binding o en un binding de composición:
+
+  1. Anotación de binding: Texto rodeado por  ({{}}) o doble corchete ([[]]). Identifica los datos del host que están enlazados.
+  2. Compound binding: Una cadena literal que contiene una o más anotaciones de enlace.
+
+### Binding a un a una propiedad
+
+```html 
+<target-element name="{{myName}}"></target-element>
+<target-element name="[[myName]]"></target-element>
+```
+
+### Binding a contenido de texto, interpolación
+
+```html
+<dom-module id="user-view">
+  <template>
+    <div>[[name]]</div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'user-view',
+      properties: {
+        name: String
+      }
+    });
+  </script>
+</dom-module>
+
+<!-- usage -->
+<user-view name="Samuel"></user-view>
+```
+
+### Binding a un atributo
+
+Para enlazar con un atributo, agregue un signo de dólar ($) después del nombre del atributo:
+
+```html
+<div style$="color: {{myColor}};">
+```
+
+Attribute binding resulta en una llamada:
+
+```javascript
+element.setAttribute(attr,value);
+```
+
+en vez de:
+
+```javascript
+element.property = value;
+```
+
+Otro ejemplo:
+
+```html
+<template>
+  <!-- Attribute binding -->
+  <my-element selected$="[[value]]"></my-element>
+  <!-- results in <my-element>.setAttribute('selected', this.value); -->
+
+  <!-- Property binding -->
+  <my-element selected="{{value}}"></my-element>
+  <!-- results in <my-element>.selected = this.value; -->
+</template>
+```
+
+Propiedades nativas que no soportan binding de propiedades:
+
+* class
+* style
+* href
+* for
+* data-*
+* value
+
+Algunos ejemplos de binding de atranutos correcto:
+
+```html
+<!-- class -->
+<div class$="[[foo]]"></div>
+
+<!-- style -->
+<div style$="[[background]]"></div>
+
+<!-- href -->
+<a href$="[[url]]">
+
+<!-- label for -->
+<label for$="[[bar]]"></label>
+
+<!-- dataset -->
+<div data-bar$="[[baz]]"></div>
+
+<!-- ARIA -->
+<button aria-label$="[[buttonLabel]]"></button>
+```
+
+### Sintasis de binding
+
+Dentro de la anotación podemos incluir lo siguiente:
+
+* Una ruta de propiedad o subproperty (users, address.street).
+
+```html
+<!-- Binding a una host property  -->
+<simple-view name="{{myName}}"></simple-view>
+
+<!-- Binding a una host sub-property  -->
+<dom-module id="main-view">
+
+  <template>
+    <user-view first="{{user.first}}" last="{{user.last}}"></user-view>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'main-view',
+      properties: {
+        user: Object
+      }
+    });
+  </script>
+
+</dom-module>
+```
+
+Recordemos que los cambios de las sub-properties de los objetos ni los Arrays son directamente detectabler, tenemos que hacer algo especial para detectar los cambios:
+
+```javascript
+//  Change a subproperty observably
+this.set('name.last', 'Maturin');
+```
+
+* Un binding calculado (_computeName(firstName, lastName, locale)).
+
+```html
+<div>[[_formatName(first, last, title)]]</div>
+```
+
+otro ejemplo:
+
+```html
+<dom-module id="x-custom">
+
+  <template>
+    My name is <span>[[_formatName(first, last)]]</span>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'x-custom',
+      properties: {
+        first: String,
+        last: String
+      },
+      _formatName: function(first, last) {
+        return first + ' ' + last;
+      }
+      ...
+    });
+  </script>
+
+</dom-module>
+```
+
+podemos usar literales como parámetros:
+
+```html
+<dom-module id="x-custom">
+  <template>
+    <span>{{translate('Hello\, nice to meet you', first, last)}}</span>
+  </template>
+</dom-module>
+```
+
+* Cualquiera de las anteriores con la anotación negación.
+
+```html
+<template>
+  <my-page show-login="[[!isLoggedIn]]"></my-page>
+</template>
+```
+
+### Binding de composición
+
+Concatenamos literales con datos:
+
+```html
+<img src$="https://www.example.com/profiles/[[userId]].jpg">
+
+<span>Name: [[lastname]], [[firstname]]</span>
+```
+
+### Binding con un elemento no Polymer
+
+Polymer utiliza una convención de nomenclatura de eventos para lograr el binding bidireccional:
+
+Utilizamos la sintaxis:
+
+> target-prop="{{hostProp::target-change-event}}"
+
+Ejemplo:
+
+```html
+<!-- Listens for `input` event and sets hostValue to <input>.value -->
+<input value="{{hostValue::input}}">
+
+<!-- Listens for `change` event and sets hostChecked to <input>.checked -->
+<input type="checkbox" checked="{{hostChecked::change}}">
+
+<!-- Listens for `timeupdate ` event and sets hostTime to <video>.currentTime -->
+<video url="..." current-time="{{hostTime::timeupdate}}">
+```
+
+Realmente si no especificamos nada se disparará un evento con la "_propiedad_-change":
+
+```html
+<!-- Listens for `value-changed` event -->
+<my-element value="{{hostValue::value-changed}}">
+
+<!-- Listens for `value-changed` event using Polymer convention by default -->
+<my-element value="{{hostValue}}">
+```
 
 ## Comunicación entre componentes
 
@@ -321,22 +542,12 @@ El fragmento de documento que aparece en la ruta de eventos es la raíz del árb
 
 ## Directivas estructurales
 
-### Template repeater (dom-repeat)
+### dom-repeat
 
 TODO
 
-### Data bind an array selection (array-selector)
+## Primer vistazo rápido a la librería de componentes
 
-TODO
+Vamos a echar un vistazo a lo que necesitamos para nuestra tienda
 
-### Conditional templates
-
-TODO
-
-### Auto-binding templates
-
-TODO 
-
-### dom-change event
-
-TODO
+_Vamos a prácticar lo aprendido_

@@ -911,7 +911,6 @@ El orden básico de inicialización del elemento para un elemento dado es:
 
 NOTA: No hay garantías sobre el tiempo de inicialización de los hijos del light DOM. En general los elementos se inicializan en orden de creación, por lo que los elementos child suelen ser inicializados después de sus padres.
 
-
 Polymer también proporciona dos devoluciones de llamada de en tiempo de registro, *beforeRegister* y *registered*.
 
 Podemos utilizar el callback *beforeRegister* para transformar el prototipo de un elemento antes del registro. Esto es útil cuando se registra un elemento usando el estilo de clase de ES6.
