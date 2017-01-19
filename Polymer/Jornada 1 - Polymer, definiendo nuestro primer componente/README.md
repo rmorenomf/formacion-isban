@@ -1546,6 +1546,7 @@ c2.setAttribute('slot', 's1');
 ## Aplicación de estilos para nodos distribuidos
 
 ### Antes (v0)
+-
 
 Era necesario el selector: *::content selector*
 
