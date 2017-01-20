@@ -11,6 +11,7 @@ Echaremos un vistazo al catálogo de componentes para empezar en serio con nuest
 Data binding conecta los datos de un custom element (el elemento host) a una propiedad o atributo de un elemento en su DOM local (el elemento secundario o elemento objetivo). Los datos del elemento host pueden ser una propiedad o sub-propiedad representada por una ruta de datos, o datos generados basados ​​en una o más rutas.
 
 > property-name=annotation-or-compound-binding
+
 > attribute-name$=annotation-or-compound-binding
 
 
