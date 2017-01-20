@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="recursive-app-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[name]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'recursive-app-app',
+
+      properties: {
+        name: {
+          type: String,
+          value: 'recursive-app-app',
+        },
+      },
+
+    });
+  </script>
+</dom-module>

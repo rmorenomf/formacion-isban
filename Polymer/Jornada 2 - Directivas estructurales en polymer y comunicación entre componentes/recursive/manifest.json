@@ -1,0 +1,6 @@
+{
+  "name": "recursive-app",
+  "short_name": "recursive-app",
+  "start_url": "/",
+  "display": "standalone"
+}
