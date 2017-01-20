@@ -544,7 +544,109 @@ El fragmento de documento que aparece en la ruta de eventos es la raíz del árb
 
 ### dom-repeat
 
-TODO
+El template repeater es una plantilla especializada que se une a un aRRAY. Crea una instancia del contenido de la plantilla para cada elemento deL Array. Para cada instancia, crea un nuevo ámbito de DATA BINDING que incluye las siguientes propiedades:
+
+  * *item*. El elemento de Array utilizado para crear esta instancia.
+  * *index*. El índice del elemento en la matriz. (El valor del índice cambia si la matriz está ordenada o filtrada)
+
+Ejemplo:
+
+```html
+<dom-module id="employee-list">
+  <template>
+
+    <div> Employee list: </div>
+    <template is="dom-repeat" items="{{employees}}">
+        <div># <span>{{index}}</span></div>
+        <div>First name: <span>{{item.first}}</span></div>
+        <div>Last name: <span>{{item.last}}</span></div>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'employee-list',
+      ready: function() {
+        this.employees = [
+            {first: 'Bob', last: 'Smith'},
+            {first: 'Sally', last: 'Johnson'},
+            ...
+        ];
+      }
+    });
+  </script>
+
+</dom-module>
+```
+
+Filtrado de elementos:
+
+```html
+<dom-module id="employee-search">
+
+  <template>
+    <input value="{{searchString::input}}">
+    <template is="dom-repeat" items="{{employees}}" as="employee"
+        filter="{{computeFilter(searchString)}}">
+        <div>{{employee.lastname}}, {{employee.firstname}}</div>
+    </template>
+  </template>
+
+  <script>
+    Polymer({
+      is: "employee-search",
+
+      computeFilter: function(string) {
+        if (!string) {
+          // set filter to null to disable filtering
+          return null;
+        } else {
+          // return a filter function for the current search string
+          string = string.toLowerCase();
+          return function(employee) {
+            var first = employee.firstname.toLowerCase();
+            var last = employee.lastname.toLowerCase();
+            return (first.indexOf(string) != -1 ||
+                last.indexOf(string) != -1);
+          };
+        }
+      },
+      properties: {
+        employees: {
+          type: Array,
+          value: function() {
+            return [
+              { firstname: "Jack", lastname: "Aubrey" },
+              { firstname: "Anne", lastname: "Elliot" },
+              { firstname: "Stephen", lastname: "Maturin" },
+              { firstname: "Emma", lastname: "Woodhouse" }
+            ]
+          }
+        }
+      }
+    });
+  </script>
+</dom-module>
+```
+
+dom-repead anidados:
+
+```html
+<div> Employee list: </div>
+<template is="dom-repeat" items="{{employees}}" as="employee">
+    <div>First name: <span>{{employee.first}}</span></div>
+    <div>Last name: <span>{{employee.last}}</span></div>
+
+    <div>Direct reports:</div>
+
+    <template is="dom-repeat" items="{{employee.reports}}" as="report" index-as="report_no">
+      <div><span>{{report_no}}</span>.
+           <span>{{report.first}}</span> <span>{{report.last}}</span>
+      </div>
+    </template>
+</template>
+```
 
 ## Primer vistazo rápido a la librería de componentes
 
