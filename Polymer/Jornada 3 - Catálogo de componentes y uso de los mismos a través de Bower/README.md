@@ -2,6 +2,7 @@
 
 ## Plan de trabajo
 
+En esta jornada vamos a volver a algunos conceptos importantes de Polymer, como es el Data Binding con son los objetos complejos.
 En esta jornada vamos a revisar la libreria de componentes de Polymer. 
 
 https://elements.polymer-project.org/
@@ -11,6 +12,18 @@ y una versión de componentes en Beta:
 https://beta.webcomponents.org/
 
 También vamos a hablar de los settings globales. 
+
+## Propiedades a fondo
+
+*Ver el apartado sobre propiedades de la Jornada 1.*
+
+## Observers y computed properties
+
+TODO
+
+## Binding de Arrays y Objects
+
+
 
 ## La ayuda
 

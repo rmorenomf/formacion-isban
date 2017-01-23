@@ -1004,6 +1004,52 @@ El valor se interpreta como un nombre de método que se invocará cuando cambie 
 * *reflectToAttribute*: Tipo: boolean
 Establezca en true para que el atributo correspondiente se establezca en el nodo host cuando cambie el valor de la propiedad. Si el valor de la propiedad es booleano, el atributo se crea como un atributo booleano HTML estándar (si es true, no se establece si es falso). Para otros tipos de propiedad, el valor del atributo es una representación de cadena del valor de la propiedad.
 
+El poder configurar con estás opciones el comportamiento de las propiedades nos permite definir en "grano fino" controlar el funcionamiento de las mismas:
+
+* (notify: false) + (readOnly: false) = One-way, downward
+* (notify: false) + (readOnly: true) = No data flow
+* (notify: true) + (readOnly: false) = Two-way
+* (notify: true) + (readOnly: true) = One-way, upward
+
+Sobre cómo gestiona Polymer el acceso a los datos:
+
+Tomando como ejemplo:
+
+```html
+<dom-module id="name-card">
+  <template>
+    <div>[[name.first]] [[name.last]]</div>
+  </template>
+  <script>Polymer({ is: 'name-card' });</script>
+</dom-module>
+```
+
+El sistema de datos se basa en Paths, no en objetos, donde un path representa una propiedad o subproperty relativa a un elemento. Por ejemplo, el elemento ```<name-card>``` tiene enlaces de datos para las rutas de acceso "name.first" y "name.last". Si una ```<name-card>``` tiene el siguiente objeto para su propiedad name:
+
+```json
+{
+  Primero: 'Lizzy',
+  Pasado: 'Bennet'
+}
+```
+
+La ruta "name" se refiere a la propiedad name del elemento (un objeto). Las rutas "name.first" y "name.last" se refieren a las propiedades de ese objeto.
+
+  1. La propiedad name hace referencia al objeto JavaScript.
+  2. La ruta "nombre" se refiere al objeto en sí. La ruta "name.first" se refiere a su subproperty, primero (la cadena, Lizzy).
+
+Polymer no detecta automáticamente todos los cambios de datos. Los efectos de propiedad ocurren cuando hay un cambio observable en una propiedad o subpropriedad.
+
+¿Por qué usar Paths? Path y cambios observables puede parecer un poco extraño al principio. Pero esto resulta en un sistema de enlace de datos de muy alto rendimiento. Cuando se produce un cambio observable, Polymer puede hacer un cambio sólo a aquellos puntos en el DOM que son afectados por ese cambio.
+
+*Paths especiales:*
+
+Hay algunos tipos especiales de rutas.
+
+  1. El carácter comodín, *, se puede utilizar como último segmento en una ruta de acceso (como foo.*). Esta ruta de comodín representa todos los cambios a una ruta de acceso dada y sus subproperties, incluyendo mutaciones de array.
+  2. Los *splices* de cadena se pueden utilizar como el último segmento de una ruta (como foo.splices) para representar todas las mutaciones de Array a un Array determinado. De forma que podemos detectar las insercciones y las eliminaciones de elementos en un Array. De forma que nos evita tener que hacer el análisis de qué ha cambiado en un Array. 
+  3. Las rutas de elementos de un Array (como foo.11 o myArray.#1) representan un elemento de un Array. Tanto por posición como por clave.
+
 #### Attribute deserialization
 
 Si una propiedad está configurada en el objeto _properties_, un atributo en la instancia que coincide con el nombre de la propiedad será deserializado de acuerdo con el tipo especificado y asignado a una propiedad del mismo nombre en la instancia del elemento.
