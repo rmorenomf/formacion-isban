@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Attributes vs Properties</title>
+    <meta name="description" content="Attributes vs Properties Explanation">
+
+    <script>
+        function changeValue(){
+            var elementSelected = document.getElementById('numberValue');
+            elementSelected.value = elementSelected.value + '#';  
+            
+            console.log('============================================================');
+            console.log('[*] Attribute value: ' + elementSelected.getAttribute('value') );
+            console.log('[*] Property value: ' + elementSelected.value );
+            //elementSelected.setAttribute('value', elementSelected.value);
+        }
+    </script>
+
+  </head>
+  <body>
+    
+    <h1>Example of difference between Attributes and Properties</h1>
+    <h4>Show console (Press F12)</h4>
+    <input type="text" id="numberValue" value="#">
+    <button type="button" onclick="changeValue();">Change property value not attribute value</button>
+
+  </body>
+</html>

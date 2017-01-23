@@ -1,0 +1,34 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="shop-list">
+
+
+  <template>
+
+    <iron-ajax
+        auto
+        url="../json-data/products.json"
+        params=''
+        handle-as="json"
+        on-response="handleProductsResponse"
+        debounce-duration="300"></iron-ajax>
+    
+        <template is="dom-repeat" items="[[products]]" as="product" index-as="product_no">
+            <div>#[[product_no]] [[product.name]]</div>
+        </template>
+    
+        
+  </template>
+
+  <script>
+    Polymer({
+      is: "shop-list",
+
+      handleProductsResponse: function(data){
+          this.products = data.detail.response;
+      }
+    });
+  </script>
+
+</dom-module>
