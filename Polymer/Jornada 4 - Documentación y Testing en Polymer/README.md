@@ -206,6 +206,8 @@ registered: function() {
 }
 ```
 
+_Práctica: En nuestra tienda vamos a crear un Behavior que se encarge de reorganizar la lista de productos según se agregen_
+
 ## Directiva *dom-if*
 
 Permite ocultar o mostrar un elemento, según el valor del traibuto *if*:
@@ -303,6 +305,34 @@ $$ Devuelve el primer nodo en el DOM local que coincide con el selector.
 
 ### DOM API
 
+Nota: Sobre la difrencia entre Nodo y Elemento:
+
+* The Element Object
+
+    The Element interface represents an object of a Document. This interface describes methods and properties common to all kinds of elements. Specific behaviors are described in interfaces which inherit from Element but add additional functionality. For example, the HTMLElement interface is the base interface for HTML elements, while the SVGElement interface is the basis for all SVG elements.
+
+    In the HTML DOM, the Element object represents an HTML element.
+
+    Element objects can have child nodes of type element nodes, text nodes, or comment nodes.
+
+    A NodeList object represents a list of nodes, like an HTML element's collection of child nodes.
+
+    Elements can also have attributes. Attributes are attribute nodes (See next chapter).
+
+* HTML DOM Nodes
+
+    A Node is an interface from which a number of DOM types inherit, and allows these various types to be treated (or tested) similarly.
+    The following interfaces all inherit from Node its methods and properties: Document, Element, CharacterData (which Text, Comment, and CDATASection inherit), ProcessingInstruction, DocumentFragment, DocumentType, Notation, Entity, EntityReference
+
+    HTML DOM Nodes
+    In the HTML DOM (Document Object Model), everything is a node:
+
+    The document itself is a document node
+    All HTML elements are element nodes
+    All HTML attributes are attribute nodes
+    Text inside HTML elements are text nodes
+    Comments are comment nodes
+
 Agregar y eliminar hijos:
 
     * Polymer.dom(parent).appendChild(node)
@@ -381,7 +411,52 @@ this.$$('#cancelButton');
 </dom-module>
 ```
 
+### Observe added and removed children
 
+Podemos utilizar el método observerNodes de la API de DOM para rastrear cuándo los hijos se agregan y eliminan de un elemento:
+
+```javascript
+this._observer =
+    Polymer.dom(this.$.contentNode).observeNodes(function(info) {
+  this.processNewNodes(info.addedNodes);
+  this.processRemovedNodes(info.removedNodes);
+});
+```
+
+### Bonus. Eliminar los nodos de texto vacios:
+
+```html
+<dom-module id="has-whitespace">
+  <template> <div>A</div> <div>B</div> </template>
+  <script>
+    Polymer({
+      is: 'has-whitespace',
+      ready: function() {
+        console.log(Polymer.dom(this.root).childNodes.length); // 5
+      }
+    });
+  </script>
+</dom-module>
+```
+
+Si inclucimos el atributo *strip-whitespace* en el template:
+
+```html
+<dom-module id="no-whitespace">
+  <template strip-whitespace>
+    <div>A</div>
+    <div>B</div>
+  </template>
+  <script>
+    Polymer({
+      is: 'no-whitespace',
+      ready: function() {
+        console.log(Polymer.dom(this.root).childNodes.length); // 2
+      }
+    });
+  </script>
+</dom-module>
+```
 
 ## Styling
 
@@ -546,7 +621,7 @@ también podemos dar un valor por defecto:
 color: var(--my-toolbar-title-color, blue);
 ```
 
-### Custom CSS mixin
+### Custom CSS mixins
 
 Nos permite incluir un bloque entero de estilos CSS en el componente, sin tener que especifcar cada una de las propiedades por adelantado.
 
