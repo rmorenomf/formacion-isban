@@ -381,6 +381,8 @@ this.$$('#cancelButton');
 </dom-module>
 ```
 
+
+
 ## Styling
 
 Ejemplo de utilización de estilos:
@@ -462,9 +464,302 @@ Eso implica:
 
 ### Custom CSS properties
 
+CSS custom properties. Los nombres de propiedades con prefijo --, como --example-name, representan propiedades personalizadas que contienen un valor que puede ser reutilizado en todo el documento mediante la función (var ()). Las propiedades personalizadas participan en la css: cada una de ellas puede aparecer varias veces y el valor de la variable coincidirá con el valor definido en la custom properties computada por el algoritmo CSS.
 
+```css
+h1 {  
+  color: var(--header-color, green);
+}
+```
 
+Ejemplo:
+
+```html
+<dom-module id="my-toolbar">
+
+  <template>
+
+    <style>
+      :host {
+        padding: 4px;
+        background-color: gray;
+      }
+      .title {
+        color: var(--my-toolbar-title-color);
+      }
+    </style>
+
+    <span class="title">{{title}}</span>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-toolbar',
+      properties: {
+        title: String
+      }
+    });
+  </script>
+
+</dom-module>
+```
+
+Y ahora vamos a usar el componente personalizado el color:
+
+```html
+<dom-module id="my-element">
+
+  <template>
+
+    <style>
+
+      /* Make all toolbar titles in this host green by default */
+      :host {
+        --my-toolbar-title-color: green;
+      }
+
+      /* Make only toolbars with the .warning class red */
+      .warning {
+        --my-toolbar-title-color: red;
+      }
+
+    </style>
+
+    <my-toolbar title="This one is green."></my-toolbar>
+    <my-toolbar title="This one is green too."></my-toolbar>
+
+    <my-toolbar class="warning" title="This one is red."></my-toolbar>
+
+  </template>
+
+  <script>
+    Polymer({ is: 'my-element'});
+  </script>
+
+</dom-module>
+```
+
+también podemos dar un valor por defecto:
+
+```css
+color: var(--my-toolbar-title-color, blue);
+```
+
+### Custom CSS mixin
+
+Nos permite incluir un bloque entero de estilos CSS en el componente, sin tener que especifcar cada una de las propiedades por adelantado.
+
+```css
+selector {
+  --mixin-name: {
+    /* rules */
+  };
+}
+```
+
+Ejemplo:
+
+```html
+<dom-module id="my-toolbar">
+
+  <template>
+
+    <style>
+      :host {
+        padding: 4px;
+        background-color: gray;
+        /* apply a mixin */
+        @apply(--my-toolbar-theme);
+      }
+      .title {
+        @apply(--my-toolbar-title-theme);
+      }
+    </style>
+
+    <span class="title">{{title}}</span>
+
+  </template>
+
+  ...
+
+</dom-module>
+```
+
+En uso:
+
+```html
+<dom-module id="my-element">
+
+  <template>
+
+    <style>
+      /* Apply custom theme to toolbars */
+      :host {
+        --my-toolbar-theme: {
+          background-color: green;
+          border-radius: 4px;
+          border: 1px solid gray;
+        };
+        --my-toolbar-title-theme: {
+          color: green;
+        };
+      }
+
+      /* Make only toolbars with the .warning class red and bold */
+      .warning {
+        --my-toolbar-title-theme: {
+          color: red;
+          font-weight: bold;
+        };
+      }
+    </style>
+
+    <my-toolbar title="This one is green."></my-toolbar>
+    <my-toolbar title="This one is green too."></my-toolbar>
+
+    <my-toolbar class="warning" title="This one is red."></my-toolbar>
+
+  </template>
+
+  <script>
+    Polymer({ is: 'my-element'});
+  </script>
+
+</dom-module>
+```
+
+Mediante la API de Polymer podemos modificar los estilos:
+
+```html
+<dom-module id="x-custom">
+
+  <template>
+
+    <style>
+      :host {
+        --my-toolbar-color: red;
+      }
+    </style>
+
+    <my-toolbar>My awesome app</my-toolbar>
+    <button on-tap="changeTheme">Change theme</button>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'x-custom',
+      changeTheme: function() {
+        this.customStyle['--my-toolbar-color'] = 'blue';
+        this.updateStyles();
+      }
+    });
+  </script>
+
+</dom-module>
+```
+
+la llamada a *this.updateStyles();* es la que reevalualo los estilos.
+
+### Estilos compartidos
+
+Definiemos un módulo externo solo con estilos:
+
+```html
+<!-- shared-styles.html -->
+<dom-module id="shared-styles">
+  <template>
+    <style>
+      .red { color: red; }
+    </style>
+  </template>
+</dom-module>
+```
+
+lo importamos y lo usamos usando el atributo id:
+
+```html
+<!-- import the module  -->
+<link rel="import" href="../shared-styles/shared-styles.html">
+<dom-module id="x-foo">
+  <template>
+    <!-- include the style module by name -->
+    <style include="shared-styles"></style>
+    <style>:host { display: block; }</style>
+    Hi
+  </template>
+  <script>Polymer({is: 'x-foo'});</script>
+</dom-module>
+```
 
 ## Documentación
 
+Hay que documentar bine el código, pero si además lo hacemos siguiendo ciertos estilos podemos usar herramientas de automatización de documentación que nos van a permitir un mejor acceso a la documentación de esos componentes, como es el caso del componente: *iron-component-page*
+
+Para crear una documentación en un proyecto existente podemos hacer lo siguiente:
+
+1. Agregar *iron-component-page* como dependencia:
+
+    > bower install --save-dev PolymerElements/iron-component-page
+
+2. Crear un index.html lo mas alto del proyecto con el siguiente contenido:
+
+```html
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../bower_components/iron-component-page/iron-component-page.html">
+
+</head>
+<body>
+  <!-- Note: if the main element for this repository doesn't
+       match the folder name, add a src="&lt;main-component&gt;.html" attribute,
+       where &lt;main-component&gt;.html" is a file that imports all of the
+       components you want documented. -->
+  <iron-component-page></iron-component-page>
+
+</body>
+</html>
+```
+
+Lo mejor es especificar lo que vamos a documentar:
+
+1. Creamos un único fichero de imports:
+
+```html
+<!-- all-imports.html -->
+<link rel="import" href="my-element-one.html">
+<link rel="import" href="my-element-two.html">
+```
+
+2. Editamos nuestro fichero *index.html*
+3. Agregamos el atributo *src* con el path a nuestro fichero de multiples importaciones.
+
+```html
+<iron-component-page src="all-imports.html"></iron-component-page> 
+```
+
 https://www.polymer-project.org/1.0/docs/tools/documentation
+
+Guía de estilo de documentación:
+
+http://polymerelements.github.io/style-guide/
+
+Lista completa de anotaciones:
+
+https://github.com/google/closure-compiler/wiki/Annotating-JavaScript-for-the-Closure-Compiler

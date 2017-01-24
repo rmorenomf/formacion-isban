@@ -1,0 +1,37 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<!--
+`<document-polymer-app>` injects a healthy dose of awesome into your page.
+
+In typical use, just slap some `<awesome-sauce>` at the top of your body:
+
+    <body>
+      <document-polymer-app></document-polymer-app>
+
+Wham! It's all awesome now!
+-->
+<dom-module id="document-polymer-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'document-polymer-app',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'document-polymer-app',
+        },
+      },
+
+    });
+  </script>
+</dom-module>

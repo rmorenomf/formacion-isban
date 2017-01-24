@@ -1,0 +1,6 @@
+{
+  "name": "document-polymer",
+  "short_name": "document-polymer",
+  "start_url": "/",
+  "display": "standalone"
+}

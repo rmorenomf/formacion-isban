@@ -1,0 +1,25 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="shop-cart">
+
+  <template>
+    
+    <style include="shared-styles">
+    </style>
+
+    <h5>Items in cart: [[ cart.length ]] </h5>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "shop-cart",
+
+      properties: {
+          cart: { type: Array, value: []}
+      }
+    });
+  </script>
+
+</dom-module>
