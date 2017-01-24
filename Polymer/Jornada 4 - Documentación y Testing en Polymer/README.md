@@ -9,7 +9,6 @@ Vamos a revisar lo siguiente:
 3. Shady DOM y manipulación del DOM
 4. Styling
 5. Documentar el código
-6. Testing
 
 ### Crear piezas de código reutilizables.
 
@@ -233,6 +232,33 @@ Por defecto el elemento no se crea y destruye, solamente se oculta (esto es mas 
 
 El DOM que crea y maneja un elemento se llama Local DOM. Es distinto de los hijos del elemento a los que podemos referirnos como light DOM.
 
+```html
+<dom-module id="x-foo">
+
+  <template>
+    <div>I am local dom</div>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'x-foo'
+    });
+  </script>
+
+</dom-module>
+```
+
+Cuando lo usamos:
+
+```html
+<x-foo>
+    <div>I am light dom</div>
+</x-foo>
+```
+
+Lo que se pone en la plantilla del elemento es DOM local. Lo que pones como niños a tu elemento personalizado cuando lo usas es light DOM. Por lo tanto, el DOM local es determinada por el creador del elemento, mientras que la light DOM es establecido por el usuario del elemento.
+
 Polymer admite múltiples implementaciones DOM locales. En los navegadores compatibles con Shadow DOM, se puede utilizar Shadow DOM para crear DOM local. En otros navegadores, Polymer proporciona DOM local a través de una implementación personalizada denominada Sahdy DOM  que está inspirada en Shadow DOM.
 
 Shadow DOM requiere que utilice la API de DOM de Polymer cuando manipule DOM de JavaScript. Esta interfaz cubre la mayoría de los métodos y propiedades DOM comunes y es compatible tanto con el Shady DOM como con el Shadow DOM nativo.
@@ -336,20 +362,109 @@ var cancelButton = Polymer.dom(this.root).querySelector('#cancelButton');
 // (equivalent to the above):
 this.$$('#cancelButton');
 ```
+### Acceso al Light DOM
 
+```html
+<dom-module id="simple-content">
+  <template>
+    <content id="myContent"></content>
+  </template>
+  <script>
+    Polymer({
+      is: 'simple-content',
+      ready: function() {
+        var distributed = this.getContentChildren('#myContent');
+        console.log(distributed.length);
+      }
+    });
+  </script>
+</dom-module>
+```
 
 ## Styling
+
+Ejemplo de utilización de estilos:
+
+```html
+<dom-module id="my-element">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        border: 1px solid red;
+      }
+      #child-element {
+        background: yellow;
+      }
+      /* styling elements distributed to content (via ::content) requires */
+      /* selecting the parent of the <content> element for compatibility with */
+      /* shady DOM . This can be :host or a wrapper element. */
+      .content-wrapper ::content > .special {
+        background: orange;
+      }
+    </style>
+
+    <div id="child-element">In local DOM!</div>
+    <div class="content-wrapper">
+        <content></content>
+    </div>
+
+  </template>
+
+  <script>
+
+      Polymer({
+          is: 'my-element'
+      });
+
+  </script>
+
+</dom-module>
+```
+
+NOTA: Styling elements distributed to content (via ::content) requires selecting the parent of the ```<content>``` element for compatibility with shady DOM. This can be :host or a wrapper element.
+
+Bajo Shady DOM, la etiqueta ```<content>``` no aparece en el árbol de DOM. Los estilos se reescriben para quitar el pseudo-elemento de ::content y cualquier combinador inmediatamente a la izquierda de ::content.
+
+Eso implica:
+
+    * Debemos poner un selector a la izquierda de ::content
+
+        *:host ::content div*
+
+        se convierte en:
+
+        *x-foo div* /* Donde x-foo es el nombre del custom element.
+
+    * Para limitar los estilos dentro de ::content es muy recomendable usar el selector de hijos ```>```:
+
+    ```html
+        <dom-module id="my-element">
+
+    <template>
+
+        <style>
+        .content-wrapper ::content > .special {
+            background: orange;
+        }
+        </style>
+
+        <div class="content-wrapper"><content></content></div>
+
+    </template>
+
+    </dom-module>
+    ```
+    
+    *.content-wrapper ::content > .special* => Se convierte en: *.content-wrapper > .special*
+
+### Custom CSS properties
+
 
 
 
 ## Documentación
 
 https://www.polymer-project.org/1.0/docs/tools/documentation
-
-## Testing
-
-https://www.polymer-project.org/1.0/docs/tools/tests
-
-Usando el componente de testing:
-
-https://github.com/Polymer/web-component-tester

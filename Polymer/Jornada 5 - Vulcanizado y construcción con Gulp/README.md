@@ -2,6 +2,8 @@
 
 ## Plan de trabajo
 
+Testing
+
 Vamos a conocer un poco mas en detalle las herramientas de construcción de la aplicación. También vamos a ver las diferentes herramientas de optimización de cara a su despliegue en productión.
 Trabajaremos sobre nuestro proyecto de tienda para probar las diferentes opciones de construcción.
 También vamos a repasar los cambios en la versión 2 de Polymer.
