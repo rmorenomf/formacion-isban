@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
-
+<link rel="import" href="shop-cart.html">
 
 <dom-module id="my-app">
   <template>
@@ -86,7 +86,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="my-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My App</div>
+            <div main-title>Ruben's Shop</div>
+            <shop-cart cart="{{items}}"></shop-cart>
           </app-toolbar>
         </app-header>
 
@@ -114,12 +115,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
-        },
+        }
+      },
+
+      listeners: {
+        'added-product-to-cart': 'handleAddedProductToCart',
       },
 
       observers: [
         '_routePageChanged(routeData.page)',
       ],
+
+      factoryImpl: function() {
+        this.items = [];
+      },
 
       _routePageChanged: function(page) {
         this.page = page || 'shop-list';
@@ -138,6 +147,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _showPage404: function() {
         this.page = 'view404';
       },
+
+      handleAddedProductToCart: function(e){
+        this.items = this.items || [];
+        //this.items.push( e.detail ); //Esto no es observable
+        this.push('items', e.detail); //Para un array o un objeto tenemos que cambiarlo de forma especial. 
+      }
+
     });
   </script>
 </dom-module>

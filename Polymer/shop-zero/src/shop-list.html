@@ -1,10 +1,28 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="shop-list">
 
-
   <template>
+    
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+
+      paper-card {
+        --paper-card-header-image: {
+          width: 300px;
+          height: 300px;
+        };
+      }
+
+    </style>
 
     <iron-ajax
         auto
@@ -14,8 +32,29 @@
         on-response="handleProductsResponse"
         debounce-duration="300"></iron-ajax>
     
-        <template is="dom-repeat" items="[[products]]" as="product" index-as="product_no">
-            <div>#[[product_no]] [[product.name]]</div>
+        <template is="dom-repeat" items="[[products]]" id="productsList">
+            <paper-card image="../shop-img/{{item.id}}.jpg" 
+              src="shop-products-details/{{item.id}}" 
+              alt="{{item.name}}">
+              
+              <div class="card-content">
+                  <div class="cafe-header"><a href="shop-products-details/{{item.id}}" tabindex="-1">{{item.name}}</a>
+                      <div>
+                        {{item.description}}                      
+                      </div>
+                      <div>
+                        <h2>{{item.price}}€</h2>                      
+                      </div>
+                  </div>
+              </div>
+              <paper-button class="indigo" 
+                raised 
+                on-click="addProductToChart">Add to cart</paper-button>   
+              <a href="shop-products-details/{{item.id}}" tabindex="-1">
+                <paper-button class="" raised>Details</paper-button>
+              </a>
+          
+          </paper-card>
         </template>
     
         
@@ -24,6 +63,18 @@
   <script>
     Polymer({
       is: "shop-list",
+
+      /*
+      properties : {
+        cart: { type: Array, value : [] }
+      },
+      */
+
+      addProductToChart: function(e){
+        var item = this.$.productsList.itemForElement(e.target);
+        //this.push('cart', item);
+        this.fire('added-product-to-cart', item);
+      },
 
       handleProductsResponse: function(data){
           this.products = data.detail.response;
