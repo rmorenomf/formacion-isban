@@ -21,8 +21,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
 <link rel="import" href="my-icons.html">
 <link rel="import" href="shop-cart.html">
+<link rel="import" href="bhv-cart.html">
 
 <dom-module id="my-app">
   <template>
@@ -125,6 +127,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       observers: [
         '_routePageChanged(routeData.page)',
       ],
+      
+      behaviors : [CartManager],
 
       factoryImpl: function() {
         this.items = [];
@@ -149,9 +153,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       handleAddedProductToCart: function(e){
-        this.items = this.items || [];
+        this.addToCart(e.detail);
+
+        //this.items = this.items || [];
         //this.items.push( e.detail ); //Esto no es observable
-        this.push('items', e.detail); //Para un array o un objeto tenemos que cambiarlo de forma especial. 
+        //this.push('items', e.detail); //Para un array o un objeto tenemos que cambiarlo de forma especial. 
       }
 
     });

@@ -1,6 +1,16 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
 
+<!--
+`<shop-cart>` injects a healthy dose of awesome into your page.
+
+In typical use, just slap some `<shop-cart>` at the top of your body:
+
+    <body>
+      <shop-cart></shop-cart>
+
+Wham! It's all awesome now!
+-->
 <dom-module id="shop-cart">
 
   <template>
@@ -17,7 +27,16 @@
       is: "shop-cart",
 
       properties: {
+          /**
+          * Lista de elementos en el carrito.
+          *
+          * @type {{cart: Array}}
+          */
           cart: { type: Array, value: []}
+      },
+
+      addElement: function(item) {
+          this.push('cart', item);
       }
     });
   </script>
