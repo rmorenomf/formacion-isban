@@ -11,6 +11,8 @@
   "sourceGlobs": [
     "src/**/*",
     "images/**/*",
+    "json-data/**/*",
+    "shop-img/**/*",
     "bower.json"
   ],
   "includeDependencies": [

@@ -313,12 +313,258 @@ gulp.task('vulcanize', function() {
 });
 ```
 
-
-
 ## Cómo lo hace el Starter Kit
 
 El Starter Kit hace las cosas de una forma mas completa, automatizando ya las tareas. Veamos lo que monta para generar los proyecto de la forma mas optima.
 
+Para ello tenemos el comando *build*:
+
+"Generates a production-ready build of your app. This process includes minifying the HTML, CSS, and JS of the application dependencies, and generating a service worker to pre-cache dependencies."
+
+El Starter Kit está diseñado con la arquitectura Shell (https://developers.google.com/web/updates/2015/11/app-shell) y usa el fichero *polymer.json* para configurar la generación de la aplicación.
+
+* *entrypoint*: The main entrypoint into your application for all routes. Often times this is your index.html file. This file should import the app shell file specified in the shell option. It should be minimal since it's loaded and cached for each route.
+* *shell*: The app shell file containing common code for the app.
+*fragment: An array of any HTML files that are not synchronously loaded from the app shell, such as async imports or any imports loaded on-demand (e.g. by importHref).
+* *sources*: An optional array of globs matching your application source files. This will default to all files in your project src/ directory, but configuring your own list of sources can be useful when your source files live in other directories.
+* *includeDependencies*: An optional array of globs matching any additional dependencies you'd like to include with your build. If your application loads any files dynamically they can be missed by the analyzer, but you can include them here to make sure that they are always added to your build. *Note: If you ever use polymer-build to define your own build process you can decide to handle sources & dependencies differently. But Polymer CLI currently treats additional files included in sources & includeDependencies the same, so place any additional files wherever you think makes the most sense.
+
+### Service workers
+
+Polymer CLI will generate a service worker for your build using the sw-precache library. To customize your service worker, create a sw-precache-config.js file in your project directory that exports your configuration. See the sw-precache README for a list of all supported options.
+
+Note that the sw-precache library uses a cache-first strategy for maximum speed and makes some other assumptions about how your service worker should behave. Read the "Considerations" section of the sw-precache README to make sure that this is suitable for your application.
+
+### Bundled and unbundled builds
+
+Polymer CLI generates two build versions:
+
+bundled. All fragments are bundled together to reduce the number of file requests. Optimal for sending to clients or serving from servers that are not HTTP/2 compatible.
+unbundled. Fragments are unbundled. Optimal for HTTP/2-compatible servers and clients.
+
+## Testing
+
+Polymer CLI cubre la gran mayoría de las tareas de desarrollo de Polymer, incluidos los test unitarios. La biblioteca subyacente que alimenta las herramientas de prueba de unidad de Polymer CLI se llama Web Component Tester (WCT).
+
+Web Component Tester es un entorno de prueba de extremo a extremo construido por el equipo Polymer. Permite probar elementos localmente, contra todos los navegadores instalados, o de forma remota, a través de Sauce Labs. Está construido sobre herramientas populares de terceros, incluyendo:
+
+* Mocha for a test framework, complete with support for BDD and TDD.
+* Chai for more assertion types that can be used with your Mocha tests.
+* Sinon for spies, stubs, and mocks.
+* Selenium for running tests against multiple browsers.
+* Accessibility Developer Tools for accessibility audits.
+
+_Revisar los test que se han creado con el Starter Kit_ 
+
+### Creación de un Test Asíncrono:
+
+```javascript
+test('fires lasers', function(done) {
+  myEl.addEventListener('seed-element-lasers', function(event) {
+    assert.equal(event.detail.sound, 'Pew pew!');
+    done();
+  });
+  myEl.fireLasers();
+});
+```
+
+Pasamos *done* como argumento al test de la función.
+
+### Crear fixtures para tener estados limpios para cada test:
+
+Los fixtures de pruebas nos permiten definir un template y copiar una nueva instancia limpia de ese template en cada conjunto de pruebas. Usaremos fixtures de prueba para minimizar la cantidad de estados compartidos entre los conjuntos de pruebas.
+
+* Definir el template de fictire y darle una identificación (ID).
+* DefinaDefinir una variable en el script de prueba para hacer referencia al template.
+* Instanciar una nueva instancia del fictire en el método *setup()*.
+
+```html
+<test-fixture id="seed-element-fixture">
+  <template>
+    <seed-element>
+      <h2>seed-element</h2>
+    </seed-element>
+  </template>
+</test-fixture>
+
+<script>
+  suite('<seed-element>', function() {
+    var myEl;
+    setup(function() {
+      myEl = fixture('seed-element-fixture');
+    });
+    test('defines the "author" property', function() {
+      assert.equal(myEl.author.name, 'Dimitri Glazkov');
+    });
+  });
+</script>
+```
+
+### Crear métodos stub.
+
+Los stubs permiten reemplazar implementaciones predeterminadas con métodos personalizados. Esto es útil para detectar efectos secundarios.
+
+```javascript
+setup(function() {
+  stub('paper-button', {
+    click: function() {
+      console.log('paper-button.click called');
+    }
+  });
+});
+```
+
+No es necesario utilizar stubs directamente en elementos individuales. Puede anular la implementación de todos los elementos de un tipo determinado.
+
+Utilice elementos stub para probar los elementos de forma aislada. Por ejemplo, si una de sus pruebas depende de otro elemento para devolver datos, en lugar de importar el otro elemento (posiblemente inestable) en las pruebas, puede implementar un stub del otro elemento que siempre devuelve datos coherentes.
+
+```javascript
+setup(function() {
+  replace('paper-button').with('fake-paper-button');
+});
+```
+
+para:
+
+```html
+<dom-module id='x-el'>
+  <template>
+    <paper-button id="pb">button</paper-button>
+  </template>
+</dom-module>
+```
+
+en la ejecución del test pasará lo siguiente:
+
+```html
+<dom-module id='x-el'>
+  <template>
+    <fake-paper-button id="pb">button</fake-paper-button>
+  </template>
+</dom-module>
+```
+
+### Sinon
+
+Web Component Tester incluye Sinon, que le permite simular solicitudes de XHR y crear servidores falsos.
+
+A continuación se muestra un ejemplo de un simple test unitario de una llamada XHR para ```<iron-ajax>```. 
+
+```html
+<!-- create test fixture template -->
+<test-fixture id="simple-get">
+  <template>
+    <iron-ajax url="/responds_to_get_with_json"></iron-ajax>
+  </template>
+</test-fixture>
+<script>
+  suite('<iron-ajax>', function() {
+    var ajax;
+    var request;
+    var server;
+    var responseHeaders = {
+      json: { 'Content-Type': 'application/json' }
+    };
+    setup(function() {
+      server = sinon.fakeServer.create();
+      server.respondWith(
+        'GET',
+        /\/responds_to_get_with_json.*/, [
+          200,
+          responseHeaders.json,
+          '{"success":true}'
+        ]
+      );
+    });
+    teardown(function() {
+      server.restore();
+    });
+    suite('when making simple GET requests for JSON', function() {
+      setup(function() {
+        // get fresh instance of iron-ajax before every test
+        ajax = fixture('simple-get');
+      });
+      test('has sane defaults that love you', function() {
+        request = ajax.generateRequest();
+        server.respond();
+        expect(request.response).to.be.ok;
+        expect(request.response).to.be.an('object');
+        expect(request.response.success).to.be.equal(true);
+      });
+      test('has the correct xhr method', function() {
+        request = ajax.generateRequest();
+        expect(request.xhr.method).to.be.equal('GET'); //The example above uses Chai's expect assertion style.
+      });
+    });
+  });
+</script>
+```
+
+### Ejecutar mas de un Test
+
+```html
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src=”../bower_components/webcomponentsjs/webcomponents-lite.js”></script>
+    <script src=”../bower_components/web-component-tester/browser.js”></script>
+  </head>
+  <body>
+    <script>
+      WCT.loadSuites([
+        'basic.html',
+        'async.html'
+      ]);
+    </script>
+  </body>
+</html>
+```
+
+### Testing del DOM local
+
+Usar el DOM API de Polymer para manipular los hijos.
+
+```javascript
+test('click sets isWaiting to true', function() {
+  myEl.$$('button').click();
+  assert(myEl.isWaiting, true);
+});
+```
+
+Para testar una mutación del DOM o en el caso de tener que probar dom-repeat o dom-if:
 
 
+Envuelva siempre su prueba con *flush()* si la plantilla de elemento contiene un repetidor de plantilla (dom-repeat) o una plantilla condicional (dom-if) o si su prueba implica una mutación DOM local. Polymer realiza estas operaciones de forma *Lazy* por temas de rendimiento. Flush garantiza que se han producido cambios asincrónicos. La función de prueba debe tomar un argumento, hecho, para indicar que es asíncrono, y debe llamar a *done()* al final de la descarga.
 
+```javascript
+suite('my-list tests', function() {
+  var list, listItems;
+  setup(function() {
+    list = fixture('basic');
+  });
+  test('Item lengths should be equal', function(done) {
+    list.items = [
+      'Responsive Web App boilerplate',
+      'Unit testing with Web Component Tester',
+      'Offline support with the Platinum Service Worker Elements'
+    ];
+    // Data bindings will stamp out new DOM asynchronously
+    // so wait to check for updates
+    flush(function() {
+      listItems = Polymer.dom(list.root).querySelectorAll('li');
+      assert.equal(list.items.length, listItems.length);
+      done();
+    });
+  });
+)};
+```
+
+### Testear en varios modos de aislamiento:
+
+```javascript
+WCT.loadSuites([
+  'basic-test.html',
+  'basic-test.html?dom=shadow'
+]);
+```
