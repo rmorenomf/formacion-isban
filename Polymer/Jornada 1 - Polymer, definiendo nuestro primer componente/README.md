@@ -690,7 +690,6 @@ _Vamos a crear un proyecto Polymer_
 
 ## Estructura de un componente Polymer (v0)
 
-
 ```javascript
 // register an element
     MyElement = Polymer({
