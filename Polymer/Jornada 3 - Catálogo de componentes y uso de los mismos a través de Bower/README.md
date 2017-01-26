@@ -19,7 +19,6 @@ También vamos a hablar de los settings globales.
 
 ## Observers y computed properties
 
-
 Los Observers son métodos invocados cuando ocurren cambios observables en los datos del elemento. Hay dos tipos básicos de observadores:
 
 * Observadores simples observan una sola propiedad.

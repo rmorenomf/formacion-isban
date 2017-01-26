@@ -744,7 +744,7 @@ console.log(el2 instanceof HTMLInputElement); // true
 <input is="my-input">
 ```
 
-NOTA: En la preview de la versióin 2 se prescinde de este formula:
+NOTA: En la preview de la versión 2 se prescinde de este formula:
 
 Polymer 2.0 doesn't support type-extension elements (for example, ```<input is="iron-input">```). Type-extension support is still included in the custom elements v1 spec (as "customized build-in elements"), and scheduled for implementation in Chrome. However, since Apple has said it will not implement is, we will not be encouraging its use to avoid indefinite reliance on the custom elements polyfill. Instead, a wrapper custom element can surround a native element. For example:
 

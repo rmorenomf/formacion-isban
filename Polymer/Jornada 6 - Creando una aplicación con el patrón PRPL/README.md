@@ -99,7 +99,64 @@ Actualmente tenemos una preview. Según el equipo de desarrollo está "bajo acti
 ## Lo nuevo:
 
 1. Toma las mejoras de la verión "v1" de Webcomponents. En lo relativo a lo nuevo de Custom Elements y Shadow DOM. Además de utilizar la nueva sintaxis de  ES6 aka JavaScript 2015.
-2. Proveer una migración *suave* desde Polymer 1.x. Permitiendo, entre otras cosas, tener aplicaciones híbridas que contengan componentes creados con las dos versiones de Polymer. No obstante, según el equipo de desarrollo, abrá cosas que no sean compatibles y la adaptación necesitará cambios en el código.
+2. Proveer una migración *suave* desde Polymer 1.x. Permitiendo, entre otras cosas, tener aplicaciones híbridas que contengan componentes creados con las dos versiones de Polymer. No obstante, según el equipo de desarrollo, habrá cosas que no sean compatibles y la adaptación necesitará cambios en el código.
+
+### Extendiendo elementos nativos HTML cambios en la versión 2 de Polymer
+
+De hecho, en la versión de Polymer 1.x, solo podemos extender componentes nativos; *input*, *button*, etc. Pero no de otros Custom elements.
+
+```javascript
+MyInput = Polymer({
+  is: 'my-input',
+  extends: 'input',
+  created: function() {
+    this.style.border = '1px solid red';
+  }
+});
+
+var el1 = new MyInput();
+console.log(el1 instanceof HTMLInputElement); // true
+
+var el2 = document.createElement('input', 'my-input');
+console.log(el2 instanceof HTMLInputElement); // true
+```
+
+¡IMPORTANTE! - Para poder usarlo tendremos que incluir la formula *is* en el custom element:
+
+```html
+<input is="my-input">
+```
+
+NOTA: En la preview de la versión 2 se prescinde de este formula:
+
+Polymer 2.0 doesn't support type-extension elements (for example, ```<input is="iron-input">```). Type-extension support is still included in the custom elements v1 spec (as "customized build-in elements"), and scheduled for implementation in Chrome. However, since Apple has said it will not implement is, we will not be encouraging its use to avoid indefinite reliance on the custom elements polyfill. Instead, a wrapper custom element can surround a native element. For example:
+
+```html
+<a is="my-anchor">...</a>
+```
+
+Could become:
+
+```html
+<my-anchor>
+  <a>...</a>
+</my-anchor>
+```
+Users will need to change existing type-extension elements where necessary.
+
+All template type extensions provided by Polymer have now been changed to standard custom elements that take a <template> in their light DOM. For example:
+
+```html
+<template is="dom-repeat" items="{{items}}">...</template>
+```
+
+Becomes:
+
+```html
+<dom-repeat items="{{items}}">
+  <template>...</template>
+</dom-repeat>
+```
 
 # Lo nuevo de Shadow DOM v1.
 
